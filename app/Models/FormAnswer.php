@@ -24,5 +24,5 @@ class FormAnswer extends Model
      *
      * @var string
      */
-    protected $table = 'community';
+    protected $table = 'form_answer';
 }

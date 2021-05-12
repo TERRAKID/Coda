@@ -15,7 +15,7 @@ class CommunityMessage extends Model
      * @var array
      */
     protected $fillable = [
-        'community_id'
+        'community_id',
         'user_id',
         'message',
     ];
