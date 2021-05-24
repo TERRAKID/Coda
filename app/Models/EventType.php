@@ -4,15 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
 
-class Community extends Model
+class EventType extends Model
 {
     use HasFactory;
-
-    public function user(){
-        return $this->hasMany(User::class);
-    }
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -20,9 +16,6 @@ class Community extends Model
      */
     protected $fillable = [
         'name',
-        'visibility',
-        'community_photo_path',
-        'background_photo_path',
     ];
 
     /**
@@ -30,5 +23,5 @@ class Community extends Model
      *
      * @var string
      */
-    protected $table = 'community';
+    protected $table = 'event_type';
 }

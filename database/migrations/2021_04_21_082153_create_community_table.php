@@ -16,6 +16,7 @@ class CreateCommunityTable extends Migration
         Schema::create('community', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->boolean('visibility')->default('1');
             $table->text('community_photo_path')->nullable();
             $table->text('background_photo_path')->nullable();
             $table->timestamps();

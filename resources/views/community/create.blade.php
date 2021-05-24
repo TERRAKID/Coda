@@ -1,10 +1,6 @@
+<html>
 
-@section('title')
-    Create New Community
-@endsection
+    @component('../components/create-community', ['users' => $users])@endcomponent
 
-@section('content')
-
-    @component('components/create-community')@endcomponent
-@endsection
+</html>
 

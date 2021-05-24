@@ -32,3 +32,4 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 //Communities
 Route::get('/community/create', [CommunityController::class, 'index'])->name('create');
+Route::post('/community/create', [CommunityController::class, 'create']);
