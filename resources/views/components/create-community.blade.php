@@ -19,18 +19,30 @@
 
     <div id="img_uploads">
         <div>
-            <label for="avatar">Upload Avatar</label>
-            <input type="file" name="avatar" placeholder="Upload Avatar">
+            <div>
+                <img id="display-avatar-preview" src="" alt="" style="max-height: 150px;">
+            </div>
+            <div id="avatar-div">
+                <label for="avatar">Upload Avatar</label>
+                <input type="file" id="avatar" name="avatar" placeholder="Upload Avatar">
+                <input type='button' id='remove-avatar' value='Remove File' style="display: none;">
+            </div>
         </div>
         <div>
-            <label for="banner">Upload Banner</label>
-            <input type="file" name="banner" placeholder="Upload Banner">
+            <div>
+                <img id="display-banner-preview" src="" alt="" style="max-height: 150px;">
+            </div>
+            <div>
+                <label for="banner">Upload Banner</label>
+                <input type="file" id="banner" name="banner" placeholder="Upload Banner">
+                <input type='button' id='remove-banner' value='Remove File' style="display: none;">
+            </div>
         </div>
     </div>
 
     <div id="community_details">
         <div>
-            <label for="name">Community name</label>
+            <label for="name">Community Name</label>
             <input type="text" name="name" placeholder="Name">
         </div>
         <div>
@@ -41,7 +53,7 @@
             </select>
         </div>
         <div>
-            <label for="invite">Invite members</label>
+            <label for="invite">Invite Your Friends</label>
             <?php $x=0; ?>
             @foreach($users as $user)
                 <div>
@@ -54,3 +66,40 @@
     </div>
     <input id="submit" type="submit" value="Create Community">
 </form>
+
+<script type="text/javascript">
+     
+    $(document).ready(function (e) {
+
+        $('#avatar').change(function(){
+            $('#remove-avatar').show();
+            let reader = new FileReader();
+            reader.onload = (e) => { 
+              $('#display-avatar-preview').attr('src', e.target.result); 
+            }
+            reader.readAsDataURL(this.files[0]);
+        });
+
+        $('#remove-avatar').click(function(){
+            $('#display-avatar-preview').attr('src', '');
+            $('#avatar').val("");
+            $('#remove-avatar').hide();
+        });
+
+        $('#banner').change(function(){
+            $('#remove-banner').show();
+            let reader = new FileReader();
+            reader.onload = (e) => { 
+              $('#display-banner-preview').attr('src', e.target.result); 
+            }
+            reader.readAsDataURL(this.files[0]);
+        });
+
+        $('#remove-banner').click(function(){
+            $('#display-banner-preview').attr('src', '');
+            $('#banner').val("");
+            $('#remove-banner').hide();
+        });
+    });
+ 
+</script>

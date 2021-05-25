@@ -31,5 +31,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 })->name('dashboard');
 
 //Communities
-Route::get('/community/create', [CommunityController::class, 'index'])->name('create');
-Route::post('/community/create', [CommunityController::class, 'create']);
+Route::get('/community/create', [CommunityController::class, 'createCommunityShowUsers'])->name('create');
+Route::post('/community/create', [CommunityController::class, 'createCommunity']);
+Route::get('/community/{id}', [CommunityController::class,'showCommunity'])->middleware('auth');
+

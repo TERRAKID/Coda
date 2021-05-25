@@ -6,14 +6,23 @@ use App\Models\User;
 use App\Models\Community;
 use App\Models\CommunityMember;
 use App\Models\UserFriend;
-use Illuminate\Http\Request;
 use App\Traits\UploadTrait;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CommunityController extends Controller
 {
     use UploadTrait;
+
+    public function showCommunity($id){
+        $community = Community::where('id', $id)
+            ->get();
+        $community = $community[0];
+
+        return view('community.show', ['community' => $community]);
+    }
     
-    public function index(){
+    public function createCommunityShowUsers(){
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
 
@@ -22,7 +31,14 @@ class CommunityController extends Controller
         return view('community.create', ['users' => $friends]);
     }
 
-    public function create(Request $request){
+    public function createCommunity(Request $request){
+        
+        $validation = $request->validate([
+            'name' => 'required|max:255',
+            'avatar' => 'image|max:2048',
+            'banner' => 'image|max:2048',
+        ]);
+
         $community = new Community;
 
         $community->name = request('name');
