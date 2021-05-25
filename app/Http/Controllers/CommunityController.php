@@ -54,6 +54,10 @@ class CommunityController extends Controller
             $community->background_photo_path = $filePath;
         }
 
+        for($x = 0; $x <= 5; $x++){
+            
+        }
+
         $community->save();
         return redirect()->back()->with(['message' => "Your Community, '" . request('name') . "', was created successfully."]);
     }

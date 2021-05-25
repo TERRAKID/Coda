@@ -42,12 +42,13 @@
         </div>
         <div>
             <label for="invite">Invite members</label>
-
+            <?php $x=0; ?>
             @foreach($users as $user)
                 <div>
-                    <label for="{{ $user->id }}">{{ $user->name }}</label>
-                    <input type="checkbox" id="{{ $user->id }}" name="invitee-{{ $user->id }}">
+                    <label for="invitee-{{ $x }}">{{ $user->name }}</label>
+                    <input type="checkbox" id="invitee-{{ $x }}" name="invitee-{{ $x }}">
                 </div>
+                <?php $x++; ?>
             @endforeach
         </div>
     </div>

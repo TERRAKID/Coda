@@ -17,6 +17,7 @@ class CreateCommunityMemberTable extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('community_id');
+            $table->boolean('invited')->default('0');
             $table->boolean('active')->default('1');
             $table->timestamps();
         });
