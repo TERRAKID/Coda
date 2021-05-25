@@ -21,6 +21,49 @@ class CommunityController extends Controller
 
         return view('community.show', ['community' => $community]);
     }
+
+    public function communityDetails($id){
+        $community = Community::where('id', $id)
+            ->get();
+        $community = $community[0];
+
+        return view('community.details', ['community' => $community]);
+    }
+
+    public function communityInvite($id){
+        $community = Community::where('id', $id)
+            ->get();
+        $community = $community[0];
+
+        $currentUser = auth()->user();
+        $currentUser = $currentUser->id;
+
+        $member = CommunityMember::where('user_id', $currentUser)
+            ->where('community_id', $id)
+            ->where('active', 1)
+            ->count();
+
+        return view('community.invite', ['community' => $community], ['member' => $member]);
+    }
+
+    public function acceptInvite($id){
+        $communityMember = new CommunityMember;
+
+        $currentUser = auth()->user();
+        $currentUser = $currentUser->id;
+
+        $community = Community::where('id', $id)
+            ->get();
+        $community = $community[0];
+
+        $communityMember->user_id = $currentUser;
+        $communityMember->community_id = $id;
+        $communityMember->active = 1;
+
+        //$communityMember->save();
+
+        //return view('community.show', ['community' => $community]);
+    }
     
     public function createCommunityShowUsers(){
         $currentUser = auth()->user();
