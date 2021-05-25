@@ -8,6 +8,7 @@
         <h1>You have been invited to join {{ $community->name }}</h1>
 
         <form action="/community/{{ $community->id }}/invite" method="POST">
+            @csrf
             <input type="submit" value="Click here to join">
         </form>
     @endif

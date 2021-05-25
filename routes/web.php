@@ -32,16 +32,16 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 //---Communities----------------------------------
 // These routes are used to display and submit the form for creating a new community
-Route::get('/community/create', [CommunityController::class, 'createCommunityShowUsers'])->name('create');
-Route::post('/community/create', [CommunityController::class, 'createCommunity']);
+Route::get('/community/create', [CommunityController::class, 'createCommunityShowUsers'])->middleware('auth');;
+Route::post('/community/create', [CommunityController::class, 'createCommunity'])->middleware('auth');
 
 
-Route::get('/community/{id}', [CommunityController::class,'showCommunity'])->middleware('auth');
+Route::get('/community/{id}', [CommunityController::class,'showCommunity']);
 
 Route::get('/community/{id}/details', [CommunityController::class, 'communityDetails'])->middleware('auth');
-Route::get('/community/{id}/details', [CommunityController::class, 'communityDetails'])->middleware('auth');
+Route::post('/community/{id}/details', [CommunityController::class, 'leaveCommunity'])->middleware('auth');
 
-Route::get('/community/{id}/invite', [CommunityController::class, 'communityInvite'])->middleware('auth');
+Route::get('/community/{id}/invite', [CommunityController::class, 'communityInvite'])->middleware('auth');;
 Route::post('/community/{id}/invite', [CommunityController::class, 'acceptInvite'])->middleware('auth');
 
 

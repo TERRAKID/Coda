@@ -49,25 +49,26 @@
             </article>
         </div>
     </div>
+    
+    <input id="leave-btn" class="btn danger-btn" type="button" value="Leave Community">
 
-    <form action="/community/{{ $community->id }}/details" method="POST">
+    <form id="leave-community-form" style="display: none;" action="/community/{{ $community->id }}/details" method="POST">
         @csrf
-        @if( $flash = session('message') )
-            <div class="alert alert-success">{{ $flash }}</div>
-        @endif
-
-        @if( $flash = session('error') )
-            <div class="alert alert-danger">{{ $flash }}</div>
-        @endif
-
-        @if( $errors->any())
-            <ul class="alert alert-danger">
-                @foreach($errors->all() as $e)
-                    <li>{{ $e }}</li>
-                @endforeach
-            </ul>
-        @endif
-
-        <input class="btn danger-btn" type="button" value="Leave Community">
+        <h3>Are you sure you want to leave {{ $community->name }}?</h3>
+        <input id="leave-confirm" class="btn danger-btn" type="submit" value="Leave Community">
+        <input id="leave-cancel" type="button" value="Cancel">
     </form>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function (e) {
+
+        $('#leave-btn').click(function(){
+            $('#leave-community-form').show();
+        })
+
+        $('#leave-cancel').click(function(){
+            $('#leave-community-form').hide();
+        })
+    });
+</script>

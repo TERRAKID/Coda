@@ -5,9 +5,11 @@
         </div>
         <div>
             <h1>{{ $community->name }}</h1>
-            <a href="/community/{{ $community->id }}/details"><div>
-                <p>i</p>
-            </div></a>
+            @if($member == 1)
+                <a href="/community/{{ $community->id }}/details"><div>
+                        <p>i</p>
+                </div></a>
+            @endif
         </div>
 
     </div>
