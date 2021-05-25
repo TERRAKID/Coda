@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Community;
+use App\Models\CommunityMember;
+use App\Models\UserFriend;
 use Illuminate\Http\Request;
 use App\Traits\UploadTrait;
 
@@ -11,11 +14,12 @@ class CommunityController extends Controller
     use UploadTrait;
     
     public function index(){
-        $users = \DB::table('users')
-            ->take(10)
-            ->get();
+        $currentUser = auth()->user();
+        $currentUser = $currentUser->id;
 
-        return view('community.create', ['users' => $users]);
+        $friends = auth()->user()->friends()->get();
+
+        return view('community.create', ['users' => $friends]);
     }
 
     public function create(Request $request){
@@ -25,40 +29,63 @@ class CommunityController extends Controller
         $community->visibility = request('visibility');
 
         if ($request->has('avatar')) {
-            // Get image file
+
             $image = $request->file('avatar');
-            // Make an image name based on user name and current timestamp
+
             $name = $request->input('name').'_'.time();
-            // Define folder path
+
             $folder = 'community-photos/';
-            // Make a file path where image will be stored [ folder path + file name + file extension]
+
             $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
-            // Upload image
+            //this comes from /Traits/UploadTrait
             $this->uploadOne($image, $folder, 'public', $name);
-            // Set user profile image path in database to filePath
+
             $community->community_photo_path = $filePath;
         }
 
         if ($request->has('banner')) {
-            // Get image file
             $image = $request->file('banner');
-            // Make an image name based on user name and current timestamp
+
             $name = $request->input('name').'_'.time();
-            // Define folder path
+
             $folder = 'community-photos/';
-            // Make a file path where image will be stored [ folder path + file name + file extension]
+
             $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
-            // Upload image
-            $this->uploadOne($image, $folder, 'public', $name);
-            // Set user profile image path in database to filePath
+            //this comes from /Traits/UploadTrait
+            $this->uploadOne($image, $folder, 'public', $name); 
+
             $community->background_photo_path = $filePath;
         }
+        
+        $community->save();
 
-        for($x = 0; $x <= 5; $x++){
+        $community = \DB::table('community')
+            ->select('id')
+            ->where('name', request('name'))
+            ->orderBy('id', 'DESC')
+            ->take(1)
+            ->get();
+        
+        $communityId = $community[0]->id;
+
+        for($x = 0; $x <= 4; $x++){
+            $communityMember = new CommunityMember;
+            $value = request('invitee-' . $x);
+
+            if(isset($value)){
+                var_dump($value);
             
+                $communityMember->user_id = $value;
+                $communityMember->community_id = $communityId;
+                $communityMember->invited = '1';
+                $communityMember->active = '0';
+
+                $communityMember->save();
+            }
         }
 
-        $community->save();
-        return redirect()->back()->with(['message' => "Your Community, '" . request('name') . "', was created successfully."]);
+        return redirect()
+            ->back()
+            ->with(['message' => "Your Community, '" . request('name') . "', was created successfully."]);
     }
 }

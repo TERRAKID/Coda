@@ -14,9 +14,9 @@ class CreateUserFriendTable extends Migration
     public function up()
     {
         Schema::create('user_friend', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id_1');
-            $table->foreignId('user_id_2');
+            $table->increments('id');
+            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('friend_id')->references('id')->on('users')->onDelete('cascade');
             $table->boolean('accepted')->default('0');
             $table->boolean('active')->default('1');
             $table->timestamps();

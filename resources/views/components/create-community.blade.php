@@ -46,7 +46,7 @@
             @foreach($users as $user)
                 <div>
                     <label for="invitee-{{ $x }}">{{ $user->name }}</label>
-                    <input type="checkbox" id="invitee-{{ $x }}" name="invitee-{{ $x }}">
+                    <input type="checkbox" value="{{ $user->id }}" id="invitee-{{ $x }}" name="invitee-{{ $x }}">
                 </div>
                 <?php $x++; ?>
             @endforeach
