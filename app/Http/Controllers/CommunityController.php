@@ -33,6 +33,8 @@ class CommunityController extends Controller
         return view('community.show', ['community' => $community], ['member' => $member]);
     }
 
+    //-----------------------------------------------------------------------
+    
     public function communityDetails($id){
         $community = Community::where('id', $id)
             ->get();
@@ -41,6 +43,8 @@ class CommunityController extends Controller
         return view('community.details', ['community' => $community]);
     }
 
+    //-----------------------------------------------------------------------
+    
     public function leaveCommunity($id){
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
@@ -58,9 +62,13 @@ class CommunityController extends Controller
             ->where('active', 1)
             ->count();
 
-        return view('community.show', ['community' => $community], ['member' => $member]);
+        return redirect('/community' . '/' . $id)
+            ->with(['community' => $community], ['member' => $member])
+            ->withSuccess('You have left ' . $community->name);
     }
 
+    //-----------------------------------------------------------------------
+    
     public function communityInvite($id){
         $community = Community::where('id', $id)
             ->get();
@@ -77,6 +85,8 @@ class CommunityController extends Controller
         return view('community.invite', ['community' => $community], ['member' => $member]);
     }
 
+    //-----------------------------------------------------------------------
+    
     public function acceptInvite($id){
         $communityMember = new CommunityMember;
 
@@ -105,18 +115,24 @@ class CommunityController extends Controller
             $communityMember->save();
         }
 
-        return view('community.show', ['community' => $community], ['member' => $member]);
+        return redirect('/community' . '/' . $id)
+            ->with(['community' => $community], ['member' => $member])
+            ->withSuccess('You have joined ' . $community->name);
     }
+    
+    //-----------------------------------------------------------------------
     
     public function createCommunityShowUsers(){
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
 
-        $friends = auth()->user()->friends()->get();
+        $friends = auth()->user()->friends()->take(6)->get();
 
         return view('community.create', ['users' => $friends]);
     }
 
+    //-----------------------------------------------------------------------
+    
     public function createCommunity(Request $request){
         
         $validation = $request->validate([
@@ -175,8 +191,6 @@ class CommunityController extends Controller
             $value = request('invitee-' . $x);
 
             if(isset($value)){
-                var_dump($value);
-            
                 $communityMember->user_id = $value;
                 $communityMember->community_id = $communityId;
                 $communityMember->invited = '1';
@@ -189,6 +203,12 @@ class CommunityController extends Controller
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
 
+        $communityMember->user_id = $currentUser;
+        $communityMember->community_id = $communityId;
+        $communityMember->active='1';
+
+        $communityMember->save();
+
         $community = Community::where('id', $communityId)
             ->get();
         $community = $community[0];
@@ -198,6 +218,8 @@ class CommunityController extends Controller
             ->where('active', 1)
             ->count();
 
-        return view('community.show', ['community' => $community], ['member' => $member]);
+        return redirect('/community' . '/' . $communityId)
+            ->with(['community' => $community], ['member' => $member])
+            ->withSuccess(request('name') . ' was created successfully');
     }
 }
