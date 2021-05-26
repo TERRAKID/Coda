@@ -8,6 +8,7 @@ use App\Models\CommunityMember;
 use App\Models\UserFriend;
 use App\Traits\UploadTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 class CommunityController extends Controller
@@ -52,8 +53,8 @@ class CommunityController extends Controller
         $community = Community::where('id', $id)
             ->get();
         $community = $community[0];
-
-        CommunityMember::where('user_id', $currentUser)
+        
+        $query = CommunityMember::where('user_id', $currentUser)
             ->where('community_id', $id)
             ->update(['active' => 0]);
         
@@ -62,9 +63,16 @@ class CommunityController extends Controller
             ->where('active', 1)
             ->count();
 
-        return redirect('/community' . '/' . $id)
-            ->with(['community' => $community], ['member' => $member])
-            ->withSuccess('You have left ' . $community->name);
+        if($query){
+            return redirect('/community' . '/' . $id)
+                ->with(['community' => $community], ['member' => $member])
+                ->withSuccess('You have left ' . $community->name);
+        }
+        else{
+            return back()
+                ->with(['community' => $community], ['member' => $member])
+                ->withFail('Something went wrong, try again later');
+        }
     }
 
     //-----------------------------------------------------------------------
@@ -102,22 +110,40 @@ class CommunityController extends Controller
             ->count();
 
         if($member != 0){
-            CommunityMember::where('user_id', $currentUser)
+            $query = CommunityMember::where('user_id', $currentUser)
                 ->where('community_id', $id)
                 ->update(['active' => 1]);
+
+            if($query){
+                return redirect('/community' . '/' . $id)
+                    ->with(['community' => $community], ['member' => $member])
+                    ->withSuccess('You have joined ' . $community->name);
+            }
+            else{
+                return back()
+                    ->with(['community' => $community], ['member' => $member])
+                    ->withFail('Something went wrong, try again later');
+            }
         }
 
-        elseif($member == 0){
+        else if($member == 0){
             $communityMember->user_id = $currentUser;
             $communityMember->community_id = $id;
             $communityMember->active = 1;
     
-            $communityMember->save();
-        }
+            $query = $communityMember->save();
 
-        return redirect('/community' . '/' . $id)
-            ->with(['community' => $community], ['member' => $member])
-            ->withSuccess('You have joined ' . $community->name);
+            if($query){
+                return redirect('/community' . '/' . $id)
+                    ->with(['community' => $community], ['member' => $member])
+                    ->withSuccess('You have joined ' . $community->name);
+            }
+            else{
+                return back()
+                    ->with(['community' => $community], ['member' => $member])
+                    ->withFail('Something went wrong, try again later');
+            }
+        }
     }
     
     //-----------------------------------------------------------------------

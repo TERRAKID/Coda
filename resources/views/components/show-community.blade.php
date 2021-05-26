@@ -41,7 +41,7 @@
 
     <div style="display: none" id="invite-popup">
         <h2>Send this link to your friends to invite them to {{ $community-> name }}</h2>
-        <p>{{ url()->current() }}/invite</p>
+        <p id="invite-url">{{ url()->current() }}/invite</p>
         <input id="invite-close" type="button" value="Close">
     </div>
 </div>
