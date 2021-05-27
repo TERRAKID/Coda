@@ -30,8 +30,12 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
 
+Route::middleware(['auth:sanctum', 'verified'])->get('/community', function () {
+    return Inertia::render('Community/Show');
+})->name('community');
+
 //---Communities----------------------------------
-// These routes are used to display and submit the form for creating a new community
+/* These routes are used to display and submit the form for creating a new community
 Route::get('/community/create', [CommunityController::class, 'createCommunityShowUsers'])->middleware('auth');;
 Route::post('/community/create', [CommunityController::class, 'createCommunity'])->middleware('auth');
 
@@ -42,6 +46,6 @@ Route::get('/community/{id}/details', [CommunityController::class, 'communityDet
 Route::post('/community/{id}/details', [CommunityController::class, 'leaveCommunity'])->middleware('auth');
 
 Route::get('/community/{id}/invite', [CommunityController::class, 'communityInvite'])->middleware('auth');;
-Route::post('/community/{id}/invite', [CommunityController::class, 'acceptInvite'])->middleware('auth');
+Route::post('/community/{id}/invite', [CommunityController::class, 'acceptInvite'])->middleware('auth');*/
 
 
