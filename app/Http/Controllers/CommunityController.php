@@ -10,6 +10,8 @@ use App\Traits\UploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Laravel\Jetstream\Jetstream;
+use Inertia\Inertia;
 
 class CommunityController extends Controller
 {
@@ -31,7 +33,8 @@ class CommunityController extends Controller
             ->where('active', 1)
             ->count();
 
-        return view('community.show', ['community' => $community], ['member' => $member]);
+        //dd($community);
+        return Inertia::render('Community/Show')->with('community', $community)->with('isMember', $member);
     }
 
     //-----------------------------------------------------------------------
@@ -41,7 +44,7 @@ class CommunityController extends Controller
             ->get();
         $community = $community[0];
 
-        return view('community.details', ['community' => $community]);
+        return Inertia::render('Community/Details')->with('community', $community);
     }
 
     //-----------------------------------------------------------------------
@@ -90,7 +93,7 @@ class CommunityController extends Controller
             ->where('active', 1)
             ->count();
 
-        return view('community.invite', ['community' => $community], ['member' => $member]);
+        return Inertia::render('Community/Invite')->with('community', $community)->with('isMember', $member);
     }
 
     //-----------------------------------------------------------------------
@@ -115,13 +118,12 @@ class CommunityController extends Controller
                 ->update(['active' => 1]);
 
             if($query){
-                return redirect('/community' . '/' . $id)
-                    ->with(['community' => $community], ['member' => $member])
-                    ->withSuccess('You have joined ' . $community->name);
+                return Inertia::render('Community/Show')->with('community', $community)->with('isMember', $member);
             }
             else{
                 return back()
-                    ->with(['community' => $community], ['member' => $member])
+                    ->with('community', $community)
+                    ->with('member', $member)
                     ->withFail('Something went wrong, try again later');
             }
         }
@@ -134,13 +136,17 @@ class CommunityController extends Controller
             $query = $communityMember->save();
 
             if($query){
+                return Inertia::render('Community/Show')->with('community', $community)->with('isMember', $member);
+                /*
                 return redirect('/community' . '/' . $id)
                     ->with(['community' => $community], ['member' => $member])
                     ->withSuccess('You have joined ' . $community->name);
+                */
             }
             else{
                 return back()
-                    ->with(['community' => $community], ['member' => $member])
+                    ->with('community', $community)
+                    ->with('member', $member)
                     ->withFail('Something went wrong, try again later');
             }
         }
@@ -153,15 +159,13 @@ class CommunityController extends Controller
         $currentUser = $currentUser->id;
 
         $friends = auth()->user()->friends()->take(6)->get();
-
-        return view('community.create', ['users' => $friends]);
+        return Inertia::render('Community/Create')->with('friends', $friends);
     }
 
     //-----------------------------------------------------------------------
     
     public function createCommunity(Request $request){
-        
-        $validation = $request->validate([
+        $validator = $request->validate([
             'name' => 'required|max:255',
             'avatar' => 'image|max:2048',
             'banner' => 'image|max:2048',
@@ -215,7 +219,6 @@ class CommunityController extends Controller
         for($x = 0; $x <= 4; $x++){
             $communityMember = new CommunityMember;
             $value = request('invitee-' . $x);
-
             if(isset($value)){
                 $communityMember->user_id = $value;
                 $communityMember->community_id = $communityId;
@@ -244,8 +247,9 @@ class CommunityController extends Controller
             ->where('active', 1)
             ->count();
 
-        return redirect('/community' . '/' . $communityId)
+        return redirect()->back()->withErrors($validator)->withInput();
+        /*return redirect('/community' . '/' . $communityId)
             ->with(['community' => $community], ['member' => $member])
-            ->withSuccess(request('name') . ' was created successfully');
+            ->withSuccess(request('name') . ' was created successfully');*/
     }
 }
