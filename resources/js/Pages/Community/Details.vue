@@ -57,33 +57,14 @@
             </div>
         </div>
         
-        <input v-on:click.native="confirmingUserDeletion = true" id="leave-btn" class="btn danger-btn" type="button" value="Leave Community">
+        <input v-on:click="confirmingUserDeletion = !confirmingUserDeletion" id="leave-btn" class="btn danger-btn" type="button" value="Leave Community">
 
-        <form id="leave-community-form" :action="'/community/' + this.community.id + '/details'" method="POST">
+        <form v-show="confirmingUserDeletion" id="leave-community-form" :action="'/community/' + this.community.id + '/details'" method="POST">
             <input type="hidden" name="_token" :value="csrf">
             <h3>Are you sure you want to leave {{ this.community.name }}?</h3>
             <input id="leave-confirm" class="btn danger-btn" type="submit" value="Leave Community">
-            <input id="leave-cancel" type="button" value="Cancel">
+            <input v-on:click="confirmingUserDeletion = !confirmingUserDeletion" id="leave-cancel" type="button" value="Cancel">
         </form>
-        <jet-confirmation-modal :show="confirmingUserDeletion" @close="confirmingUserDeletion = false">
-            <template #title>
-                Delete Account
-            </template>
-
-            <template #content>
-                Are you sure you want to delete your account? Once your account is deleted, all of its resources and data will be permanently deleted.
-            </template>
-
-            <template #footer>
-                <jet-secondary-button @click.native="confirmingUserDeletion = false">
-                    Nevermind
-                </jet-secondary-button>
-
-                <jet-danger-button class="ml-2" @click.native="deleteTeam" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Delete Account
-                </jet-danger-button>
-            </template>
-        </jet-confirmation-modal>
     </div>
 
     </app-layout>

@@ -30,10 +30,11 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/community/{id}', [CommunityController::class, 'showCommunity']);
-
-Route::middleware(['auth:sanctum', 'verified'])->get('/community/create', [CommunityController::class, 'createCommunityShowUsers'])->name('community');
+Route::middleware(['auth:sanctum', 'verified'])->get('/community/create', [CommunityController::class, 'createCommunityShowUsers']);
 Route::middleware(['auth:sanctum', 'verified'])->post('/community/create', [CommunityController::class, 'createCommunity']);
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/community', [CommunityController::class, 'showAllCommunities'])->name('community');
+Route::middleware(['auth:sanctum', 'verified'])->get('/community/{id}', [CommunityController::class, 'showCommunity']);
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/community/{id}/details', [CommunityController::class, 'communityDetails']);
 Route::middleware(['auth:sanctum', 'verified'])->post('/community/{id}/details', [CommunityController::class, 'leaveCommunity']);

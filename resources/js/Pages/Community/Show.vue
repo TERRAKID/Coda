@@ -15,20 +15,20 @@
                             <p class="link-btn-text">i</p>
                     </div></a>
 
-                    <input id="invite-btn" type="button" value="Invite Friends">
+                    <input v-on:click="inviteVis = !inviteVis" id="invite-btn" type="button" value="Invite Friends">
                 </div>
 
                 <div v-else>
-                    <a v-on:click="inviteVis = !inviteVis" class="link join-link"><div class="link-btn">
+                    <a v-bind:href="'/community/' + this.community.id + '/invite'" class="link join-link"><div class="link-btn">
                             <p class="link-btn-text">Join Community</p>
                     </div></a>
                 </div>
             </div>
         </div>
-        <div id="invite-popup">
+        <div v-show="inviteVis" id="invite-popup">
             <h2>Send this link to your friends to invite them to {{ this.community.name }}</h2>
             <p id="invite-url">coda.app/community/{{ this.community.id }}/invite</p>
-            <input id="invite-close" type="button" value="Close">
+            <input v-on:click="inviteVis = !inviteVis" id="invite-close" type="button" value="Close">
         </div>
     </app-layout>
 </template>

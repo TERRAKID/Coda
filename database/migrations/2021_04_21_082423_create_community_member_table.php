@@ -14,9 +14,9 @@ class CreateCommunityMemberTable extends Migration
     public function up()
     {
         Schema::create('community_member', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id');
-            $table->foreignId('community_id');
+            $table->increments('id');
+            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('community_id')->references('id')->on('community')->onDelete('cascade');
             $table->boolean('invited')->default('0');
             $table->boolean('active')->default('1');
             $table->timestamps();

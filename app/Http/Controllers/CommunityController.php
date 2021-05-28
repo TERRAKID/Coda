@@ -17,14 +17,36 @@ class CommunityController extends Controller
 {
     use UploadTrait;
 
-    public function showCommunity($id){
-        $community = Community::where('id', $id)
-            ->get();
-        $community = $community[0];
+    public function showAllCommunities(){
+        $currentUser = auth()->user();
+        $currentUser = $currentUser->id;
 
+        //$members = CommunityMember::where('user_id', $currentUser)->get();
+
+        $communities = Community::join('community_member', 'community_member.community_id', '=', 'community.id')
+            ->where('community_member.user_id', '=', $currentUser)->get();
+
+        return Inertia::render('Community/Index')->with('communities', $communities)->with('user', auth()->user());
+    }
+
+    public function showCommunity($id){
         $currentUser = auth()->user();
         if($currentUser != null){
             $currentUser = $currentUser->id;
+        }
+
+        $community = Community::where('id', $id)
+            ->get();
+        
+        if($community->isEmpty()){
+
+            $communities = Community::join('community_member', 'community_member.community_id', '=', 'community.id')
+                ->where('community_member.user_id', '=', $currentUser)->get();
+
+            return Inertia::render('Community/Index')->with('communities', $communities)->with('user', auth()->user());
+        }
+        else{
+            $community = $community[0];
         }
         
 
@@ -207,13 +229,10 @@ class CommunityController extends Controller
         
         $community->save();
 
-        $community = \DB::table('community')
-            ->select('id')
-            ->where('name', request('name'))
+        $community = Community::where('name', request('name'))
             ->orderBy('id', 'DESC')
             ->take(1)
             ->get();
-        
         $communityId = $community[0]->id;
 
         for($x = 0; $x <= 4; $x++){
@@ -247,9 +266,6 @@ class CommunityController extends Controller
             ->where('active', 1)
             ->count();
 
-        return redirect()->back()->withErrors($validator)->withInput();
-        /*return redirect('/community' . '/' . $communityId)
-            ->with(['community' => $community], ['member' => $member])
-            ->withSuccess(request('name') . ' was created successfully');*/
+        return Inertia::render('Community/Show')->with('community', $community)->with('isMember', $member);
     }
 }
