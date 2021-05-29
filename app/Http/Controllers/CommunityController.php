@@ -180,8 +180,15 @@ class CommunityController extends Controller
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
 
-        $friends = auth()->user()->friends()->take(6)->get();
-        return Inertia::render('Community/Create')->with('friends', $friends);
+        $friends1 = User::join('user_friend', 'user_friend.user_id', '=', 'users.id')
+                ->where('user_friend.friend_id', '=', $currentUser)->get();
+
+        $friends2 = auth()->user()->friends()->get();
+
+        $allFriends = $friends1->merge($friends2);
+        //dd($allFriends);
+
+        return Inertia::render('Community/Create')->with('friends', $allFriends);
     }
 
     //-----------------------------------------------------------------------

@@ -4,6 +4,11 @@
             <h1>Hey, {{ this.user.name }}, here are all your communities</h1>
         </template>
         <a v-for="(community, index) in communities" :key="index" :href="'community/' + community.id">
+            <div :style="{'background-image':'url(/storage/' + community.background_photo_path + ')'}">
+                <div style="padding: 50px 50px 50px 50px">
+
+                </div>
+            </div>
             <div>
                 <img style="max-height: 100px" v-bind:src="'/storage/' + community.community_photo_path" alt="">
                 <h3>{{ community.name }}</h3>

@@ -6,11 +6,62 @@
             </h2>
         </template>
 
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <welcome />
+        <div>
+            <h3>
+                Recommended Communities or <a href="community/create">Create a new one <img src="" alt=""></a>
+            </h3>
+            <div>
+                <a v-for="(community, index) in recCommunities" :key="index" :href="'/community/' + community.id">
+                    <div class="rounded-full bg-cover h-40 w-40" :style="{'background-image':'url(/storage/' + community.community_photo_path + ')'}"></div>
+                </a>
+            </div>
+        </div>
+
+        <div>
+            <h3>
+                Trending movies
+            </h3>
+            <div>
+
+            </div>
+        </div>
+
+        <div>
+            <h3>
+                Most popular review this week
+            </h3>
+            <div>
+                <img src="" alt="">
+                <div>
+                    <img src="" alt="">
+                    <div>
+                        <h4>
+                            Will Smitters
+                        </h4>
+                        <p>
+                            12/04/2021 - 5k likes
+                        </p>
+                    </div>
                 </div>
+                <div>
+                    <p>
+                        review text
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h3>
+                Your Community updates
+            </h3>
+            <div>
+                <a v-for="(community, index) in communities" :key="index" :href="'/community/' + community.id">
+                    <div>
+                        <img :src="community.community_photo_path" alt="">
+                        <p>{{ community.name }}</p>
+                    </div>
+                </a>
             </div>
         </div>
     </app-layout>
@@ -24,6 +75,21 @@
         components: {
             AppLayout,
             Welcome,
+        },
+        data(){
+            return{
+
+            }
+        },
+        props:{
+            recCommunities: {
+                type: Array,
+                required: true,
+            },
+            review: {
+                type: Array,
+                required: true,
+            }
         },
     }
 </script>
