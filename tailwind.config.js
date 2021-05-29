@@ -1,4 +1,5 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
+const colors = require('tailwindcss/colors');
 
 module.exports = {
     purge: [
@@ -12,8 +13,23 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+                sans: ['Raleway', ...defaultTheme.fontFamily.sans],
+                serif: ['Merriweather', ...defaultTheme.fontFamily.serif],
+                detail: ['Domine', ...defaultTheme.fontFamily.serif],
             },
+            colors: {
+                blue: {
+                    primary: '#3766AF',
+                    secondary: '#5779BB',
+                },
+                purple: '#7C217E',
+                green: '#3BBAC0',
+                black: '#212125',
+                white: '#fefdfb',
+            },
+            backgroundImage: theme => ({
+                'hero-auth': "url('/img/hero-auth.png')",
+            })
         },
     },
 

@@ -1,5 +1,8 @@
 <template>
-    <button :type="type" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
+    <button
+        :type="type"
+        class="text-center px-4 py-2.5 bg-green rounded-lg text-xl text-white focus:outline-none hover:bg-opacity-70 active:bg-opacity-60 disabled:opacity-25 transition ease-in-out duration-150"
+    >
         <slot></slot>
     </button>
 </template>
@@ -9,8 +12,8 @@
         props: {
             type: {
                 type: String,
-                default: 'submit',
+                default: "submit",
             },
-        }
-    }
+        },
+    };
 </script>
