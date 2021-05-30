@@ -29,13 +29,18 @@ module.exports = {
             },
             backgroundImage: theme => ({
                 'hero-auth': "url('/img/hero-auth.png')",
-            })
+            }),
+            gridTemplateColumns: {
+                'main': '20% 80%',
+            },
         },
     },
 
     variants: {
         extend: {
             opacity: ['disabled'],
+            ringWidth: ['active'],
+            ringColor: ['active'],
         },
     },
 

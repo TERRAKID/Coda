@@ -30,7 +30,7 @@
                 />
             </div>
 
-            <div class="block mt-4 flex justify-between">
+            <div class="mt-4 flex justify-between">
                 <label class="flex items-center">
                     <jet-checkbox
                         name="remember"
