@@ -1,62 +1,80 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
-
+<br />
 <p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <a href="https://coda-app.com">
+    <img src="public/img/icon.png" alt="Logo" height="80">
+  </a>
+
+  <h3 align="center">Coda</h3>
+
+  <h4 align="center">MOVIES IN CLOSE-UP</h4>
+  <p align="center">The first true social media for movie enthusiasts.</p>
 </p>
 
-## About Laravel
+## About The Project
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Our idea was born out of frustration. We are very interested in film ourselves and have found that there is currently a gap in the market for proper film discussion. The film experience can be made more interesting. It is difficult to find a "sense of community" online where people can share their love for movies. It remains a challenge for people with the same film interest to find each other.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+To solve these problems, we built a movie platform where you can review movies, earn badges and levels, log movies and share your experience with other users in an intimate atmosphere through the communities system. In this way everyone feels heard and there is open discussion that is constantly being stimulated. We also offer much more personalization, something that users greatly miss with existing platforms. This is how we build the new social media for film. 
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Built With
 
-## Learning Laravel
+* [Laravel Jetstream](https://jetstream.laravel.com)
+* [Tailwind CSS](https://tailwindcss.com)
+* [Vue.js](https://vuejs.org)
+* [Inertia.js](https://inertiajs.com)
+* [Laravel](https://laravel.com)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### APIs
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+* [Pusher](https://pusher.com)
+* [The Movie Database API](https://developers.themoviedb.org)
 
-## Laravel Sponsors
+## Getting Started
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### Prerequisites
 
-### Premium Partners
+* [Docker Desktop](https://www.docker.com/products/docker-desktop)
+* [Windows Subsystem for Linux 2](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
+* [Ubuntu](https://www.microsoft.com/nl-be/p/ubuntu/9nblggh4msv6)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/)**
-- **[OP.GG](https://op.gg)**
+### Installation
 
-## Contributing
+1. Clone repo in Ubuntu
+    ```sh
+    git clone git@github.com:TERRAKID/Coda.git
+    ```
+2. Install Composer dependencies
+    ```sh
+    docker run --rm \
+        -u "$(id -u):$(id -g)" \
+        -v $(pwd):/opt \
+        -w /opt \
+        laravelsail/php80-composer:latest \
+        composer install --ignore-platform-reqs
+    ```
+3. Configure Bash alias
+    ```sh
+    alias sail='bash vendor/bin/sail'
+    ```
+4. Start Docker containers
+    ```sh
+    sail up
+    ```
+5. Install npm packages
+    ```sh
+    sail npm install
+    ```
+6. Compile assets
+    ```sh
+    sail npm run dev
+    ```
+7. Run migrations
+    ```sh
+    sail php artisan migrate
+    ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Credits
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+* **Thibaud Streignart** - *Project manager* - [Jadabyte](https://github.com/Jadabyte)
+* **Lars Ingelrelst** - *Chief designer* - [Lars-ingel](https://github.com/Lars-ingel)
+* **Wannes Verboven** - *Lead developer* - [TERRAKID](https://github.com/TERRAKID)
