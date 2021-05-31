@@ -11,9 +11,9 @@
                 Recommended Communities or <a href="community/create">Create a new one <img src="" alt=""></a>
             </h3>
             <div>
-                <a v-for="(community, index) in recCommunities" :key="index" :href="'/community/' + community.id">
+                <inertia-link v-for="(community, index) in recCommunities" :key="index" :href="'/community/' + community.id">
                     <div class="rounded-full bg-cover h-40 w-40" :style="{'background-image':'url(/storage/' + community.community_photo_path + ')'}"></div>
-                </a>
+                </inertia-link>
             </div>
         </div>
 
@@ -22,7 +22,11 @@
                 Trending movies
             </h3>
             <div>
-
+                <img :src="poster" alt="">
+                <img :src="poster" alt="">
+                <img :src="poster" alt="">
+                <img :src="poster" alt="">
+                <img :src="poster" alt="">
             </div>
         </div>
 
@@ -31,21 +35,21 @@
                 Most popular review this week
             </h3>
             <div>
-                <img src="" alt="">
+                <img id="reviewPoster" :src="poster" alt="">
                 <div>
-                    <img src="" alt="">
+                    <img id="userAvatar" :src="'/storage/' + review.profile_photo_path" alt="">
                     <div>
                         <h4>
-                            Will Smitters
+                            {{ review.name }}
                         </h4>
                         <p>
-                            12/04/2021 - 5k likes
+                            {{ friendlyDate(review.created_at) }} - 5k likes
                         </p>
                     </div>
                 </div>
                 <div>
                     <p>
-                        review text
+                        {{ review.review }}
                     </p>
                 </div>
             </div>
@@ -56,12 +60,12 @@
                 Your Community updates
             </h3>
             <div>
-                <a v-for="(community, index) in communities" :key="index" :href="'/community/' + community.id">
+                <inertia-link v-for="(community, index) in userCommunities" :key="index" :href="'/community/' + community.id">
                     <div>
-                        <img :src="community.community_photo_path" alt="">
+                        <div class="rounded-full bg-cover h-40 w-40" :style="{'background-image':'url(/storage/' + community.community_photo_path + ')'}"></div>
                         <p>{{ community.name }}</p>
                     </div>
-                </a>
+                </inertia-link>
             </div>
         </div>
     </app-layout>
@@ -78,17 +82,30 @@
         },
         data(){
             return{
-
+                poster: "/storage/film-posters/game-night.jpg",
             }
         },
-        props:{
+        props: {
             recCommunities: {
                 type: Array,
                 required: true,
             },
+            userCommunities: {
+                type: Array,
+                required: false,
+            },
             review: {
                 type: Array,
                 required: true,
+            }
+        },
+        methods: {
+            friendlyDate(str){
+                var dateArray = str.substring(0, 10).split("-");
+                dateArray.reverse();
+
+                var date = (dateArray[0] + "/" + dateArray[1] + "/" + dateArray[2]);
+                return date;
             }
         },
     }

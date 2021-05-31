@@ -20,12 +20,26 @@ class GeneralController extends Controller
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
 
-        $communities = Community::take(5)->get();
+        $recCommunities = Community::take(5)->get();
+        $userCommunities = Community::join('community_member', 'community_member.community_id', '=', 'community.id')
+        ->where('community_member.user_id', '=', $currentUser)->get();
 
-        $review = MovieRating::take(1)->get();
-
+        $review = User::join('movie_ratings', 'movie_ratings.user_id', '=', 'users.id')
+            ->take(1)
+            ->get([
+                'users.id', 
+                'users.name', 
+                'users.profile_photo_path', 
+                'movie_ratings.created_at', 
+                'movie_ratings.movie_id', 
+                'movie_ratings.watched', 
+                'movie_ratings.rating', 
+                'movie_ratings.review',
+            ]);
+        $review = $review[0];
         return Inertia::render('Dashboard')
-            ->with('recCommunities', $communities)
+            ->with('recCommunities', $recCommunities)
+            ->with('userCommunities', $userCommunities)
             ->with('review', $review);
     }
 }
