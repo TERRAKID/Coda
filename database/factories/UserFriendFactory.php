@@ -22,8 +22,8 @@ class UserFriendFactory extends Factory
     public function definition()
     {
         return [
-            'user_id_1' => $this->faker->randomDigitNotNull,
-            'user_id_2' => $this->faker->randomDigitNotNull,
+            'user_id' => $this->faker->randomDigitNotNull,
+            'friend_id' => $this->faker->randomDigitNotNull,
             'accepted' => $this->faker->boolean,
         ];
     }

@@ -137,7 +137,10 @@
                                 Messages
                             </jet-responsive-nav-link>
 
-                            <jet-responsive-nav-link>
+                            <jet-responsive-nav-link
+                                :href="route('community')"
+                                :active="route().current('community')"
+                            >
                                 My communities
                             </jet-responsive-nav-link>
 
