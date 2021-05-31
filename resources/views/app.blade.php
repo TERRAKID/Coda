@@ -5,10 +5,23 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'Laravel') }} | Movies in close-up</title>
+        <meta name="description" content="A social media platform for movie enthusiasts.">
+
+        <meta property="og:url" content="{{ config('app.url', 'http://localhost') }}">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="Coda">
+        <meta property="og:description" content="Movies in close-up">
+        <meta property="og:image" content="{{ config('app.url', 'http://localhost') }}/img/icon.png">
+
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="apple-touch-icon" href="/img/icon.png">
+
+        <meta name="theme-color" content="#3766AF">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Domine&family=Merriweather&family=Raleway:wght@400;600&display=swap">
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
