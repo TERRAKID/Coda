@@ -58,4 +58,9 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $appends = [
         'profile_photo_url',
     ];
+
+    protected function defaultProfilePhotoUrl()
+    {
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=fefdfb&background=3766AF&bold=true&font-size=0.3';
+    }
 }
