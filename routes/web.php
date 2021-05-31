@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\DirectMessageController;
 
 use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\CommunityController;
@@ -19,12 +20,7 @@ use App\Http\Controllers\CommunityController;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return redirect()->route('dashboard');
 });
 /*
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
@@ -32,6 +28,17 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 })->name('dashboard');
 */
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [GeneralController::class, 'dashboard'])->name('dashboard');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/chat', function () {
+    return Inertia::render('Chat/Show');
+})->name('chat');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/chat/users', [DirectMessageController::class, 'listUsers']);
+Route::middleware(['auth:sanctum', 'verified'])->get('/chat/{userId}/last', [DirectMessageController::class, 'getLastMessages']);
+Route::middleware(['auth:sanctum', 'verified'])->get('/chat/{userId}', [DirectMessageController::class, 'getMessages']);
+Route::middleware(['auth:sanctum', 'verified'])->post('/chat/{userId}', [DirectMessageController::class, 'newMessage']);
+
+
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/community/create', [CommunityController::class, 'createCommunityShowUsers']);
 Route::middleware(['auth:sanctum', 'verified'])->post('/community/create', [CommunityController::class, 'createCommunity']);
@@ -58,5 +65,3 @@ Route::post('/community/{id}/details', [CommunityController::class, 'leaveCommun
 
 Route::get('/community/{id}/invite', [CommunityController::class, 'communityInvite'])->middleware('auth');;
 Route::post('/community/{id}/invite', [CommunityController::class, 'acceptInvite'])->middleware('auth');*/
-
-

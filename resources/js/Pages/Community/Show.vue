@@ -7,70 +7,101 @@
         </template>
         <div :style="styles">
             <div>
-                <img v-bind:src="'/storage/' + community.community_photo_path" alt="" style="max-height: 200px;">
+                <img
+                    v-bind:src="'/storage/' + community.community_photo_path"
+                    alt=""
+                    style="max-height: 200px"
+                />
             </div>
             <div>
                 <div v-if="this.isMember == true">
-                    <a class="link details-link" v-bind:href="'/community/' + this.community.id + '/details'"><div class="link-btn">
+                    <inertia-link
+                        class="link details-link"
+                        v-bind:href="
+                            '/community/' + this.community.id + '/details'
+                        "
+                        ><div class="link-btn">
                             <p class="link-btn-text">i</p>
-                    </div></a>
+                        </div></inertia-link
+                    >
 
-                    <input v-on:click="inviteVis = !inviteVis" id="invite-btn" type="button" value="Invite Friends">
+                    <input
+                        v-on:click="inviteVis = !inviteVis"
+                        id="invite-btn"
+                        type="button"
+                        value="Invite Friends"
+                    />
                 </div>
 
                 <div v-else>
-                    <a v-bind:href="'/community/' + this.community.id + '/invite'" class="link join-link"><div class="link-btn">
+                    <inertia-link
+                        v-bind:href="
+                            '/community/' + this.community.id + '/invite'
+                        "
+                        class="link join-link"
+                        ><div class="link-btn">
                             <p class="link-btn-text">Join Community</p>
-                    </div></a>
+                        </div></inertia-link
+                    >
                 </div>
             </div>
         </div>
         <div v-show="inviteVis" id="invite-popup">
-            <h2>Send this link to your friends to invite them to {{ this.community.name }}</h2>
-            <p id="invite-url">coda.app/community/{{ this.community.id }}/invite</p>
-            <input v-on:click="inviteVis = !inviteVis" id="invite-close" type="button" value="Close">
+            <h2>
+                Send this link to your friends to invite them to
+                {{ this.community.name }}
+            </h2>
+            <p id="invite-url">
+                coda.app/community/{{ this.community.id }}/invite
+            </p>
+            <input
+                v-on:click="inviteVis = !inviteVis"
+                id="invite-close"
+                type="button"
+                value="Close"
+            />
         </div>
     </app-layout>
 </template>
 
 <script type="text/javascript">
-import AppLayout from "@/Layouts/AppLayout";
-import {reactive} from 'vue';
+    import AppLayout from "@/Layouts/AppLayout";
+    import { reactive } from "vue";
 
-export default{
-    components: {
-        AppLayout,
-    },
-    data(){
-        return{
-            communityBanner: 'url({{this.community.community_photo_path}})',
-            inviteVis: false,
-            avatarURL: null,
-            bannerURL: null,
-            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-        }
-    },
-    styles(){
-        return{
-            'background-image': 'url(${this.community.community_photo_path})',
-        }
-    },
-    props: {
-        community: {
-            type: Array,
-            required: true,
+    export default {
+        components: {
+            AppLayout,
         },
-        isMember: {
-            type: Array,
-            required: false,
+        data() {
+            return {
+                communityBanner: "url({{this.community.community_photo_path}})",
+                inviteVis: false,
+                avatarURL: null,
+                bannerURL: null,
+                csrf: document
+                    .querySelector('meta[name="csrf-token"]')
+                    .getAttribute("content"),
+            };
         },
-        errors: {
-            type: Array,
-            required: false,
-        }
-    },
-    methods: {
-
-    }
-}
+        styles() {
+            return {
+                "background-image": "url(${this.community.community_photo_path})",
+            };
+        },
+        props: {
+            community: {
+                type: Array,
+                required: true,
+            },
+            isMember: {
+                type: Array,
+                required: false,
+            },
+            errors: {
+                type: Array,
+                required: false,
+            },
+        },
+        methods: {},
+    };
 </script>

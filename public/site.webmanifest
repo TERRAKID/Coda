@@ -1,0 +1,14 @@
+{
+    "short_name": "Coda",
+    "name": "Coda",
+    "icons": [
+        {
+            "src": "img/icon.png",
+            "type": "image/png",
+            "sizes": "1997x1997"
+        }
+    ],
+    "start_url": "/dashboard",
+    "background_color": "#fefdfb",
+    "theme_color": "#3766AF"
+}

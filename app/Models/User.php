@@ -59,9 +59,13 @@ class User extends Authenticatable implements MustVerifyEmail
         'profile_photo_url',
     ];
 
-    public function friends(){
+    protected function defaultProfilePhotoUrl()
+    {
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=fefdfb&background=3766AF&bold=true&font-size=0.3';
+    }
 
+    public function friends()
+    {
         return $this->belongsToMany(User::class, 'user_friend', 'user_id', 'friend_id');
-
     }
 }

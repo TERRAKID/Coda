@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class DirectMessage extends Model
 {
     use HasFactory;
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -26,4 +26,14 @@ class DirectMessage extends Model
      * @var string
      */
     protected $table = 'direct_message';
+
+    public function userOne()
+    {
+        return $this->hasOne(User::class, 'foreign_key', 'user_id_1');
+    }
+
+    public function userTwo()
+    {
+        return $this->hasOne(User::class, 'foreign_key', 'user_id_2');
+    }
 }

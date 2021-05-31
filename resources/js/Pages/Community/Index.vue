@@ -3,50 +3,50 @@
         <template #header>
             <h1>Hey, {{ this.user.name }}, here are all your communities</h1>
         </template>
-        <a v-for="(community, index) in communities" :key="index" :href="'community/' + community.id">
+        <inertia-link v-for="(community, index) in communities" :key="index" :href="'community/' + community.id">
             <div :style="{'background-image':'url(/storage/' + community.background_photo_path + ')'}">
                 <div style="padding: 50px 50px 50px 50px">
 
                 </div>
             </div>
             <div>
-                <img style="max-height: 100px" v-bind:src="'/storage/' + community.community_photo_path" alt="">
+                <img
+                    style="max-height: 100px"
+                    v-bind:src="'/storage/' + community.community_photo_path"
+                    alt=""
+                />
                 <h3>{{ community.name }}</h3>
             </div>
-        </a>
-        <a href="/community/create"><input type="button" value="Create New +"></a>
+        </inertia-link>
+        <inertia-link href="/community/create"><input type="button" value="Create New +"></inertia-link>
     </app-layout>
 </template>
 
 <script type="text/javascript">
-import AppLayout from "@/Layouts/AppLayout";
-import {reactive} from 'vue';
+    import AppLayout from "@/Layouts/AppLayout";
+    import { reactive } from "vue";
 
-export default{
-    components: {
-        AppLayout,
-    },
-    data(){
-        return{
-
-        }
-    },
-    props: {
-        communities: {
-            type: Array,
-            required: true,
+    export default {
+        components: {
+            AppLayout,
         },
-        user: {
-            type: Array,
-            required: true,
+        data() {
+            return {};
         },
-        errors: {
-            type: Array,
-            required: false,
-        }
-    },
-    methods: {
-
-    },
-}
+        props: {
+            communities: {
+                type: Array,
+                required: true,
+            },
+            user: {
+                type: Array,
+                required: true,
+            },
+            errors: {
+                type: Array,
+                required: false,
+            },
+        },
+        methods: {},
+    };
 </script>

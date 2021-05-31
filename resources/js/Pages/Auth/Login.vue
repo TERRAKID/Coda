@@ -1,92 +1,116 @@
 <template>
     <jet-authentication-card>
-        <template #logo>
-            <jet-authentication-card-logo />
-        </template>
-
+        <h2 class="text-black text-2xl mb-8">Sign in</h2>
         <jet-validation-errors class="mb-4" />
 
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
+        <div v-if="status" class="mb-4 font-semibold text-green">
             {{ status }}
         </div>
 
         <form @submit.prevent="submit">
             <div>
-                <jet-label for="email" value="Email" />
-                <jet-input id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autofocus />
+                <jet-input
+                    type="email"
+                    class="mt-1 block w-full"
+                    v-model="form.email"
+                    required
+                    autofocus
+                    placeholder="Email"
+                />
             </div>
 
             <div class="mt-4">
-                <jet-label for="password" value="Password" />
-                <jet-input id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="current-password" />
+                <jet-input
+                    type="password"
+                    class="mt-1 block w-full"
+                    v-model="form.password"
+                    required
+                    autocomplete="current-password"
+                    placeholder="Password"
+                />
             </div>
 
-            <div class="block mt-4">
+            <div class="mt-4 flex justify-between">
                 <label class="flex items-center">
-                    <jet-checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="ml-2 text-sm text-gray-600">Remember me</span>
+                    <jet-checkbox
+                        name="remember"
+                        v-model:checked="form.remember"
+                    />
+                    <span class="ml-2 text-black">Remember me</span>
                 </label>
-            </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <inertia-link v-if="canResetPassword" :href="route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900">
+                <inertia-link
+                    v-if="canResetPassword"
+                    :href="route('password.request')"
+                    class="underline text-black text-opacity-50 hover:text-opacity-100 text-right"
+                >
                     Forgot your password?
                 </inertia-link>
+            </div>
 
-                <jet-button class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+            <div class="flex flex-col items-center mt-8 gap-8">
+                <jet-button
+                    class="w-full"
+                    :class="{ 'opacity-25': form.processing }"
+                    :disabled="form.processing"
+                >
                     Log in
                 </jet-button>
+                <inertia-link
+                    :href="route('register')"
+                    class="underline text-black text-opacity-50 hover:text-opacity-100"
+                >
+                    Don't have an account?
+                </inertia-link>
             </div>
         </form>
     </jet-authentication-card>
 </template>
 
 <script>
-    import JetAuthenticationCard from '@/Jetstream/AuthenticationCard'
-    import JetAuthenticationCardLogo from '@/Jetstream/AuthenticationCardLogo'
-    import JetButton from '@/Jetstream/Button'
-    import JetInput from '@/Jetstream/Input'
-    import JetCheckbox from '@/Jetstream/Checkbox'
-    import JetLabel from '@/Jetstream/Label'
-    import JetValidationErrors from '@/Jetstream/ValidationErrors'
+    import JetAuthenticationCard from "@/Jetstream/AuthenticationCard";
+    import JetButton from "@/Jetstream/Button";
+    import JetInput from "@/Jetstream/Input";
+    import JetCheckbox from "@/Jetstream/Checkbox";
+    import JetLabel from "@/Jetstream/Label";
+    import JetValidationErrors from "@/Jetstream/ValidationErrors";
 
     export default {
         components: {
             JetAuthenticationCard,
-            JetAuthenticationCardLogo,
             JetButton,
             JetInput,
             JetCheckbox,
             JetLabel,
-            JetValidationErrors
+            JetValidationErrors,
         },
 
         props: {
             canResetPassword: Boolean,
-            status: String
+            status: String,
         },
 
         data() {
             return {
                 form: this.$inertia.form({
-                    email: '',
-                    password: '',
-                    remember: false
-                })
-            }
+                    email: "",
+                    password: "",
+                    remember: false,
+                }),
+            };
         },
 
         methods: {
             submit() {
                 this.form
-                    .transform(data => ({
-                        ... data,
-                        remember: this.form.remember ? 'on' : ''
+                    .transform((data) => ({
+                        ...data,
+                        remember: this.form.remember ? "on" : "",
                     }))
-                    .post(this.route('login'), {
-                        onFinish: () => this.form.reset('password'),
-                    })
-            }
-        }
-    }
+                    .post(this.route("login"), {
+                        onFinish: () => this.form.reset("password"),
+                    });
+            },
+        },
+    };
 </script>

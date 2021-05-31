@@ -22,7 +22,7 @@ class GeneralController extends Controller
 
         $recCommunities = Community::take(5)->get();
         $userCommunities = Community::join('community_member', 'community_member.community_id', '=', 'community.id')
-        ->where('community_member.user_id', '=', $currentUser)->get();
+        ->where('community_member.user_id', '=', $currentUser)->take(5)->get();
 
         $review = User::join('movie_ratings', 'movie_ratings.user_id', '=', 'users.id')
             ->take(1)

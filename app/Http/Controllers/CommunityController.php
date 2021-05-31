@@ -186,9 +186,16 @@ class CommunityController extends Controller
         $friends2 = auth()->user()->friends()->get();
 
         $allFriends = $friends1->merge($friends2);
-        //dd($allFriends);
 
-        return Inertia::render('Community/Create')->with('friends', $allFriends);
+        if($allFriends->isEmpty()){
+            $hasFriends = false;
+            return Inertia::render('Community/Create')->with('hasFriends', '$hasFriends');
+        }
+        else{
+            $hasFriends = true;
+            return Inertia::render('Community/Create')->with('friends', $allFriends)->with('hasFriends', '$hasFriends');
+        }
+
     }
 
     //-----------------------------------------------------------------------
