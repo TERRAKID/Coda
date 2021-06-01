@@ -1,26 +1,31 @@
 <template>
-    <app-layout v-if="this.isMember == true">
-        <template #header>
-            <h1>You are already a member of {{ this.community.name }}</h1>
-        </template>
-        <div>
-            <inertia-link v-bind:href="'/community/' + this.community.id">
-                <input type="button" value="Go to community" />
-            </inertia-link>
+    <div v-if="this.isMember == true" class="h-screen flex content-center">
+        <div class="w-full m-auto text-center" :style="{'background-image':'linear-gradient(rgba(59, 186, 192, 0.5), rgba(59, 186, 192, 0.5)), url(' + this.community.background_photo_path + ')'}">
+            <div class="rounded-full bg-cover h-24 w-24 inline-block col-span-2" :style="{'background-image':'url(/storage/' + community.community_photo_path + ')'}"></div>
+            <h1 class="text-lg">You are already a member of</h1>
+            <span class="text-2xl m-5 inline-block">{{ this.community.name }}</span>
+            <div>
+                <inertia-link v-bind:href="'/community/' + this.community.id">
+                    <input class="cursor-pointer transition-all duration-100 bg-green transform hover:bg-greenDark text-white p-3 pl-10 pr-10 text-2xl rounded-xl" type="button" value="Go to community" />
+                </inertia-link>
+            </div>
         </div>
-    </app-layout>
-    <app-layout v-else>
-        <template #header>
-            <h1>You have been invited to join {{ this.community.name }}</h1>
-        </template>
-        <form
-            :action="'/community/' + this.community.id + '/invite'"
-            method="POST"
-        >
-            <input type="hidden" name="_token" :value="csrf" />
-            <input type="submit" value="Click here to join" />
-        </form>
-    </app-layout>
+    </div>
+    <div v-else class="h-screen flex content-center">
+        <div class="m-auto text-center" :style="{'background-image':'linear-gradient(rgba(59, 186, 192, 0.5), rgba(59, 186, 192, 0.5)), url(' + community.background_photo_path + ')'}">
+            <div class="rounded-full bg-cover h-24 w-24 inline-block col-span-2" :style="{'background-image':'url(/storage/' + community.community_photo_path + ')'}"></div>
+            <h1 class="text-lg">You have been invited to join</h1>
+            <span class="text-2xl m-5 inline-block"> {{ this.community.name }}</span>
+            <form :action="'/community/' + this.community.id + '/invite'" method="POST">
+                <input type="hidden" name="_token" :value="csrf" />
+                <input class="cursor-pointer transition-all duration-100 bg-green transform hover:bg-greenDark text-white p-2 pl-24 pr-24 text-2xl rounded-xl" type="submit" value="Join now" />
+            </form>
+            <div>
+                <h2 class="text-lg m-5">Don't have an account?</h2>
+                <inertia-link><input class="cursor-pointer transition-all duration-100 bg-green transform hover:bg-greenDark text-white p-2 pl-24 pr-24 text-2xl rounded-xl" type="submit" value="Register" /></inertia-link>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script type="text/javascript">

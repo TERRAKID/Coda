@@ -114,7 +114,7 @@ class CommunityController extends Controller
             ->where('community_id', $id)
             ->where('active', 1)
             ->count();
-
+            
         return Inertia::render('Community/Invite')->with('community', $community)->with('isMember', $member);
     }
 

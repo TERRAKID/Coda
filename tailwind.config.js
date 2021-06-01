@@ -24,6 +24,7 @@ module.exports = {
                 },
                 purple: '#7C217E',
                 green: '#3BBAC0',
+                greenDark: '#3bafbf',
                 black: '#212125',
                 white: '#fefdfb',
             },
@@ -38,6 +39,9 @@ module.exports = {
                 '1/2': '50%',
                 '3/4': '75%',
                 'full': '100%',
+            },
+            borderRadius: {
+                'large': '50px',
             },
         },
     },
