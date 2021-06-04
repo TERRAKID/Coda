@@ -124,7 +124,7 @@ export default{
         visSelect(e){
             this.isActive = !this.isActive;
         },
-    }
+    },
 }
      
     /*$(document).ready(function (e) {
