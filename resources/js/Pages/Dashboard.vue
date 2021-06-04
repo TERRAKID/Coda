@@ -1,9 +1,9 @@
 <template>
     <app-layout>
-        <div class="md:grid grid-cols-6 grid-rows-4 gap-5">
+        <div class="md:grid grid-cols-6 gap-5">
             <div class="md:col-span-4">
                 <h2 class="mt-5 ml-5 text-lg">
-                    Recommended Communities or <a class="text-white bg-blue-primary p-2 pl-3 pr-3 rounded-full" href="community/create">Create a new one <span class="text-2xl">></span></a>
+                    Recommended Communities or <inertia-link class="text-white bg-blue-primary p-2 pl-3 pr-3 rounded-full" href="community/create">Create a new one <span class="text-2xl">></span></inertia-link>
                 </h2>
                 <div class="content-between ml-2 mt-3">
                     <inertia-link v-for="(community, index) in recCommunities" :key="index" :href="'/community/' + community.id">
@@ -16,8 +16,8 @@
                     Your Community updates
                 </h2>
                 <div class="flex justify-items-center flex-col">
-                    <inertia-link v-for="(community, index) in userCommunities" :key="index" :href="'/community/' + community.id" class="m-5 text-white">
-                        <div class="grid grid-cols-6 gap-4 flex items-center justify-center bg-blue-primary rounded-bl-large rounded-tl-large rounded-tr-xl rounded-br-xl">
+                    <inertia-link v-for="(community, index) in userCommunities" :key="index" :href="'/community/' + community.id" class="m-2 text-white">
+                        <div class="grid grid-cols-6 flex items-center justify-center bg-blue-primary rounded-bl-large rounded-tl-large rounded-tr-xl rounded-br-xl">
                             <div class="rounded-full bg-cover h-24 w-24 inline-block col-span-2" :style="{'background-image':'url(/storage/' + community.community_photo_path + ')'}"></div>
                             <p class="w-full col-span-4 pr-5">{{ community.name }}</p>
                         </div>

@@ -66,7 +66,14 @@ class CommunityController extends Controller
             ->get();
         $community = $community[0];
 
-        return Inertia::render('Community/Details')->with('community', $community);
+        $communityMembers = User::join('community_member', 'community_member.user_id', '=', 'users.id')
+                ->where('community_member.community_id', '=', $community->id)
+                ->where('community_member.active', '=', '1')
+                ->get(['users.id', 'users.name', 'users.profile_photo_path']);
+
+        $memberCount = $communityMembers->count();
+
+        return Inertia::render('Community/Details')->with('community', $community)->with('communityMembers', $communityMembers)->with('memberCount', $memberCount);
     }
 
     //-----------------------------------------------------------------------
@@ -189,11 +196,11 @@ class CommunityController extends Controller
 
         if($allFriends->isEmpty()){
             $hasFriends = false;
-            return Inertia::render('Community/Create')->with('hasFriends', '$hasFriends');
+            return Inertia::render('Community/Create')->with('hasFriends', $hasFriends);
         }
         else{
             $hasFriends = true;
-            return Inertia::render('Community/Create')->with('friends', $allFriends)->with('hasFriends', '$hasFriends');
+            return Inertia::render('Community/Create')->with('friends', $allFriends)->with('hasFriends', $hasFriends);
         }
 
     }

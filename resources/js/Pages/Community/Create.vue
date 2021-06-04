@@ -1,16 +1,12 @@
 <template>
     <app-layout>
-        <form class="max-w-full" action="/community/create" method="POST" enctype="multipart/form-data" @submit.prevent="submit">
+        <form class="max-w-full" action="/community/create" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="_token" :value="csrf">
             <header class="grid grid-cols-2 bg-green bg-center bg-cover max-w-full pl-10" :style="{'background-image':'linear-gradient(rgba(59, 186, 192, 0.5), rgba(59, 186, 192, 0.5)), url(' + bannerURL + ')'}">
                 <div class="flex">
-                    <div class="bg-cover bg-center w-28 h-28 rounded-full bg-blue-primary m-4 ml-0" :style="{'background-image':'url(' + avatarURL + ')'}">
-                        <!--
-                        <img class="w-32 h-32 rounded-full" id="display-avatar-preview" v-if="avatarURL" :src="avatarURL" alt="" style="max-height: 150px;">
-                        -->
-                    </div>
-                    <div id="avatar-div flex content-center">
-                        <label class="w-64 cursor-pointer bg-blue-primary p-3 pl-5 text-lg pr-5 ml-10 text-white text-center rounded-xl" for="avatar">Upload avatar 
+                    <div class="bg-cover bg-center w-28 h-28 rounded-full bg-blue-primary m-4 ml-0" :style="{'background-image':'url(' + avatarURL + ')'}"></div>
+                    <div class="ml-6 mt-14">
+                        <label class="w-60 max-h-14 cursor-pointer bg-blue-primary p-3 pl-10 pr-10 text-lg text-white text-center rounded-xl" for="avatar">Upload avatar 
                             <img class="w-7 inline-block" src="/img/upload.svg" alt="">
                             <input class="hidden" @change="avatarChange" type="file" id="avatar" name="avatar" placeholder="Upload Avatar">
                         </label>
@@ -18,13 +14,8 @@
                     </div>
                 </div>
                 <div class="justify-self-end content-center inline-block">
-                    <!--
-                    <div>
-                        <img id="display-banner-preview" v-if="bannerURL" :src="bannerURL" alt="" style="max-height: 150px;">
-                    </div>
-                    -->
-                    <div class="h-full mr-10">
-                        <label class="w-64 cursor-pointer bg-blue-primary p-3 pl-5 text-lg pr-5 ml-10 text-white text-center rounded-xl" for="banner">Upload Banner
+                    <div class="mt-14 mr-10">
+                        <label class="w-60 max-h-14 cursor-pointer bg-blue-primary p-3 pl-10 pr-10 text-lg text-white text-center rounded-xl" for="banner">Upload Banner
                             <img class="w-7 inline-block" src="/img/upload.svg" alt="">
                             <input class="hidden" @change="bannerChange" type="file" id="banner" name="banner" placeholder="Upload Banner">
                         </label>
@@ -41,33 +32,33 @@
                 </div>
                 <div class="mt-10 mb-10">
                     <label for="visibility" class="text-black text-2xl mb-8">Community Visibility</label>
-                    <label class="cursor-pointer bg-blue-primary p-3 pl-16 text-lg pr-16 ml-10 text-white text-center rounded-xl">
+                    <label class="cursor-pointer bg-blue-primary p-3 pl-16 text-lg pr-16 ml-10 text-white text-center rounded-xl" v-bind:class="[isActive ? 'opacity-100' : 'opacity-60']">
                         Public
                         <input @click="visSelect" class="hidden" type="radio" name="visibility" id="community_visibility" value="1" v-model="visibility">
                     </label>
-                    <label class="cursor-pointer bg-blue-primary p-3 pl-16 text-lg pr-16 ml-10 text-white text-center rounded-xl opacity-60">
+                    <label class="cursor-pointer bg-blue-primary p-3 pl-16 text-lg pr-16 ml-10 text-white text-center rounded-xl opacity-60" v-bind:class="[isActive ? 'opacity-60' : 'opacity-100']">
                         Private
                         <input @click="visSelect" class="hidden" type="radio" name="visibility" id="community_visibility" value="0" v-model="visibility">
                     </label>
                 </div>
                 <div>
                     <h2 for="invite" class="text-black text-2xl mb-8">Invite Your Friends</h2>
-                    <!-- there's something wrong with this if/else, coming back to it later -->
                     <div v-if="this.hasFriends == true" >
-                        <div v-for="(friend, index) in friends" :key="index">
-                            <label :for="'invitee-' + index">{{ friend.name }}</label>
-                            <input type="checkbox" :value="friend.id" :id="'invitee-' + index" :name="'invitee-' + index">
-                        </div>
+                        <label v-for="(friend, index) in friends" :key="index" class="flex grid grid-cols-12 mb-5 mr-5 min-w-min" :for="'invitee-' + index">
+                            <div class="rounded-full bg-blue-primary bg-cover h-16 w-16 inline-block" :style="{'background-image':'url(/storage/' + friend.profile_photo_path + ')'}"></div>
+                            <p class="p-5 pl-0 grid col-span-2">{{ friend.name }}</p>
+                            <input class="mt-6" type="checkbox" :value="friend.id" :id="'invitee-' + index" :name="'invitee-' + index">
+                        </label>
                     </div>
                     <div v-else>
                         <h3>You do not have any friends at the moment.</h3>
                     </div>
                 </div>
             </div>
-            </main>
-            <div class="absolute flex items-center justify-center">
-                <input class="cursor-pointer transition-all duration-100 bg-green transform hover:scale-105 text-white p-3 pl-10 pr-10 text-2xl rounded-full" id="submit" type="submit" value="Create Community">
+            <div class="w-full text-center">
+                <input class="cursor-pointer transition-all duration-200 bg-green hover:bg-greenDark text-white p-3 pl-10 pr-10 text-2xl rounded-full" id="submit" type="submit" value="Create Community">
             </div>
+            </main>
         </form>
     </app-layout>
 </template>
@@ -86,8 +77,8 @@ export default{
             avatarURL: null,
             bannerURL: null,
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-            opacity: false,
             visibility: "1",
+            isActive: true,
         }
     },
     setups(){
@@ -129,8 +120,7 @@ export default{
             this.bannerURL = URL.createObjectURL(file);
         },
         visSelect(e){
-            var vis = e.target.value;
-            console.log(vis);
+            this.isActive = !this.isActive;
         },
     }
 }
