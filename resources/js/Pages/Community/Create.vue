@@ -2,10 +2,10 @@
     <app-layout>
         <form class="max-w-full" action="/community/create" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="_token" :value="csrf">
-            <header class="grid grid-cols-2 bg-green bg-center bg-cover max-w-full pl-10" :style="{'background-image':'linear-gradient(rgba(59, 186, 192, 0.5), rgba(59, 186, 192, 0.5)), url(' + bannerURL + ')'}">
-                <div class="flex">
+            <header class="lg:grid grid-cols-2 bg-green bg-center bg-cover max-w-full pl-10" :style="{'background-image':'linear-gradient(rgba(59, 186, 192, 0.5), rgba(59, 186, 192, 0.5)), url(' + bannerURL + ')'}">
+                <div class="flex flex-col lg:flex-row">
                     <div class="bg-cover bg-center w-28 h-28 rounded-full bg-blue-primary m-4 ml-0" :style="{'background-image':'url(' + avatarURL + ')'}"></div>
-                    <div class="ml-6 mt-14">
+                    <div class="lg:ml-6 lg:mt-14 mt-5">
                         <label class="w-60 max-h-14 cursor-pointer bg-blue-primary p-3 pl-10 pr-10 text-lg text-white text-center rounded-xl" for="avatar">Upload avatar 
                             <img class="w-7 inline-block" src="/img/upload.svg" alt="">
                             <input class="hidden" @change="avatarChange" type="file" id="avatar" name="avatar" placeholder="Upload Avatar">
@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <div class="justify-self-end content-center inline-block">
-                    <div class="mt-14 mr-10">
+                    <div class="mt-14 lg:mr-10 pb-10">
                         <label class="w-60 max-h-14 cursor-pointer bg-blue-primary p-3 pl-10 pr-10 text-lg text-white text-center rounded-xl" for="banner">Upload Banner
                             <img class="w-7 inline-block" src="/img/upload.svg" alt="">
                             <input class="hidden" @change="bannerChange" type="file" id="banner" name="banner" placeholder="Upload Banner">
@@ -28,23 +28,25 @@
             <div id="community_details">
                 <div>
                     <label for="name" class="text-black text-2xl mb-8">Community Name</label>
-                    <input type="text" name="name" placeholder="Name" class="max-w-1/4 border-2 border-green focus:border-green focus:ring-2 focus:ring-green rounded-lg text-xl mt-5 block w-full">
+                    <input type="text" name="name" placeholder="Name" class="lg:max-w-1/4 border-2 border-green focus:border-green focus:ring-2 focus:ring-green rounded-lg text-xl mt-5 block w-full">
                 </div>
                 <div class="mt-10 mb-10">
                     <label for="visibility" class="text-black text-2xl mb-8">Community Visibility</label>
-                    <label class="cursor-pointer bg-blue-primary p-3 pl-16 text-lg pr-16 ml-10 text-white text-center rounded-xl" v-bind:class="[isActive ? 'opacity-100' : 'opacity-60']">
-                        Public
-                        <input @click="visSelect" class="hidden" type="radio" name="visibility" id="community_visibility" value="1" v-model="visibility">
-                    </label>
-                    <label class="cursor-pointer bg-blue-primary p-3 pl-16 text-lg pr-16 ml-10 text-white text-center rounded-xl opacity-60" v-bind:class="[isActive ? 'opacity-60' : 'opacity-100']">
-                        Private
-                        <input @click="visSelect" class="hidden" type="radio" name="visibility" id="community_visibility" value="0" v-model="visibility">
-                    </label>
+                    <div class="inline-block mt-5 lg:mt-0">
+                        <label class="cursor-pointer bg-blue-primary p-3 pl-16 text-lg pr-16 lg:ml-10 text-white text-center rounded-xl" v-bind:class="[isActive ? 'opacity-100' : 'opacity-60']">
+                            Public
+                            <input @click="visSelect" class="hidden" type="radio" name="visibility" id="community_visibility" value="1" v-model="visibility">
+                        </label>
+                        <label class="cursor-pointer bg-blue-primary p-3 pl-16 text-lg pr-16 lg:ml-10 ml-5 text-white text-center rounded-xl opacity-60" v-bind:class="[isActive ? 'opacity-60' : 'opacity-100']">
+                            Private
+                            <input @click="visSelect" class="hidden" type="radio" name="visibility" id="community_visibility" value="0" v-model="visibility">
+                        </label>
+                    </div>
                 </div>
                 <div>
                     <h2 for="invite" class="text-black text-2xl mb-8">Invite Your Friends</h2>
                     <div v-if="this.hasFriends == true" >
-                        <label v-for="(friend, index) in friends" :key="index" class="flex grid grid-cols-12 mb-5 mr-5 min-w-min" :for="'invitee-' + index">
+                        <label v-for="(friend, index) in friends" :key="index" class="flex grid grid-cols-4 lg:grid-cols-10 mb-5 mr-5 min-w-min max-w-64" :for="'invitee-' + index">
                             <div class="rounded-full bg-blue-primary bg-cover h-16 w-16 inline-block" :style="{'background-image':'url(/storage/' + friend.profile_photo_path + ')'}"></div>
                             <p class="p-5 pl-0 grid col-span-2">{{ friend.name }}</p>
                             <input class="mt-6" type="checkbox" :value="friend.id" :id="'invitee-' + index" :name="'invitee-' + index">

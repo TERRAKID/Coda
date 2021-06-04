@@ -1,7 +1,7 @@
 <template>
     <app-layout>
         <template #header>
-            <h1>Hey, {{ this.user.name }}, here are all your communities</h1>
+            <h1>Hey {{ this.user.name }}, here are all your communities</h1>
         </template>
         <inertia-link v-for="(community, index) in communities" :key="index" :href="'community/' + community.id">
             <div class="rounded-full bg-cover bg-center h-24 w-24 inline-block m-3" :style="{'background-image':'url(/storage/' + community.community_photo_path + ')'}"></div>
