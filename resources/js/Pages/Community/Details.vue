@@ -34,7 +34,7 @@
                     </h2>
                     <p class="text-2xl mt-2 mb-2">{{ this.community.name }}</p>
                     <p class="mb-5 bg-gray-200 p-3 pl-5 pr-5 rounded-lg">
-                        coda.app/community/{{ this.community.id }}/invite
+                        coda-app.com/community/{{ this.community.id }}/invite
                     </p>
                     <input
                         v-on:click="inviteVis = !inviteVis"
@@ -88,7 +88,7 @@
             <input v-on:click="confirmingUserDeletion = !confirmingUserDeletion" class="m-5 cursor-pointer transition-all duration-200 bg-purple hover:bg-purpleDark text-white p-3 pl-10 pr-10 text-2xl rounded-full" type="button" value="Leave Community">
         </div>
         <form v-on:click="confirmingUserDeletion = !confirmingUserDeletion" v-show="confirmingUserDeletion" id="leave-community-form" :action="'/community/' + this.community.id + '/details'" method="POST" class="min-w-screen h-screen animated fadeIn faster fixed left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-blue-primary bg-opacity-70">
-            <div v-on:click="confirmingUserDeletion = !confirmingUserDeletion" class="bg-white rounded-2xl h-64 p-4 text-center flex flex-col justify-center items-center">
+            <div v-on:click="confirmingUserDeletion = !confirmingUserDeletion" class="bg-white rounded-2xl h-64 p-5 text-center flex flex-col justify-center items-center">
                 <input type="hidden" name="_token" :value="csrf">
                 <h3 class="text-2xl">Are you sure you want to leave {{ this.community.name }}?</h3>
                 <input id="leave-confirm" class="m-5 cursor-pointer transition-all duration-200 bg-purple hover:bg-purpleDark text-white p-3 pl-10 pr-10 text-2xl rounded-full" type="submit" value="Leave Community">

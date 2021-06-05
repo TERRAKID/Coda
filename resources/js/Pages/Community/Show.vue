@@ -1,8 +1,8 @@
 <template>
     <app-layout>
-        <header class="grid grid-cols-2 bg-green bg-center bg-cover max-w-full" :style="{'background-image':'linear-gradient(rgba(59, 186, 192, 0.5), rgba(59, 186, 192, 0.5)), url(/storage/' + community.background_photo_path + ')'}">
+        <header class="grid grid-cols-2 bg-green bg-center bg-cover max-w-full" :style="{'background-image':'linear-gradient(rgba(59, 186, 192, 0.5), rgba(59, 186, 192, 0.5)), url(/storage/' + this.community.background_photo_path + ')'}">
             <div class="flex content-center">
-                <div class="bg-cover bg-center w-24 h-24 rounded-full bg-blue-primary m-3 md:m-5" :style="{'background-image':'url(/storage/' + community.community_photo_path + ')'}"></div>
+                <div class="bg-cover bg-center w-24 h-24 rounded-full bg-blue-primary m-3 md:m-5" :style="{'background-image':'url(/storage/' + this.community.community_photo_path + ')'}"></div>
                 <h2 class="text-white text-2xl mt-11 md:mt-12 md:text-3xl">{{ community.name }}</h2>
             </div>
             <inertia-link v-if="this.isMember == true" v-bind:href="'/community/' + this.community.id + '/details'" class="bg-white rounded-full w-10 h-10 place-self-end text-center mb-10 mr-3 md:mb-12 md:mr-5">

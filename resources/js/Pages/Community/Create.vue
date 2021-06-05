@@ -2,10 +2,18 @@
     <app-layout>
         <form class="max-w-full" action="/community/create" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="_token" :value="csrf">
-            <header class="lg:grid grid-cols-2 bg-green bg-center bg-cover max-w-full pl-10" :style="{'background-image':'linear-gradient(rgba(59, 186, 192, 0.5), rgba(59, 186, 192, 0.5)), url(' + bannerURL + ')'}">
+            <header 
+                class="lg:grid grid-cols-2 bg-green bg-center bg-cover max-w-full pl-10" 
+                :style="{'background-image':'linear-gradient(rgba(59, 186, 192, 0.5), rgba(59, 186, 192, 0.5)), url(' + bannerURL + ')'}">
+
                 <div class="flex flex-col lg:flex-row">
-                    <div class="bg-cover bg-center w-28 h-28 rounded-full bg-blue-primary m-4 ml-0" :style="{'background-image':'url(' + avatarURL + ')'}"></div>
+                    <div 
+                        class="bg-cover bg-center w-28 h-28 rounded-full bg-blue-primary m-4 ml-0" 
+                        :style="{'background-image':'url(' + avatarURL + ')'}">
+                    </div>
+
                     <div class="lg:ml-6 lg:mt-14 mt-5">
+
                         <label class="w-60 max-h-14 cursor-pointer bg-blue-primary p-3 pl-10 pr-10 text-lg text-white text-center rounded-xl" for="avatar">Upload avatar 
                             <img class="w-7 inline-block" src="/img/upload.svg" alt="">
                             <input class="hidden" @change="avatarChange" type="file" id="avatar" name="avatar" placeholder="Upload Avatar">
@@ -13,6 +21,7 @@
                         <input type='button' id='remove-avatar' value='Remove File' v-show="visible">
                     </div>
                 </div>
+
                 <div class="justify-self-end content-center inline-block">
                     <div class="mt-14 lg:mr-10 pb-10">
                         <label class="w-60 max-h-14 cursor-pointer bg-blue-primary p-3 pl-10 pr-10 text-lg text-white text-center rounded-xl" for="banner">Upload Banner
@@ -81,21 +90,13 @@ export default{
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             visibility: "1",
             isActive: true,
+            form: {
+                avatar: null,
+                banner: null,
+                name: null,
+                visibility: null,
+            },
         }
-    },
-    setups(){
-        const form = reactive({
-            avatar: null,
-            banner: null,
-            name: null,
-            visibility: null,
-        })
-
-        function submit(){
-            Inertia.post('/community/create', form)
-        }
-
-        return { form, submit }
     },
     props: {
         friends: {
@@ -103,8 +104,7 @@ export default{
             required: false,
         },
         errors: {
-            type: Array,
-            required: false,
+            type: Object,
         },
         hasFriends: {
             type: String,
@@ -124,40 +124,10 @@ export default{
         visSelect(e){
             this.isActive = !this.isActive;
         },
+        submit(){
+            this.$inertia.post('/community/create', this.form)
+        }
     },
 }
-     
-    /*$(document).ready(function (e) {
-
-        $('#avatar').change(function(){
-            $('#remove-avatar').show();
-            let reader = new FileReader();
-            reader.onload = (e) => { 
-              $('#display-avatar-preview').attr('src', e.target.result); 
-            }
-            reader.readAsDataURL(this.files[0]);
-        });
-
-        $('#remove-avatar').click(function(){
-            $('#display-avatar-preview').attr('src', '');
-            $('#avatar').val("");
-            $('#remove-avatar').hide();
-        });
-
-        $('#banner').change(function(){
-            $('#remove-banner').show();
-            let reader = new FileReader();
-            reader.onload = (e) => { 
-              $('#display-banner-preview').attr('src', e.target.result); 
-            }
-            reader.readAsDataURL(this.files[0]);
-        });
-
-        $('#remove-banner').click(function(){
-            $('#display-banner-preview').attr('src', '');
-            $('#banner').val("");
-            $('#remove-banner').hide();
-        });
-    });*/
  
 </script>

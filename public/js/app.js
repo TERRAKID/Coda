@@ -17909,24 +17909,13 @@ __webpack_require__.r(__webpack_exports__);
       bannerURL: null,
       csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
       visibility: "1",
-      isActive: true
-    };
-  },
-  setups: function setups() {
-    var form = (0,vue__WEBPACK_IMPORTED_MODULE_1__.reactive)({
-      avatar: null,
-      banner: null,
-      name: null,
-      visibility: null
-    });
-
-    function submit() {
-      Inertia.post('/community/create', form);
-    }
-
-    return {
-      form: form,
-      submit: submit
+      isActive: true,
+      form: {
+        avatar: null,
+        banner: null,
+        name: null,
+        visibility: null
+      }
     };
   },
   props: {
@@ -17935,8 +17924,7 @@ __webpack_require__.r(__webpack_exports__);
       required: false
     },
     errors: {
-      type: Array,
-      required: false
+      type: Object
     },
     hasFriends: {
       type: String,
@@ -17955,37 +17943,12 @@ __webpack_require__.r(__webpack_exports__);
     },
     visSelect: function visSelect(e) {
       this.isActive = !this.isActive;
+    },
+    submit: function submit() {
+      this.$inertia.post('/community/create', this.form);
     }
   }
 });
-/*$(document).ready(function (e) {
-     $('#avatar').change(function(){
-        $('#remove-avatar').show();
-        let reader = new FileReader();
-        reader.onload = (e) => { 
-          $('#display-avatar-preview').attr('src', e.target.result); 
-        }
-        reader.readAsDataURL(this.files[0]);
-    });
-     $('#remove-avatar').click(function(){
-        $('#display-avatar-preview').attr('src', '');
-        $('#avatar').val("");
-        $('#remove-avatar').hide();
-    });
-     $('#banner').change(function(){
-        $('#remove-banner').show();
-        let reader = new FileReader();
-        reader.onload = (e) => { 
-          $('#display-banner-preview').attr('src', e.target.result); 
-        }
-        reader.readAsDataURL(this.files[0]);
-    });
-     $('#remove-banner').click(function(){
-        $('#display-banner-preview').attr('src', '');
-        $('#banner').val("");
-        $('#remove-banner').hide();
-    });
-});*/
 
 /***/ }),
 
@@ -22053,7 +22016,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "class": "bg-white rounded-2xl h-64 p-7 text-center flex flex-col justify-center items-center"
       }, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_this.community.name), 1
       /* TEXT */
-      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_12, " coda.app/community/" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_this.community.id) + "/invite ", 1
+      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_12, " coda-app.com/community/" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_this.community.id) + "/invite ", 1
       /* TEXT */
       ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
         onClick: _cache[2] || (_cache[2] = function ($event) {
@@ -22084,7 +22047,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onClick: _cache[7] || (_cache[7] = function ($event) {
           return $data.confirmingUserDeletion = !$data.confirmingUserDeletion;
         }),
-        "class": "bg-white rounded-2xl h-64 p-4 text-center flex flex-col justify-center items-center"
+        "class": "bg-white rounded-2xl h-64 p-5 text-center flex flex-col justify-center items-center"
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
         type: "hidden",
         name: "_token",
@@ -22282,7 +22245,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   return this.isMember == true ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
     "class": "w-full m-auto text-center",
     style: {
-      'background-image': 'linear-gradient(rgba(59, 186, 192, 0.5), rgba(59, 186, 192, 0.5)), url(' + this.community.background_photo_path + ')'
+      'background-image': 'linear-gradient(rgba(59, 186, 192, 0.5), rgba(59, 186, 192, 0.5)), url(' + $props.community.background_photo_path + ')'
     }
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
     "class": "rounded-full bg-cover h-24 w-24 inline-block col-span-2",
@@ -22389,12 +22352,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("header", {
         "class": "grid grid-cols-2 bg-green bg-center bg-cover max-w-full",
         style: {
-          'background-image': 'linear-gradient(rgba(59, 186, 192, 0.5), rgba(59, 186, 192, 0.5)), url(/storage/' + $props.community.background_photo_path + ')'
+          'background-image': 'linear-gradient(rgba(59, 186, 192, 0.5), rgba(59, 186, 192, 0.5)), url(/storage/' + _this.community.background_photo_path + ')'
         }
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
         "class": "bg-cover bg-center w-24 h-24 rounded-full bg-blue-primary m-3 md:m-5",
         style: {
-          'background-image': 'url(/storage/' + $props.community.community_photo_path + ')'
+          'background-image': 'url(/storage/' + _this.community.community_photo_path + ')'
         }
       }, null, 4
       /* STYLE */

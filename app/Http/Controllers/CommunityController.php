@@ -224,7 +224,8 @@ class CommunityController extends Controller
             $image = $request->file('avatar');
 
             $name = $request->input('name').'_'.time();
-
+            $name = str_replace(' ', '_', $name);
+            
             $folder = 'community-avatars/';
 
             $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
@@ -238,6 +239,7 @@ class CommunityController extends Controller
             $image = $request->file('banner');
 
             $name = $request->input('name').'_'.time();
+            $name = str_replace(' ', '_', $name);
 
             $folder = 'community-banners/';
 
