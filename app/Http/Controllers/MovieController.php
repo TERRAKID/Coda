@@ -22,7 +22,9 @@ class MovieController extends Controller
         $currentUser = $currentUser->id;
 
         $reviews = Movie::join('movie_ratings', 'movie_ratings.movie_id', '=', 'movie.id')
-            ->where('movie_ratings.user_id', '=', $currentUser)->get();
+            ->where('movie_ratings.user_id', '=', $currentUser)
+            ->orderBy('movie_ratings.created_at', 'desc')
+            ->get();
 
         $movieDetails = [];
 

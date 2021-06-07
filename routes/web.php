@@ -52,3 +52,4 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/community/{id}/invite', 
 
 /** Movies */
 Route::middleware(['auth:sanctum', 'verified'])->get('/diary', [MovieController::class, 'movieDiary']);
+Route::middleware(['auth:sanctum', 'verified'])->get('/diary/create', [MovieController::class, 'createReview']);

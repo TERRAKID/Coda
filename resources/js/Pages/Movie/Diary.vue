@@ -1,19 +1,14 @@
 <template>
     <app-layout>
-        <div>
-            <div class="bg-purple text-white text-2xl p-8 pt-2 pb-2">
-                <h2>{{ monthYearCheck }}</h2>
+        <div v-for="(review, index) in reviews" :key="index">
+            <div v-if="monthYear(review.created_at) !=  monthYearCheck" class="bg-purple text-white text-2xl p-8 pt-2 pb-2">
+                <h2>{{ monthYear(review.created_at) }}</h2>
+                {{ setCheck(monthYear(review.created_at)) }}
             </div>
-            <div v-for="(review, index) in reviews" :key="index">
-                <!-- This logic doesn't work yet -->
-                <div v-if="monthYear(review.created_at) !=  monthYearCheck">
-                    <h2>{{ monthYear(review.created_at) }}</h2>
-                    {{ setCheck(monthYear(review.created_at)) }}
-                </div>
-                <!--------------------------------->
-                <div class="flex mt-5">
-                    <div class="flex">
-                        <div class="text-3xl flex items-center text-white p-3 ml-5 mr-5 bg-green">
+            <div class="flex space-between mt-5 mb-5">
+                <div class="flex">
+                    <div class="flex items-center">
+                        <div class="text-3xl flex items-center justify-center text-white p-3 ml-5 mr-5 h-24 w-16 bg-green">
                             <p>{{ getDay(review.created_at) }}</p>
                         </div>
                         <div class="h-24 w-16 bg-center bg-cover" :style="{'background-image':'url(https://image.tmdb.org/t/p/w500' + movie[index].poster_path + ')'}"></div>
@@ -31,6 +26,9 @@
                 </div>
             </div>
         </div>
+        <inertia-link class="mb-10 w-20 flex items-center text-center text-white text-6xl rounded-full bg-green fixed right-5 bottom-10">
+            <img src="/img/create.svg" alt="Log a movie">
+        </inertia-link>
     </app-layout>
 </template>
 
