@@ -31,7 +31,7 @@ class MovieController extends Controller
             $movie = (new TMDBController)->fetchMovie($movieId);
             array_push($movieDetails, $movie);
         }
-
+        //dd($movieDetails);
         return Inertia::render('Movie/Diary')
             ->with('reviews', $reviews)
             ->with('movie', $movieDetails);
