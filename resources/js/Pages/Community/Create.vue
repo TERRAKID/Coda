@@ -33,8 +33,12 @@
                 </div>
             </header>
 
-            <main class="m-10">
+            <main class="m-10 mt-5">
             <div id="community_details">
+                <div class="text-xs mb-3">
+                    <p>Images must be smaller than 2MB</p>
+                    <p>A name is required</p>
+                </div>
                 <div>
                     <label for="name" class="text-black text-2xl mb-8">Community Name</label>
                     <input type="text" name="name" placeholder="Name" class="lg:max-w-1/4 border-2 border-green focus:border-green focus:ring-2 focus:ring-green rounded-lg text-xl mt-5 block w-full">
@@ -66,6 +70,9 @@
                     </div>
                 </div>
             </div>
+            <div v-if="error">
+                {{ error.response.status }}
+            </div>
             <div class="w-full text-center">
                 <input class="cursor-pointer transition-all duration-200 bg-green hover:bg-greenDark text-white p-3 pl-10 pr-10 text-2xl rounded-full" id="submit" type="submit" value="Create Community">
             </div>
@@ -77,6 +84,7 @@
 <script type="text/javascript">
 import AppLayout from "@/Layouts/AppLayout";
 import {reactive} from 'vue';
+import axios from 'axios';
 
 export default{
     components: {
@@ -90,6 +98,7 @@ export default{
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             visibility: "1",
             isActive: true,
+            error: null,
             form: {
                 avatar: null,
                 banner: null,
@@ -124,9 +133,6 @@ export default{
         visSelect(e){
             this.isActive = !this.isActive;
         },
-        submit(){
-            this.$inertia.post('/community/create', this.form)
-        }
     },
 }
  

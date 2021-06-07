@@ -7,7 +7,7 @@
                 </h2>
                 <div class="content-between ml-2 mt-3">
                     <inertia-link v-for="(community, index) in recCommunities" :key="index" :href="'/community/' + community.id">
-                        <div class="rounded-full bg-cover h-24 w-24 inline-block m-3" :style="{'background-image':'url(/storage/' + community.community_photo_path + ')'}"></div>
+                        <div class="rounded-full bg-cover bg-center h-24 w-24 inline-block m-3" :style="{'background-image':'url(/storage/' + community.community_photo_path + ')'}"></div>
                     </inertia-link>
                 </div>
             </div>
@@ -18,7 +18,7 @@
                 <div class="flex justify-items-center flex-col">
                     <inertia-link v-for="(community, index) in userCommunities" :key="index" :href="'/community/' + community.id" class="m-2 text-white">
                         <div class="grid grid-cols-6 flex items-center justify-center bg-blue-primary rounded-bl-large rounded-tl-large rounded-tr-xl rounded-br-xl">
-                            <div class="rounded-full bg-cover h-24 w-24 inline-block col-span-2" :style="{'background-image':'url(/storage/' + community.community_photo_path + ')'}"></div>
+                            <div class="rounded-full bg-cover bg-center h-24 w-24 inline-block col-span-2" :style="{'background-image':'url(/storage/' + community.community_photo_path + ')'}"></div>
                             <p class="w-full col-span-4 pr-5">{{ community.name }}</p>
                         </div>
                     </inertia-link>
@@ -37,7 +37,7 @@
                 </div>
             </div>
 
-            <div class="md:col-span-4 md:row-start-3 md:row-end-5 mt-5 ml-5 text-lg">
+            <div v-if="reviewStatus != '0'" class="md:col-span-4 md:row-start-3 md:row-end-5 mt-5 ml-5 text-lg">
                 <h2>
                     Most popular review this week
                 </h2>
@@ -93,7 +93,10 @@
             review: {
                 type: Array,
                 required: true,
-            }
+            },
+            reviewStatus: {
+                type: String,
+            },
         },
         methods: {
             friendlyDate(str){

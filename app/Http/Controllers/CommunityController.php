@@ -213,7 +213,7 @@ class CommunityController extends Controller
             'avatar' => 'image|max:2048',
             'banner' => 'image|max:2048',
         ]);
-
+            
         $community = new Community;
 
         $community->name = request('name');
@@ -249,7 +249,6 @@ class CommunityController extends Controller
 
             $community->background_photo_path = $filePath;
         }
-        
         $community->save();
 
         $community = Community::where('name', request('name'))
@@ -288,7 +287,7 @@ class CommunityController extends Controller
             ->where('community_id', $community)
             ->where('active', 1)
             ->count();
-
+        
         return Inertia::render('Community/Show')->with('community', $community)->with('isMember', $member);
     }
 }

@@ -38,10 +38,16 @@ class GeneralController extends Controller
                 'movie_ratings.rating', 
                 'movie_ratings.review',
             ]);
-        $review = $review[0];
+
+        $reviewStatus = $review->count();
+        if($reviewStatus != 0){
+            $review = $review[0];
+        }
+        
         return Inertia::render('Dashboard')
             ->with('recCommunities', $recCommunities)
             ->with('userCommunities', $userCommunities)
-            ->with('review', $review);
+            ->with('review', $review)
+            ->with('reviewStatus', $reviewStatus);
     }
 }
