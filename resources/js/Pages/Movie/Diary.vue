@@ -16,11 +16,11 @@
                     <div class="ml-5">
                         <h3 class="text-3xl">{{ movie[index].title }}</h3>
                         <div v-if="review.rating < 5" class="flex">
-                            <p class="m-4 ml-0" v-for="index in review.rating" :key="index">1</p>
-                            <p class="m-4 ml-0" v-for="index in 5-review.rating" :key="index">0</p>
+                            <img class="w-10 m-2 ml-0" v-for="index in review.rating" :key="index" src="/img/star.svg" alt="Full Star">
+                            <img class="w-10 m-2 ml-0" v-for="index in 5-review.rating" :key="index" src="/img/star-outline.svg" alt="Blank Star">
                         </div>
                         <div v-else class="flex">
-                            <p class="m-4 ml-0" v-for="index in review.rating" :key="index">1</p>
+                            <img class="w-10 m-2 ml-0" v-for="index in review.rating" :key="index" src="/img/star.svg" alt="Full Star">
                         </div>
                     </div>
                 </div>
