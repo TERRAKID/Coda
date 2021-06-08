@@ -26,7 +26,7 @@
                 </div>
             </div>
         </div>
-        <inertia-link class="mb-10 w-20 flex items-center text-center text-white text-6xl rounded-full bg-green fixed right-5 bottom-10">
+        <inertia-link href="/movie/search" class="mb-10 md:mb-0 w-20 flex items-center text-center text-white text-6xl rounded-full bg-green fixed right-5 md:right-10 bottom-10">
             <img src="/img/create.svg" alt="Log a movie">
         </inertia-link>
     </app-layout>

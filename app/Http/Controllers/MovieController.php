@@ -17,6 +17,7 @@ use Inertia\Inertia;
 
 class MovieController extends Controller
 {
+/**----------------------------------------------------------*/
     public function movieDiary(){
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
@@ -30,12 +31,44 @@ class MovieController extends Controller
 
         foreach($reviews as $movie){
             $movieId = $movie->tmdb_id;
-            $movie = (new TMDBController)->fetchMovie($movieId);
+            $movie = (new TMDBController)->fetchMovieById($movieId);
             array_push($movieDetails, $movie);
         }
-        //dd($movieDetails);
+
         return Inertia::render('Movie/Diary')
             ->with('reviews', $reviews)
             ->with('movie', $movieDetails);
+    }
+
+/**----------------------------------------------------------*/
+    public function showMovieSearch(){
+        return Inertia::render('Movie/Search');
+    }
+
+/**----------------------------------------------------------*/
+    public function movieSearch(Request $request){
+        $search = request('search_movie');
+        $results = (new TMDBController)->fetchMovieByName($search);
+        $genres = TMDBController::fetchGenres();
+
+        return Inertia::render('Movie/Search')
+            ->with('results', $results)
+            ->with('genres', $genres);
+    }
+
+/**----------------------------------------------------------*/
+    public function showCreateReview($movieId){
+        $currentUser = auth()->user();
+        $currentUser = $currentUser->id;
+
+        $movie = (new TMDBController)->fetchMovieById($movieId);
+
+        $communities = Community::join('community_member', 'community_member.community_id', '=', 'community.id')
+                ->where('community_member.user_id', '=', $currentUser)
+                ->get();
+
+        return Inertia::render('Movie/CreateReview')
+            ->with('movie', $movie)
+            ->with('communities', $communities);
     }
 }
