@@ -44,16 +44,20 @@
                     <input type="text" name="name" placeholder="Name" class="lg:max-w-1/4 border-2 border-green focus:border-green focus:ring-2 focus:ring-green rounded-lg text-xl mt-5 block w-full">
                 </div>
                 <div class="mt-10 mb-10">
-                    <label for="visibility" class="text-black text-2xl mb-8">Community Visibility</label>
+                    <label for="visibility" class="text-black text-2xl mb-8 mr-5">Community Visibility</label>
                     <div class="inline-block mt-5 lg:mt-0">
-                        <label class="cursor-pointer bg-blue-primary p-3 pl-16 text-lg pr-16 lg:ml-10 text-white text-center rounded-xl" v-bind:class="[isActive ? 'opacity-100' : 'opacity-60']">
-                            Public
-                            <input @click="visSelect" class="hidden" type="radio" name="visibility" id="community_visibility" value="1" v-model="visibility">
-                        </label>
-                        <label class="cursor-pointer bg-blue-primary p-3 pl-16 text-lg pr-16 lg:ml-10 ml-5 text-white text-center rounded-xl opacity-60" v-bind:class="[isActive ? 'opacity-60' : 'opacity-100']">
-                            Private
-                            <input @click="visSelect" class="hidden" type="radio" name="visibility" id="community_visibility" value="0" v-model="visibility">
-                        </label>
+                        <div class="inline-block mr-5">
+                            <label class="cursor-pointer bg-blue-primary p-3 pl-16 text-lg pr-16 lg:ml-10 text-white text-center rounded-xl" v-bind:class="[isActive ? 'opacity-100' : 'opacity-60']">
+                                Public
+                                <input @click="visSelect" class="hidden" type="radio" name="visibility" id="community_visibility" value="1" v-model="visibility">
+                            </label>
+                        </div>
+                        <div class="inline-block mt-10 sm:mt-0">
+                            <label class="cursor-pointer bg-blue-primary p-3 pl-16 text-lg pr-16 lg:ml-10 md:ml-5 text-white text-center rounded-xl opacity-60" v-bind:class="[isActive ? 'opacity-60' : 'opacity-100']">
+                                Private
+                                <input @click="visSelect" class="hidden" type="radio" name="visibility" id="community_visibility" value="0" v-model="visibility">
+                            </label>
+                        </div>
                     </div>
                 </div>
                 <div>
