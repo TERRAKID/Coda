@@ -1,66 +1,17 @@
 <template>
     <app-layout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ community.name }}
-            </h2>
-        </template>
-        <div :style="styles">
-            <div>
-                <img
-                    v-bind:src="'/storage/' + community.community_photo_path"
-                    alt=""
-                    style="max-height: 200px"
-                />
+        <header class="grid grid-cols-2 bg-green bg-center bg-cover max-w-full" :style="{'background-image':'linear-gradient(rgba(59, 186, 192, 0.5), rgba(59, 186, 192, 0.5)), url(/storage/' + this.community.background_photo_path + ')'}">
+            <div class="flex content-center items-center">
+                <div class="bg-cover bg-center p-12 rounded-full bg-blue-primary m-3 md:m-5" :style="{'background-image':'url(/storage/' + this.community.community_photo_path + ')'}"></div>
+                <h2 class="text-white text-2xl md:text-3xl">{{ community.name }}</h2>
             </div>
-            <div>
-                <div v-if="this.isMember == true">
-                    <inertia-link
-                        class="link details-link"
-                        v-bind:href="
-                            '/community/' + this.community.id + '/details'
-                        "
-                        ><div class="link-btn">
-                            <p class="link-btn-text">i</p>
-                        </div></inertia-link
-                    >
-
-                    <input
-                        v-on:click="inviteVis = !inviteVis"
-                        id="invite-btn"
-                        type="button"
-                        value="Invite Friends"
-                    />
-                </div>
-
-                <div v-else>
-                    <inertia-link
-                        v-bind:href="
-                            '/community/' + this.community.id + '/invite'
-                        "
-                        class="link join-link"
-                        ><div class="link-btn">
-                            <p class="link-btn-text">Join Community</p>
-                        </div></inertia-link
-                    >
-                </div>
-            </div>
-        </div>
-        <div v-show="inviteVis" id="invite-popup">
-            <h2>
-                Send this link to your friends to invite them to
-                {{ this.community.name }}
-            </h2>
-            <p id="invite-url">
-                coda.app/community/{{ this.community.id }}/invite
-            </p>
-            <input
-                v-on:click="inviteVis = !inviteVis"
-                id="invite-close"
-                type="button"
-                value="Close"
-            />
-        </div>
+            <inertia-link v-if="this.isMember == true" v-bind:href="'/community/' + this.community.id + '/details'" class="bg-white rounded-full w-10 h-10 place-self-end text-center mb-10 mr-3 md:mb-12 md:mr-5">
+                <p class="text-blue-primary text-3xl mt-1">i</p>
+            </inertia-link>
+            <inertia-link v-else v-bind:href="'/community/' + this.community.id + '/invite'" class="bg-white rounded-full h-11 pl-10 pr-10 place-self-end text-center mb-10 mr-3 md:mb-12 md:mr-5">
+                <p class="text-blue-primary text-xl mt-2">Join Community</p>
+            </inertia-link>
+        </header>
     </app-layout>
 </template>
 
@@ -74,7 +25,7 @@
         },
         data() {
             return {
-                communityBanner: "url({{this.community.community_photo_path}})",
+                communityBanner: "url(/storage/{{this.community.community_photo_path}})",
                 inviteVis: false,
                 avatarURL: null,
                 bannerURL: null,
@@ -85,7 +36,7 @@
         },
         styles() {
             return {
-                "background-image": "url(${this.community.community_photo_path})",
+                "background-image": "url(/storage/${this.community.community_photo_path})",
             };
         },
         props: {

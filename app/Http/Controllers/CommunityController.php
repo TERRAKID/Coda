@@ -66,7 +66,14 @@ class CommunityController extends Controller
             ->get();
         $community = $community[0];
 
-        return Inertia::render('Community/Details')->with('community', $community);
+        $communityMembers = User::join('community_member', 'community_member.user_id', '=', 'users.id')
+                ->where('community_member.community_id', '=', $community->id)
+                ->where('community_member.active', '=', '1')
+                ->get(['users.id', 'users.name', 'users.profile_photo_path']);
+
+        $memberCount = $communityMembers->count();
+
+        return Inertia::render('Community/Details')->with('community', $community)->with('communityMembers', $communityMembers)->with('memberCount', $memberCount);
     }
 
     //-----------------------------------------------------------------------
@@ -114,7 +121,7 @@ class CommunityController extends Controller
             ->where('community_id', $id)
             ->where('active', 1)
             ->count();
-
+            
         return Inertia::render('Community/Invite')->with('community', $community)->with('isMember', $member);
     }
 
@@ -180,8 +187,22 @@ class CommunityController extends Controller
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
 
-        $friends = auth()->user()->friends()->take(6)->get();
-        return Inertia::render('Community/Create')->with('friends', $friends);
+        $friends1 = User::join('user_friend', 'user_friend.user_id', '=', 'users.id')
+                ->where('user_friend.friend_id', '=', $currentUser)->get();
+
+        $friends2 = auth()->user()->friends()->get();
+
+        $allFriends = $friends1->merge($friends2);
+
+        if($allFriends->isEmpty()){
+            $hasFriends = false;
+            return Inertia::render('Community/Create')->with('hasFriends', $hasFriends);
+        }
+        else{
+            $hasFriends = true;
+            return Inertia::render('Community/Create')->with('friends', $allFriends)->with('hasFriends', $hasFriends);
+        }
+
     }
 
     //-----------------------------------------------------------------------
@@ -192,7 +213,7 @@ class CommunityController extends Controller
             'avatar' => 'image|max:2048',
             'banner' => 'image|max:2048',
         ]);
-
+            
         $community = new Community;
 
         $community->name = request('name');
@@ -203,7 +224,8 @@ class CommunityController extends Controller
             $image = $request->file('avatar');
 
             $name = $request->input('name').'_'.time();
-
+            $name = str_replace(' ', '_', $name);
+            
             $folder = 'community-avatars/';
 
             $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
@@ -217,6 +239,7 @@ class CommunityController extends Controller
             $image = $request->file('banner');
 
             $name = $request->input('name').'_'.time();
+            $name = str_replace(' ', '_', $name);
 
             $folder = 'community-banners/';
 
@@ -226,7 +249,6 @@ class CommunityController extends Controller
 
             $community->background_photo_path = $filePath;
         }
-        
         $community->save();
 
         $community = Community::where('name', request('name'))
@@ -265,7 +287,7 @@ class CommunityController extends Controller
             ->where('community_id', $community)
             ->where('active', 1)
             ->count();
-
+        
         return Inertia::render('Community/Show')->with('community', $community)->with('isMember', $member);
     }
 }
