@@ -32,6 +32,7 @@ module.exports = {
             }),
             gridTemplateColumns: {
                 'main': '20% 80%',
+                'user': 'auto 1fr 1fr',
             },
         },
     },

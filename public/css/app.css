@@ -26780,6 +26780,10 @@ select {
   grid-template-columns: 20% 80%;
 }
 
+.grid-cols-user {
+  grid-template-columns: auto 1fr 1fr;
+}
+
 .auto-cols-auto {
   grid-auto-columns: auto;
 }
@@ -56275,6 +56279,10 @@ select {
     grid-template-columns: 20% 80%;
   }
 
+  .sm\:grid-cols-user {
+    grid-template-columns: auto 1fr 1fr;
+  }
+
   .sm\:auto-cols-auto {
     grid-auto-columns: auto;
   }
@@ -85703,6 +85711,10 @@ select {
 
   .md\:grid-cols-main {
     grid-template-columns: 20% 80%;
+  }
+
+  .md\:grid-cols-user {
+    grid-template-columns: auto 1fr 1fr;
   }
 
   .md\:auto-cols-auto {
@@ -115135,6 +115147,10 @@ select {
     grid-template-columns: 20% 80%;
   }
 
+  .lg\:grid-cols-user {
+    grid-template-columns: auto 1fr 1fr;
+  }
+
   .lg\:auto-cols-auto {
     grid-auto-columns: auto;
   }
@@ -144565,6 +144581,10 @@ select {
     grid-template-columns: 20% 80%;
   }
 
+  .xl\:grid-cols-user {
+    grid-template-columns: auto 1fr 1fr;
+  }
+
   .xl\:auto-cols-auto {
     grid-auto-columns: auto;
   }
@@ -173993,6 +174013,10 @@ select {
 
   .\32xl\:grid-cols-main {
     grid-template-columns: 20% 80%;
+  }
+
+  .\32xl\:grid-cols-user {
+    grid-template-columns: auto 1fr 1fr;
   }
 
   .\32xl\:auto-cols-auto {
