@@ -23,7 +23,9 @@ module.exports = {
                     secondary: '#5779BB',
                 },
                 purple: '#7C217E',
+                purpleDark: '#53207c',
                 green: '#3BBAC0',
+                greenDark: '#3b7fbf',
                 black: '#212125',
                 white: '#fefdfb',
             },
@@ -32,6 +34,15 @@ module.exports = {
             }),
             gridTemplateColumns: {
                 'main': '20% 80%',
+            },
+            maxWidth: {
+                '1/4': '25%',
+                '1/2': '50%',
+                '3/4': '75%',
+                'full': '100%',
+            },
+            borderRadius: {
+                'large': '50px',
             },
         },
     },
