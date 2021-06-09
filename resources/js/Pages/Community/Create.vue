@@ -1,56 +1,86 @@
 <template>
     <app-layout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Create a new community
-            </h2>
-        </template>
-        <form action="/community/create" method="POST" enctype="multipart/form-data">
+        <form class="max-w-full" action="/community/create" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="_token" :value="csrf">
-            <div id="img_uploads">
-                <div>
-                    <div>
-                        <img id="display-avatar-preview" v-if="avatarURL" :src="avatarURL" alt="" style="max-height: 150px;">
+            <header 
+                class="lg:grid grid-cols-2 bg-green bg-center bg-cover max-w-full pl-10" 
+                :style="{'background-image':'linear-gradient(rgba(59, 186, 192, 0.5), rgba(59, 186, 192, 0.5)), url(' + bannerURL + ')'}">
+
+                <div class="flex flex-col lg:flex-row">
+                    <div 
+                        class="bg-cover bg-center w-28 h-28 rounded-full bg-blue-primary m-4 ml-0" 
+                        :style="{'background-image':'url(' + avatarURL + ')'}">
                     </div>
-                    <div id="avatar-div">
-                        <label for="avatar">Upload Avatar</label>
-                        <input @change="avatarChange" type="file" id="avatar" name="avatar" placeholder="Upload Avatar">
+
+                    <div class="lg:ml-6 lg:mt-14 mt-5">
+
+                        <label class="w-60 max-h-14 cursor-pointer bg-blue-primary p-3 pl-10 pr-10 text-lg text-white text-center rounded-xl" for="avatar">Upload avatar 
+                            <img class="w-7 inline-block" src="/img/upload.svg" alt="">
+                            <input class="hidden" @change="avatarChange" type="file" id="avatar" name="avatar" placeholder="Upload Avatar">
+                        </label>
                         <input type='button' id='remove-avatar' value='Remove File' v-show="visible">
                     </div>
                 </div>
-                <div>
-                    <div>
-                        <img id="display-banner-preview" v-if="bannerURL" :src="bannerURL" alt="" style="max-height: 150px;">
-                    </div>
-                    <div>
-                        <label for="banner">Upload Banner</label>
-                        <input @change="bannerChange" type="file" id="banner" name="banner" placeholder="Upload Banner">
+
+                <div class="justify-self-end content-center inline-block">
+                    <div class="mt-14 lg:mr-10 pb-10">
+                        <label class="w-60 max-h-14 cursor-pointer bg-blue-primary p-3 pl-10 pr-10 text-lg text-white text-center rounded-xl" for="banner">Upload Banner
+                            <img class="w-7 inline-block" src="/img/upload.svg" alt="">
+                            <input class="hidden" @change="bannerChange" type="file" id="banner" name="banner" placeholder="Upload Banner">
+                        </label>
                         <input type='button' style="display: none;" ref="removeBanner" id='remove-banner' value='Remove File'>
                     </div>
                 </div>
-            </div>
+            </header>
 
+            <main class="m-10 mt-5">
             <div id="community_details">
-                <div>
-                    <label for="name">Community Name</label>
-                    <input type="text" name="name" placeholder="Name">
+                <div class="text-xs mb-3">
+                    <p>Images must be smaller than 2MB</p>
+                    <p>A name is required</p>
                 </div>
                 <div>
-                    <label for="visibility">Community Visibility</label>
-                    <select name="visibility" id="community_visibility">
-                        <option value="1">Public</option>
-                        <option value="0">Private</option>
-                    </select>
+                    <label for="name" class="text-black text-2xl mb-8">Community Name</label>
+                    <input type="text" name="name" placeholder="Name" class="lg:max-w-1/4 border-2 border-green focus:border-green focus:ring-2 focus:ring-green rounded-lg text-xl mt-5 block w-full">
+                </div>
+                <div class="mt-10 mb-10">
+                    <label for="visibility" class="text-black text-2xl mb-8 mr-5">Community Visibility</label>
+                    <div class="inline-block mt-5 lg:mt-0">
+                        <div class="inline-block mr-5">
+                            <label class="cursor-pointer bg-blue-primary p-3 pl-16 text-lg pr-16 lg:ml-10 text-white text-center rounded-xl" v-bind:class="[isActive ? 'opacity-100' : 'opacity-60']">
+                                Public
+                                <input @click="visSelect" class="hidden" type="radio" name="visibility" id="community_visibility" value="1" v-model="visibility">
+                            </label>
+                        </div>
+                        <div class="inline-block mt-10 sm:mt-0">
+                            <label class="cursor-pointer bg-blue-primary p-3 pl-16 text-lg pr-16 lg:ml-10 md:ml-5 text-white text-center rounded-xl opacity-60" v-bind:class="[isActive ? 'opacity-60' : 'opacity-100']">
+                                Private
+                                <input @click="visSelect" class="hidden" type="radio" name="visibility" id="community_visibility" value="0" v-model="visibility">
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 <div>
-                    <h2 for="invite">Invite Your Friends</h2>
-                    <div v-for="(friend, index) in friends" :key="index">
-                        <label :for="'invitee-' + index">{{ friend.name }}</label>
-                        <input type="checkbox" :value="friend.id" :id="'invitee-' + index" :name="'invitee-' + index">
+                    <h2 for="invite" class="text-black text-2xl mb-8">Invite Your Friends</h2>
+                    <div v-if="this.hasFriends == true" >
+                        <label v-for="(friend, index) in friends" :key="index" class="flex grid grid-cols-4 lg:grid-cols-10 mb-5 mr-5 min-w-min max-w-64" :for="'invitee-' + index">
+                            <div class="rounded-full bg-blue-primary bg-cover h-16 w-16 inline-block" :style="{'background-image':'url(/storage/' + friend.profile_photo_path + ')'}"></div>
+                            <p class="p-5 pl-0 grid col-span-2">{{ friend.name }}</p>
+                            <input class="mt-6" type="checkbox" :value="friend.id" :id="'invitee-' + index" :name="'invitee-' + index">
+                        </label>
+                    </div>
+                    <div v-else>
+                        <h3>You do not have any friends at the moment.</h3>
                     </div>
                 </div>
             </div>
-            <input id="submit" type="submit" value="Create Community">
+            <div v-if="error">
+                {{ error.response.status }}
+            </div>
+            <div class="w-full text-center">
+                <input class="cursor-pointer transition-all duration-200 bg-green hover:bg-greenDark text-white p-3 pl-10 pr-10 text-2xl rounded-full" id="submit" type="submit" value="Create Community">
+            </div>
+            </main>
         </form>
     </app-layout>
 </template>
@@ -58,6 +88,7 @@
 <script type="text/javascript">
 import AppLayout from "@/Layouts/AppLayout";
 import {reactive} from 'vue';
+import axios from 'axios';
 
 export default{
     components: {
@@ -69,21 +100,16 @@ export default{
             avatarURL: null,
             bannerURL: null,
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            visibility: "1",
+            isActive: true,
+            error: null,
+            form: {
+                avatar: null,
+                banner: null,
+                name: null,
+                visibility: null,
+            },
         }
-    },
-    setups(){
-        const form = reactive({
-            avatar: null,
-            banner: null,
-            name: null,
-            visibility: null,
-        })
-
-        function submit(){
-            Inertia.post('/community/create', form)
-        }
-
-        return { form, submit }
     },
     props: {
         friends: {
@@ -91,8 +117,11 @@ export default{
             required: false,
         },
         errors: {
-            type: Array,
-            required: false,
+            type: Object,
+        },
+        hasFriends: {
+            type: String,
+            required: true,
         }
     },
     methods: {
@@ -104,41 +133,11 @@ export default{
         bannerChange(e){
             const file = e.target.files[0];
             this.bannerURL = URL.createObjectURL(file);
-        }
-    }
+        },
+        visSelect(e){
+            this.isActive = !this.isActive;
+        },
+    },
 }
-     
-    /*$(document).ready(function (e) {
-
-        $('#avatar').change(function(){
-            $('#remove-avatar').show();
-            let reader = new FileReader();
-            reader.onload = (e) => { 
-              $('#display-avatar-preview').attr('src', e.target.result); 
-            }
-            reader.readAsDataURL(this.files[0]);
-        });
-
-        $('#remove-avatar').click(function(){
-            $('#display-avatar-preview').attr('src', '');
-            $('#avatar').val("");
-            $('#remove-avatar').hide();
-        });
-
-        $('#banner').change(function(){
-            $('#remove-banner').show();
-            let reader = new FileReader();
-            reader.onload = (e) => { 
-              $('#display-banner-preview').attr('src', e.target.result); 
-            }
-            reader.readAsDataURL(this.files[0]);
-        });
-
-        $('#remove-banner').click(function(){
-            $('#display-banner-preview').attr('src', '');
-            $('#banner').val("");
-            $('#remove-banner').hide();
-        });
-    });*/
  
 </script>

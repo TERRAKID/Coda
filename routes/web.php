@@ -4,6 +4,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\DirectMessageController;
+
+use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\TMDBController;
@@ -22,10 +24,23 @@ use App\Http\Controllers\TMDBController;
 Route::get('/', function () {
     return redirect()->route('dashboard');
 });
-
+/*
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
+*/
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [GeneralController::class, 'dashboard'])->name('dashboard');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/chat', function () {
+    return Inertia::render('Chat/Show');
+})->name('chat');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/chat/users', [DirectMessageController::class, 'listUsers']);
+Route::middleware(['auth:sanctum', 'verified'])->get('/chat/{userId}/last', [DirectMessageController::class, 'getLastMessages']);
+Route::middleware(['auth:sanctum', 'verified'])->get('/chat/{userId}', [DirectMessageController::class, 'getMessages']);
+Route::middleware(['auth:sanctum', 'verified'])->post('/chat/{userId}', [DirectMessageController::class, 'newMessage']);
+
+
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/chat', function () {
     return Inertia::render('Chat/Show');
