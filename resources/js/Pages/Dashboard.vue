@@ -16,7 +16,7 @@
                     Your Community updates
                 </h2>
                 <div class="flex justify-items-center flex-col">
-                    <inertia-link v-for="(community, index) in userCommunities" :key="index" :href="'/community/' + community.id" class="m-2 text-white">
+                    <inertia-link v-for="(community, index) in userCommunities" :key="index" :href="'/community/' + community.community_id" class="m-2 text-white">
                         <div class="grid grid-cols-6 flex items-center justify-center bg-blue-primary rounded-bl-large rounded-tl-large rounded-tr-xl rounded-br-xl">
                             <div class="rounded-full bg-cover bg-center h-24 w-24 inline-block col-span-2" :style="{'background-image':'url(/storage/' + community.community_photo_path + ')'}"></div>
                             <p class="w-full col-span-4 pr-5">{{ community.name }}</p>
