@@ -57,3 +57,5 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/diary/{movieId}/create',
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/movie/search', [MovieController::class, 'showMovieSearch']);
 Route::middleware(['auth:sanctum', 'verified'])->post('/movie/search', [MovieController::class, 'movieSearch']);
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/movie/{movieId}', [MovieController::class, 'moviePage']);

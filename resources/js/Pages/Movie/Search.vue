@@ -9,7 +9,7 @@
             <button type="submit">Submit</button>
         </form>
 
-        <inertia-link :href="'/diary/' + result.id + '/create'" v-for="(result, index) in results" :key="index" class="m-5 flex items-center">
+        <inertia-link :href="'/movie/' + result.id" v-for="(result, index) in results" :key="index" class="m-5 flex items-center">
             <div class="h-24 w-16 bg-center bg-cover" :style="{'background-image':'url(https://image.tmdb.org/t/p/w500' + result.poster_path + ')'}"></div>
             <div class="ml-5">
                 <h3 class="text-2xl mb-4">

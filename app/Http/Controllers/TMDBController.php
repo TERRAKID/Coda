@@ -48,4 +48,27 @@ class TMDBController extends Controller
 
         return $movies;
     }
+
+    public function fetchMovieCast($movieId){
+        $apiKey = '?api_key=' . config('services.tmdb.token');
+
+        $credits = Http::get('https://api.themoviedb.org/3/movie/' . $movieId . '/credits' . $apiKey)
+            ->json();
+
+        $cast = $credits['cast'];
+            
+        return $cast;
+    }
+
+    public function fetchMovieCrew($movieId){
+        $apiKey = '?api_key=' . config('services.tmdb.token');
+
+        $credits = Http::get('https://api.themoviedb.org/3/movie/' . $movieId . '/credits' . $apiKey)
+            ->json();
+
+        $crew = $credits['crew'];
+            
+        return $crew;
+
+    }
 }

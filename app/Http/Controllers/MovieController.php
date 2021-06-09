@@ -51,6 +51,17 @@ class MovieController extends Controller
         $results = (new TMDBController)->fetchMovieByName($search);
         $genres = TMDBController::fetchGenres();
 
+        //this adds the title and 
+        foreach($results as $movie){
+            $movieExist = Movie::where('tmdb_id', '=', $movie['id'])->count();
+            if(!$movieExist){
+                $addMovie = new Movie;
+                $addMovie->title = $movie['title'];
+                $addMovie->tmdb_id = $movie['id'];
+
+                $addMovie->save();
+            }
+        }
         return Inertia::render('Movie/Search')
             ->with('results', $results)
             ->with('genres', $genres);
@@ -70,5 +81,44 @@ class MovieController extends Controller
         return Inertia::render('Movie/CreateReview')
             ->with('movie', $movie)
             ->with('communities', $communities);
+    }
+
+/**----------------------------------------------------------*/
+    public function createReview(){
+        $currentUser = auth()->user();
+        $currentUser = $currentUser->id;
+        
+        dd(request());
+        $movieId = request('movie_id');
+        dd($movieId);
+        $review = new MovieRating;
+
+        $review->user_id = $currentUser;
+        $review->movie_id = $movieId;
+
+        $watched = MovieRating::where('user_id', '=', $currentUser)
+            ->where('movie_id', '=', $movieId)
+            ->get();
+        
+        dd($watched);
+    }
+/**----------------------------------------------------------*/
+    public function moviePage($movieId){
+        $movie = (new TMDBController)->fetchMovieById($movieId);
+        $cast = (new TMDBController)->fetchMovieCast($movieId);
+        $crew = (new TMDBController)->fetchMovieCrew($movieId);
+
+        $directors = [];
+
+        foreach($crew as $crewMember){
+            if($crewMember['job'] == 'Director'){
+                array_push($directors, $crewMember);
+            }
+        }
+
+        return Inertia::render('Movie/Details')
+            ->with('movie', $movie)
+            ->with('cast', $cast)
+            ->with('directors', $directors);
     }
 }

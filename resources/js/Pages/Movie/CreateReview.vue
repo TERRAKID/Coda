@@ -11,17 +11,30 @@
                 </div>
             </div>
         </div>
-        <form @submit.prevent = "submit" class="mb-40">
+        <form @submit.prevent = "submitForm" class="mb-40">
+            <input type="hidden" name="_token" :value="csrf">
+            <input class="hidden" name="movie_id" :id="'movie_id'" v-model="form.movie_id">
             <label for="view_date" class="p-5 bg-blue-primary block flex items-center text-black text-2xl mb-3">
                 <input type="date" name="view_date" id="view_date" v-model="form.view_date">
             </label>
 
             <div class="p-5 bg-blue-primary block flex items-center text-white text-2xl mb-3">
-                Rating: 
+                Rating:
+                <!-- 
                 <label class="ml-3" v-for="index in 5" :key="index">
-                    <input class="hidden" type="radio" name="rating" :id="'rating-' + index" :value="index" v-model="rating">
+                    <input class="hidden" type="radio" name="rating" :id="'rating-' + index" :value="index" v-model="form.rating">
                     <img @click="starHover" class="w-10 ml-0" src="/img/star-outline.svg" alt="">
-                    <!-- <img v-show="!starVis" class="w-10 ml-0" src="/img/star.svg" alt=""> -->
+                    <img v-show="!starVis" class="w-10 ml-0" src="/img/star.svg" alt="">
+                </label>
+                -->
+                <label class="text-black ml-5" for="rating">
+                    <select class="text-black" name="rating" id="rating" v-model="form.rating">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
                 </label>
             </div>
 
@@ -48,9 +61,7 @@
                     <input class="justify-self-end" type="checkbox" :value="community.id" :id="'community-' + index" :name="'community-' + index">
                 </label>
             </label>
-            <div class="w-full text-center bg-green fixed bottom-16">
-                <input class="bg-green p-5 text-3xl text-white" type="submit" value="Confirm">
-            </div>
+            <input class="cursor-pointer w-full text-center fixed bottom-16 md:bottom-0 bg-green p-5 text-3xl text-white" type="submit" value="Confirm">
         </form>
     </app-layout>
 </template>
@@ -59,6 +70,7 @@
     import AppLayout from "@/Layouts/AppLayout";
     import { reactive } from "vue";
     import { Inertia } from '@inertiajs/inertia';
+    import axios from 'axios';
 
     export default {
         components: {
@@ -67,18 +79,12 @@
         data() {
             return {
                 starVis: true,
+                form:{
+                    view_date: '',
+                    rating: '',
+                    review: '',
+                },
             };
-        },
-        setup(){
-            const form = reactive({
-                search_movie: null,
-            })
-
-            function submit(){
-                Inertia.post('/movie/search', form)
-            }
-
-            return { form, submit }
         },
         props: {
             movie: {
@@ -98,7 +104,15 @@
             starHover(){
                 console.log(this.rating);
                 this.starVis = !this.starVis;
-            }
+            },
+            submitForm(){
+                axios.post('/diary/' + this.movie.id + '/create', this.form)
+                    .then((response) => {
+                        if(response.status === 201){
+                            console.log('success');
+                        }
+                    });
+            },
         },
     };
 </script>
