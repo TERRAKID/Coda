@@ -21,8 +21,6 @@ class CommunityController extends Controller
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
 
-        //$members = CommunityMember::where('user_id', $currentUser)->get();
-
         $communities = Community::join('community_member', 'community_member.community_id', '=', 'community.id')
             ->where('community_member.user_id', '=', $currentUser)->get();
 
