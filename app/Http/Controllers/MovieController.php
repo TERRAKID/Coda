@@ -104,17 +104,30 @@ class MovieController extends Controller
     }
 /**----------------------------------------------------------*/
     public function moviePage($movieId){
+        $currentUser = auth()->user();
+        $currentUser = $currentUser->id;
+
         $movie = (new TMDBController)->fetchMovieById($movieId);
         $cast = (new TMDBController)->fetchMovieCast($movieId);
         $crew = (new TMDBController)->fetchMovieCrew($movieId);
 
         $directors = [];
-
         foreach($crew as $crewMember){
             if($crewMember['job'] == 'Director'){
                 array_push($directors, $crewMember);
             }
         }
+
+        $allReviews = MovieRating::join('movie', 'movie.id', '=', 'movie_ratings.movie_id')
+            ->where('movie.tmdb_id', '=', $movieId)
+            ->get();
+
+        $reviews = [];
+        foreach($allReviews as $review){
+            array_push($reviews, $review['rating']);
+        }
+        
+        dd($reviews);
 
         return Inertia::render('Movie/Details')
             ->with('movie', $movie)
