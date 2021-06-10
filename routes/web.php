@@ -49,9 +49,10 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/community/{id}/details',
 Route::middleware(['auth:sanctum', 'verified'])->get('/community/{id}/invite', [CommunityController::class, 'communityInvite']);
 Route::middleware(['auth:sanctum', 'verified'])->post('/community/{id}/invite', [CommunityController::class, 'acceptInvite']);
 
-
+Route::middleware(['auth:sanctum', 'verified'])->post('/user/profile/info', [UserController::class, 'getProfileInfo'])->name('profileInfo');
 Route::middleware(['auth:sanctum', 'verified'])->post('/user/background', [UserController::class, 'updateBackground']);
 Route::middleware(['auth:sanctum', 'verified'])->get('/user/background', [UserController::class, 'getBackground']);
+Route::middleware(['auth:sanctum', 'verified'])->post('/user/friend', [UserController::class, 'addFriend'])->name('addFriend');
 Route::middleware(['auth:sanctum', 'verified'])->get('/user/{id}', [UserController::class, 'getUser']);
 
 

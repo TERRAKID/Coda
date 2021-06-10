@@ -8,6 +8,7 @@ use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Http;
 use App\Models\ProfileInfo;
+use App\Models\UserFriend;
 
 class UserController extends Controller
 {
@@ -21,7 +22,7 @@ class UserController extends Controller
             $user->profileInfo()->associate($profileInfo);
         }
 
-        $response = Http::get('https://api.themoviedb.org/3/search/multi?api_key=' . env('TMDB_KEY') . '&language=en-US&query=' . $request->backgroundQuery . '&page=1&include_adult=false');
+        $response = Http::get('https://api.themoviedb.org/3/search/multi?api_key=' . config('services.tmdb.token') . '&language=en-US&query=' . $request->backgroundQuery . '&page=1&include_adult=false');
 
         $user->profileInfo->background_photo_path = null;
 
@@ -59,11 +60,53 @@ class UserController extends Controller
         }
 
         $user = User::find($userId);
+        $user->profileInfo;
+        $isFriend = false;
 
-        return Inertia::render('Profile/Show', [
-            'user' => $user,
-            'background' => null,
-            'sessions' => [],
+        if (!empty(UserFriend::where('user_id', Auth::user()->id)->where('friend_id', $userId)->first()->accepted)) {
+            $isFriend = true;
+        }
+
+        $amountFriends = UserFriend::where('user_id', $userId)->get()->count();
+
+        return Inertia::render('User', [
+            'otherUser' => $user,
+            'isFriend' => $isFriend,
+            'amountFriends' => $amountFriends,
         ]);
+    }
+
+    public function addFriend(Request $request)
+    {
+        $user = Auth::user();
+
+        if ($request->isFriend) {
+            $userFriend = UserFriend::where('user_id', $user->id)->where('friend_id', $request->friendId)->orWhere('user_id', $request->friendId)->where('friend_id', $user->id)->update(['accepted' => false]);
+            return redirect('/user\\' . $request->friendId);
+        }
+
+        if (empty(UserFriend::where('user_id', $user->id)->where('friend_id', $request->friendId)->first())) {
+            $userFriend = new UserFriend;
+            $userFriend->user_id =  $user->id;
+            $userFriend->friend_id = $request->friendId;
+            $userFriend->save();
+        }
+
+        if (empty(UserFriend::where('user_id', $request->friendId)->where('friend_id', $user->id)->first())) {
+            $userFriend = new UserFriend;
+            $userFriend->user_id =  $request->friendId;
+            $userFriend->friend_id = $user->id;
+            $userFriend->save();
+        }
+
+        $userFriend = UserFriend::where('user_id', $user->id)->where('friend_id', $request->friendId)->orWhere('user_id', $request->friendId)->where('friend_id', $user->id)->update(['accepted' => true]);
+        return redirect('/user\\' . $request->friendId);
+    }
+
+    public function getProfileInfo()
+    {
+        $amountFriends = UserFriend::where('user_id', Auth::user()->id)->get()->count();
+
+        return ['amountFriends' => $amountFriends];
     }
 }

@@ -101,7 +101,7 @@
                         md:col-start-3
                     "
                 >
-                    <span>88</span>
+                    <span>{{ profileInfo.amountFriends }}</span>
                     <p>friends</p>
                 </div>
 
@@ -193,6 +193,7 @@
                 }),
 
                 photoPreview: null,
+                profileInfo: {},
             };
         },
 
@@ -235,6 +236,20 @@
                 }
                 return this.selectNewPhoto();
             },
+
+            getProfileInfo() {
+                axios.post(route("profileInfo"), {}).then((response) => {
+                    if (response.status === 200) {
+                        this.profileInfo = JSON.parse(
+                            JSON.stringify(response.data)
+                        );
+                    }
+                });
+            },
+        },
+
+        created() {
+            this.getProfileInfo();
         },
     };
 </script>
