@@ -127,7 +127,7 @@ class MovieController extends Controller
             array_push($reviews, $review['rating']);
         }
         
-        dd($reviews);
+        //dd($reviews);
 
         return Inertia::render('Movie/Details')
             ->with('movie', $movie)
