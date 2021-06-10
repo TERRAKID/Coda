@@ -22480,10 +22480,10 @@ var _hoisted_10 = {
   "class": "flex justify-items-center flex-col"
 };
 var _hoisted_11 = {
-  "class": "grid grid-cols-6 flex items-center justify-center bg-blue-primary rounded-bl-large rounded-tl-large rounded-tr-xl rounded-br-xl"
+  "class": "bg-blue-primary rounded-tl-large rounded-bl-large rounded-tr-2xl rounded-br-2xl flex items-center text-right md:h-20 md:text-center lg:h-auto lg:text-right"
 };
 var _hoisted_12 = {
-  "class": "w-full col-span-4 pr-5"
+  "class": "w-full mr-5 truncate"
 };
 var _hoisted_13 = {
   "class": "md:col-span-4"
@@ -22527,7 +22527,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_app_layout, null, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h2", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_inertia_link, {
-        "class": "text-white bg-blue-primary p-2 pl-3 pr-3 rounded-full",
+        "class": "text-white bg-blue-primary p-2 pl-3 pr-3 rounded-full inline-block",
         href: "community/create"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -22567,7 +22567,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         }, {
           "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
             return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-              "class": "rounded-full bg-cover bg-center h-24 w-24 inline-block col-span-2",
+              "class": "p-10 inline-block rounded-full bg-cover bg-center md:hidden lg:inline-block",
               style: {
                 'background-image': 'url(/storage/' + community.community_photo_path + ')'
               }

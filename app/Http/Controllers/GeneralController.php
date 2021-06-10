@@ -21,7 +21,9 @@ class GeneralController extends Controller
         $currentUser = $currentUser->id;
             
         $recCommunities = Community::join('community_member', 'community_member.community_id', '=', 'community.id')
-        ->where('community_member.user_id', '!=', $currentUser)->take(5)->get();
+            ->where('community_member.user_id', '!=', $currentUser)
+            ->take(5)->get();
+        //dd($recCommunities);
 
         $userCommunities = Community::join('community_member', 'community_member.community_id', '=', 'community.id')
         ->where('community_member.user_id', '=', $currentUser)->take(5)->get();

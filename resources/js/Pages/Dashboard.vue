@@ -3,7 +3,7 @@
         <div class="md:grid grid-cols-6 gap-5">
             <div class="md:col-span-4">
                 <h2 class="mt-5 ml-5 text-lg">
-                    Recommended Communities or <inertia-link class="text-white bg-blue-primary p-2 pl-3 pr-3 rounded-full" href="community/create">Create a new one <span class="text-2xl">></span></inertia-link>
+                    Recommended Communities or <inertia-link class="text-white bg-blue-primary p-2 pl-3 pr-3 rounded-full inline-block" href="community/create">Create a new one <span class="text-2xl">></span></inertia-link>
                 </h2>
                 <div class="content-between ml-2 mt-3">
                     <inertia-link v-for="(community, index) in recCommunities" :key="index" :href="'/community/' + community.id">
@@ -17,9 +17,9 @@
                 </h2>
                 <div class="flex justify-items-center flex-col">
                     <inertia-link v-for="(community, index) in userCommunities" :key="index" :href="'/community/' + community.community_id" class="m-2 text-white">
-                        <div class="grid grid-cols-6 flex items-center justify-center bg-blue-primary rounded-bl-large rounded-tl-large rounded-tr-xl rounded-br-xl">
-                            <div class="rounded-full bg-cover bg-center h-24 w-24 inline-block col-span-2" :style="{'background-image':'url(/storage/' + community.community_photo_path + ')'}"></div>
-                            <p class="w-full col-span-4 pr-5">{{ community.name }}</p>
+                        <div class="bg-blue-primary rounded-tl-large rounded-bl-large rounded-tr-2xl rounded-br-2xl flex items-center text-right md:h-20 md:text-center lg:h-auto lg:text-right">
+                            <div class="p-10 inline-block rounded-full bg-cover bg-center md:hidden lg:inline-block" :style="{'background-image':'url(/storage/' + community.community_photo_path + ')'}"></div>
+                            <p class="w-full mr-5 truncate">{{ community.name }}</p>
                         </div>
                     </inertia-link>
                 </div>
