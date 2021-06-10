@@ -20,20 +20,22 @@ class GeneralController extends Controller
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
             
-        $recCommunities = Community::join('community_member', 'community_member.community_id', '=', 'community.id')
-            ->where('community_member.user_id', '!=', $currentUser)
-            ->take(5)->get();
+        $recCommunities = CommunityMember::where('community_member.user_id', '!=', $currentUser)
+            ->take(5)
+            ->orderBy('id')
+            ->get('community_id');
         
+        $communityIds = [];
         $communitiesWithoutCurrentUserAsMember = [];
 
         foreach($recCommunities as $community){
-            $isMember = CommunityMember::where('community_id', '=', $community['community_id'])
-                ->where('user_id', '=', $currentUser)
-                ->count();
+            array_push($communityIds, $community['community_id']);
+        }
+        $communityIds = array_unique($communityIds);
 
-            if($isMember == 0){
-                array_push($communitiesWithoutCurrentUserAsMember, $community);
-            }
+        foreach($communityIds as $communityId){
+            $result = Community::where('id', '=', $communityId)->get();
+            array_push($communitiesWithoutCurrentUserAsMember, $result['0']);
         }
 
         $userCommunities = Community::join('community_member', 'community_member.community_id', '=', 'community.id')

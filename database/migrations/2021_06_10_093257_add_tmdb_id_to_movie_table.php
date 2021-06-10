@@ -14,7 +14,7 @@ class AddTmdbIdToMovieTable extends Migration
     public function up()
     {
         Schema::table('movie', function (Blueprint $table) {
-            $table->integer('tmdb_id')->after('title');
+            $table->integer('tmdb_id')->after('title')->nullable();
         });
     }
 

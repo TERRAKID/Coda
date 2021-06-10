@@ -6,7 +6,7 @@
                     Recommended Communities or <inertia-link class="text-white bg-blue-primary p-2 pl-3 pr-3 rounded-full inline-block" href="community/create">Create a new one <span class="text-2xl">></span></inertia-link>
                 </h2>
                 <div class="content-between ml-2 mt-3">
-                    <inertia-link v-for="(community, index) in recCommunities" :key="index" :href="'/community/' + community.community_id">
+                    <inertia-link v-for="(community, index) in recCommunities" :key="index" :href="'/community/' + community.id">
                         <div class="rounded-full bg-cover bg-center h-24 w-24 inline-block m-3" :style="{'background-image':'url(/storage/' + community.community_photo_path + ')'}"></div>
                     </inertia-link>
                 </div>
