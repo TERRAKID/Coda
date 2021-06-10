@@ -18227,10 +18227,18 @@ __webpack_require__.r(__webpack_exports__);
     },
     review: {
       type: Array,
-      required: true
+      required: false
+    },
+    reviewMovie: {
+      type: Array,
+      required: false
     },
     reviewStatus: {
       type: String
+    },
+    popular: {
+      type: Array,
+      required: true
     }
   },
   methods: {
@@ -22801,10 +22809,10 @@ var _hoisted_10 = {
   "class": "flex justify-items-center flex-col"
 };
 var _hoisted_11 = {
-  "class": "grid grid-cols-6 flex items-center justify-center bg-blue-primary rounded-bl-large rounded-tl-large rounded-tr-xl rounded-br-xl"
+  "class": "bg-blue-primary rounded-tl-large rounded-bl-large rounded-tr-2xl rounded-br-2xl flex items-center text-right md:h-20 md:text-center lg:h-auto lg:text-right"
 };
 var _hoisted_12 = {
-  "class": "w-full col-span-4 pr-5"
+  "class": "w-full mr-5 truncate"
 };
 var _hoisted_13 = {
   "class": "md:col-span-4"
@@ -22817,19 +22825,19 @@ var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 );
 
 var _hoisted_15 = {
-  "class": "content-between ml-2 mt-3"
+  "class": "content-between ml-5 mt-3"
 };
 var _hoisted_16 = {
   key: 0,
   "class": "md:col-span-4 md:row-start-3 md:row-end-5 mt-5 ml-5 text-lg"
 };
 
-var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h2", null, " Most popular review this week ", -1
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h2", null, " Most recent review ", -1
 /* HOISTED */
 );
 
 var _hoisted_18 = {
-  "class": "grid grid-cols-4 grid-rows-1 mt-8 gap-8"
+  "class": "grid grid-cols-4 grid-rows-1 mt-3 gap-8"
 };
 var _hoisted_19 = {
   "class": "col-span-3 grid-cols-1"
@@ -22848,7 +22856,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_app_layout, null, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h2", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_inertia_link, {
-        "class": "text-white bg-blue-primary p-2 pl-3 pr-3 rounded-full",
+        "class": "text-white bg-blue-primary p-2 pl-3 pr-3 rounded-full inline-block",
         href: "community/create"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -22883,12 +22891,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_10, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.userCommunities, function (community, index) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_inertia_link, {
           key: index,
-          href: '/community/' + community.id,
+          href: '/community/' + community.community_id,
           "class": "m-2 text-white"
         }, {
           "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
             return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-              "class": "rounded-full bg-cover bg-center h-24 w-24 inline-block col-span-2",
+              "class": "p-10 inline-block rounded-full bg-cover bg-center md:hidden lg:inline-block",
               style: {
                 'background-image': 'url(/storage/' + community.community_photo_path + ')'
               }
@@ -22906,40 +22914,34 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         , ["href"]);
       }), 128
       /* KEYED_FRAGMENT */
-      ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
-        "class": "w-32 inline-block m-3",
-        src: $data.poster,
-        alt: ""
-      }, null, 8
-      /* PROPS */
-      , ["src"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
-        "class": "w-32 inline-block m-3",
-        src: $data.poster,
-        alt: ""
-      }, null, 8
-      /* PROPS */
-      , ["src"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
-        "class": "w-32 inline-block m-3",
-        src: $data.poster,
-        alt: ""
-      }, null, 8
-      /* PROPS */
-      , ["src"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
-        "class": "w-32 inline-block m-3",
-        src: $data.poster,
-        alt: ""
-      }, null, 8
-      /* PROPS */
-      , ["src"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
-        "class": "w-32 inline-block m-3",
-        src: $data.poster,
-        alt: ""
-      }, null, 8
-      /* PROPS */
-      , ["src"])])]), $props.reviewStatus != '0' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+      ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_15, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.popular.slice(0, 5), function (popMovie, index) {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_inertia_link, {
+          key: index,
+          href: '/movie/' + popMovie.id,
+          "class": "mr-4"
+        }, {
+          "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+            return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+              style: {
+                'background-image': 'url(https://image.tmdb.org/t/p/w500' + popMovie.poster_path + ')'
+              },
+              "class": "w-32 h-48 bg-cover bg-center inline-block"
+            }, null, 4
+            /* STYLE */
+            )];
+          }),
+          _: 2
+          /* DYNAMIC */
+
+        }, 1032
+        /* PROPS, DYNAMIC_SLOTS */
+        , ["href"]);
+      }), 128
+      /* KEYED_FRAGMENT */
+      ))])]), $props.reviewStatus != '0' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
         "class": "max-w-full inline-block row-span-full col-span-1",
         id: "reviewPoster",
-        src: $data.poster,
+        src: 'https://image.tmdb.org/t/p/w500' + $props.reviewMovie.poster_path,
         alt: ""
       }, null, 8
       /* PROPS */
@@ -22952,7 +22954,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* STYLE */
       ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.review.name), 1
       /* TEXT */
-      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.friendlyDate($props.review.created_at)) + " - 5k likes ", 1
+      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.friendlyDate($props.review.created_at)), 1
       /* TEXT */
       )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.review.review), 1
       /* TEXT */
@@ -23491,11 +23493,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.reviews, function (review, index) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
           key: index
-        }, [$options.monthYear(review.created_at) != $data.monthYearCheck ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h2", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.monthYear(review.created_at)), 1
+        }, [$options.monthYear(review.view_date) != $data.monthYearCheck ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h2", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.monthYear(review.view_date)), 1
         /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.setCheck($options.monthYear(review.created_at))), 1
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.setCheck($options.monthYear(review.view_date))), 1
         /* TEXT */
-        )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getDay(review.created_at)), 1
+        )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getDay(review.view_date)), 1
         /* TEXT */
         )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_inertia_link, {
           href: '/movie/' + $props.movie[index].id

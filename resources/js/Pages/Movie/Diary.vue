@@ -1,15 +1,15 @@
 <template>
     <app-layout>
         <div v-for="(review, index) in reviews" :key="index">
-            <div v-if="monthYear(review.created_at) !=  monthYearCheck" class="bg-purple text-white text-2xl p-8 pt-2 pb-2">
-                <h2>{{ monthYear(review.created_at) }}</h2>
-                {{ setCheck(monthYear(review.created_at)) }}
+            <div v-if="monthYear(review.view_date) !=  monthYearCheck" class="bg-purple text-white text-2xl p-8 pt-2 pb-2">
+                <h2>{{ monthYear(review.view_date) }}</h2>
+                {{ setCheck(monthYear(review.view_date)) }}
             </div>
             <div class="flex space-between mt-5 mb-5">
                 <div class="flex">
                     <div class="flex items-center">
                         <div class="text-3xl flex items-center justify-center text-white p-3 ml-5 mr-5 h-24 w-16 bg-green">
-                            <p>{{ getDay(review.created_at) }}</p>
+                            <p>{{ getDay(review.view_date) }}</p>
                         </div>
                         <inertia-link :href="'/movie/' + movie[index].id">
                         <div class="h-24 w-16 bg-center bg-cover" :style="{'background-image':'url(https://image.tmdb.org/t/p/w500' + movie[index].poster_path + ')'}"></div>

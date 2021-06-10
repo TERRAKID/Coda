@@ -35,7 +35,7 @@ class MovieController extends Controller
 
         $reviews = Movie::join('movie_ratings', 'movie_ratings.movie_id', '=', 'movie.id')
             ->where('movie_ratings.user_id', '=', $currentUser)
-            ->orderBy('movie_ratings.created_at', 'desc')
+            ->orderBy('movie_ratings.view_date', 'desc')
             ->get();
 
         $movieDetails = [];
@@ -101,7 +101,6 @@ class MovieController extends Controller
     public function createReview(Request $request, $movieId){
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
-        
         $review = new MovieRating;
 
         $movieId = Movie::where('tmdb_id', '=', $movieId)->get();
@@ -125,6 +124,7 @@ class MovieController extends Controller
         $review->rating = request('rating');
         $review->review = request('review');
         $review->notes = request('notes');
+        $review->view_date = request('view_date');
         $review->save();
 
         $newReview = MovieRating::where('movie_id', '=', $movieId)

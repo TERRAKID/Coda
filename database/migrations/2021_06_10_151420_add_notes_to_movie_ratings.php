@@ -15,6 +15,7 @@ class AddNotesToMovieRatings extends Migration
     {
         Schema::table('movie_ratings', function (Blueprint $table) {
             $table->longText('notes')->after('review')->nullable();
+            $table->string('view_date')->after('notes')->nullable();
         });
     }
 
@@ -27,6 +28,7 @@ class AddNotesToMovieRatings extends Migration
     {
         Schema::table('movie_ratings', function (Blueprint $table) {
             $table->dropColumn('notes');
+            $table->dropColumn('view_date');
         });
     }
 }
