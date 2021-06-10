@@ -28,12 +28,13 @@
                 <h2 class="mt-5 ml-5 text-lg">
                     Trending movies
                 </h2>
-                <div class="content-between ml-2 mt-3">
-                    <img class="w-32 inline-block m-3" :src="poster" alt="">
-                    <img class="w-32 inline-block m-3" :src="poster" alt="">
-                    <img class="w-32 inline-block m-3" :src="poster" alt="">
-                    <img class="w-32 inline-block m-3" :src="poster" alt="">
-                    <img class="w-32 inline-block m-3" :src="poster" alt="">
+                <div class="content-between ml-5 mt-3">
+                    <inertia-link v-for="(popMovie, index) in popular.slice(0, 5)" :key="index" :href="'/movie/' + popMovie.id" class="mr-4">
+                        <div
+                        :style="{'background-image':'url(https://image.tmdb.org/t/p/w500' + popMovie.poster_path + ')'}"
+                        class="w-32 h-48 bg-cover bg-center inline-block">
+                        </div>
+                    </inertia-link>
                 </div>
             </div>
 
@@ -42,7 +43,7 @@
                     Most popular review this week
                 </h2>
                 <div class="grid grid-cols-4 grid-rows-1 mt-8 gap-8">
-                    <img class="max-w-full inline-block row-span-full col-span-1" id="reviewPoster" :src="poster" alt="">
+                    <img class="max-w-full inline-block row-span-full col-span-1" id="reviewPoster" :src="'https://image.tmdb.org/t/p/w500' + reviewMovie.poster_path" alt="">
                     <div class="col-span-3 grid-cols-1">
                         <div class="row-span-1 flex mb-8">
                             <div class="bg-blue-primary rounded-full bg-cover h-16 w-16 inline-block mr-3" :style="{'background-image':'url(/storage/' + review.profile_photo_path + ')'}"></div>
@@ -92,11 +93,19 @@
             },
             review: {
                 type: Array,
-                required: true,
+                required: false,
+            },
+            reviewMovie: {
+                type: Array,
+                required: false,
             },
             reviewStatus: {
                 type: String,
             },
+            popular: {
+                type: Array,
+                required: true,
+            }
         },
         methods: {
             friendlyDate(str){

@@ -27,6 +27,7 @@ class GeneralController extends Controller
         ->where('community_member.user_id', '=', $currentUser)->take(5)->get();
 
         $review = User::join('movie_ratings', 'movie_ratings.user_id', '=', 'users.id')
+            ->join('movie', 'movie.id', '=', 'movie_ratings.movie_id')
             ->take(1)
             ->get([
                 'users.id', 
@@ -37,17 +38,23 @@ class GeneralController extends Controller
                 'movie_ratings.watched', 
                 'movie_ratings.rating', 
                 'movie_ratings.review',
+                'movie.tmdb_id',
             ]);
 
         $reviewStatus = $review->count();
         if($reviewStatus != 0){
             $review = $review[0];
+            $reviewMovie = (new TMDBController)->fetchMovieById($review['tmdb_id']);
         }
+
+        $popular = (new TMDBController)->popularMovies();
         
         return Inertia::render('Dashboard')
             ->with('recCommunities', $recCommunities)
             ->with('userCommunities', $userCommunities)
             ->with('review', $review)
-            ->with('reviewStatus', $reviewStatus);
+            ->with('reviewMovie', $reviewMovie)
+            ->with('reviewStatus', $reviewStatus)
+            ->with('popular', $popular);
     }
 }

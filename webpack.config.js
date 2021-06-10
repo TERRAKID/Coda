@@ -17,7 +17,7 @@ module.exports = {
                     to: 'img',
                 },
             ],
-        }),
+        }),/*
         new ImageminPlugin({
             test: /\.(jpe?g|png|gif|svg)$/i,
             plugins: [
@@ -25,6 +25,6 @@ module.exports = {
                     quality: 80,
                 }),
             ],
-        }),
+        }),*/
     ],
 };
