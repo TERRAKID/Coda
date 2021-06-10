@@ -22,8 +22,20 @@ class GeneralController extends Controller
             
         $recCommunities = Community::join('community_member', 'community_member.community_id', '=', 'community.id')
             ->where('community_member.user_id', '!=', $currentUser)
+            ->orderBy('community_member.id', 'ASC')
             ->take(5)->get();
-        //dd($recCommunities);
+        
+        $communitiesWithoutCurrentUserAsMember = [];
+
+        foreach($recCommunities as $community){
+            $isMember = CommunityMember::where('community_id', '=', $community['community_id'])
+                ->where('user_id', '=', $currentUser)
+                ->count();
+
+            if($isMember == 0){
+                array_push($communitiesWithoutCurrentUserAsMember, $community);
+            }
+        }
 
         $userCommunities = Community::join('community_member', 'community_member.community_id', '=', 'community.id')
         ->where('community_member.user_id', '=', $currentUser)->take(5)->get();
@@ -52,7 +64,7 @@ class GeneralController extends Controller
         $popular = (new TMDBController)->popularMovies();
         
         return Inertia::render('Dashboard')
-            ->with('recCommunities', $recCommunities)
+            ->with('recCommunities', $communitiesWithoutCurrentUserAsMember)
             ->with('userCommunities', $userCommunities)
             ->with('review', $review)
             ->with('reviewMovie', $reviewMovie)
