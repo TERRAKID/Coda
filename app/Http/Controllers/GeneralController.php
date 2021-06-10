@@ -22,7 +22,6 @@ class GeneralController extends Controller
             
         $recCommunities = Community::join('community_member', 'community_member.community_id', '=', 'community.id')
             ->where('community_member.user_id', '!=', $currentUser)
-            ->orderBy('community_member.id', 'ASC')
             ->take(5)->get();
         
         $communitiesWithoutCurrentUserAsMember = [];
@@ -42,6 +41,7 @@ class GeneralController extends Controller
 
         $review = User::join('movie_ratings', 'movie_ratings.user_id', '=', 'users.id')
             ->join('movie', 'movie.id', '=', 'movie_ratings.movie_id')
+            ->orderBy('movie_ratings.created_at', 'DESC')
             ->take(1)
             ->get([
                 'users.id', 

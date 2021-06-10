@@ -40,9 +40,9 @@
 
             <div v-if="reviewStatus != '0'" class="md:col-span-4 md:row-start-3 md:row-end-5 mt-5 ml-5 text-lg">
                 <h2>
-                    Most popular review this week
+                    Most recent review
                 </h2>
-                <div class="grid grid-cols-4 grid-rows-1 mt-8 gap-8">
+                <div class="grid grid-cols-4 grid-rows-1 mt-3 gap-8">
                     <img class="max-w-full inline-block row-span-full col-span-1" id="reviewPoster" :src="'https://image.tmdb.org/t/p/w500' + reviewMovie.poster_path" alt="">
                     <div class="col-span-3 grid-cols-1">
                         <div class="row-span-1 flex mb-8">
@@ -52,7 +52,7 @@
                                     {{ review.name }}
                                 </h3>
                                 <p>
-                                    {{ friendlyDate(review.created_at) }} - 5k likes
+                                    {{ friendlyDate(review.created_at) }}
                                 </p>
                             </div>
                         </div>
