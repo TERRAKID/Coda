@@ -27,10 +27,10 @@
                     </div>
 
                     <!-- Search -->
-                    <div class="flex items-center relative w-full">
+                    <form @submit.prevent = "submit" class="flex items-center relative w-full">
                         <input
                             class="rounded-full w-full h-14 focus:outline-none focus:ring-0 border-none pl-6 pr-12 text-sm"
-                            type="search"
+                             type="search" name="search_movie" id="search_movie" v-model="form.search_movie"
                             placeholder="Search movies, communities, users..."
                         />
                         <button
@@ -63,7 +63,7 @@
                                 />
                             </svg>
                         </button>
-                    </div>
+                    </form>
                 </div>
             </div>
 
@@ -238,6 +238,8 @@
 
 <script>
     import JetResponsiveNavLink from "@/Jetstream/ResponsiveNavLink";
+    import { reactive } from "vue";
+    import { Inertia } from '@inertiajs/inertia';
 
     export default {
         components: {
@@ -248,6 +250,17 @@
             return {
                 showingNavigationDropdown: false,
             };
+        },
+        setup(){
+            const form = reactive({
+                search_movie: null,
+            })
+
+            function submit(){
+                Inertia.post('/movie/search', form)
+            }
+
+            return { form, submit }
         },
 
         methods: {

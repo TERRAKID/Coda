@@ -8,21 +8,24 @@
                     {{ movie.title }} ({{ movie.release_date.substring(0, 4) }})
                 </h3>
                 <div class="flex">
-                    <p v-for="(genre, index) in movie.genres" :key="index" class="text-xl mr-3">{{ genre.name }}</p>
+                    <p v-for="(genre, index) in movie.genres.slice(0,2)" :key="index" class="text-xl mr-3">{{ genre.name }}</p>
                 </div>
             </div>
-            <div class="text-xl">
+            <div class="text-xl text-right">
                 <p>{{ friendlyRuntime(movie.runtime) }}</p>
             </div>
         </div>
         <div class="m-5 mt-0 text-lg">
             <a class="underline" href="">Watch the trailer</a>
-            <div class="flex items-center mt-5">
+            <div class="flex items-center mt-5 w-full">
                 <div>
                     <h3>Global Rating:</h3>
                     <inertia-link class="underline">Read reviews</inertia-link>
                 </div>
-                <div class="ml-5">
+                <div v-if="globalReviews == null" class="ml-5 w-64 text-right">
+                    <h4>There are no reviews yet for this movie.</h4>
+                </div>
+                <div v-else class="ml-5">
                     <div v-if="globalReviews < 5" class="flex">
                         <img class="w-8 m-2 ml-0" v-for="index in globalReviews" :key="index" src="/img/star.svg" alt="Full Star">
                         <img class="w-8 m-2 ml-0" v-for="index in 5-globalReviews" :key="index" src="/img/star-outline.svg" alt="Blank Star">
@@ -56,6 +59,10 @@
                     </article>
                 </div>
             </div>
+            
+            <inertia-link :href="'/diary/' + movie.id + '/create'" class="mb-10 md:mb-0 w-20 flex items-center text-center text-white text-6xl rounded-full bg-green fixed right-5 md:right-10 bottom-10">
+                <img src="/img/create.svg" alt="Log a movie">
+            </inertia-link>
         </div>
         </div>
     </app-layout>

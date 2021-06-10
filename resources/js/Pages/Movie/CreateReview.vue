@@ -7,7 +7,7 @@
                     {{ movie.title }} ({{ movie.release_date.substring(0, 4) }})
                 </h3>
                 <div class="flex">
-                    <p v-for="(genre, index) in movie.genres" :key="index" class="text-xl mr-3">{{ genre.name }}</p>
+                    <p v-for="(genre, index) in movie.genres.slice(0, 3)" :key="index" class="text-xl mr-3">{{ genre.name }}</p>
                 </div>
             </div>
         </div>
@@ -78,6 +78,7 @@
         data() {
             return {
                 starVis: true,
+                errors: [],
                 view_date: '',
                 rating: '',
                 review: '',
@@ -107,13 +108,6 @@
                 this.starVis = !this.starVis;
             },
             onSubmit() {
-
-
-                const formData = new FormData()
-                formData.append('view_date', this.view_date)
-                formData.append('rating', this.rating)
-                formData.append('review', this.review)
-                formData.append('notes', this.notes)
                 axios.post('/diary/' + this.movie.id + '/create', {
                     view_date: this.view_date,
                     rating: this.rating,

@@ -52,19 +52,22 @@ class MovieController extends Controller
         $genres = TMDBController::fetchGenres();
 
         //this adds the title and 
-        foreach($results as $movie){
-            $movieExist = Movie::where('tmdb_id', '=', $movie['id'])->count();
-            if(!$movieExist){
-                $addMovie = new Movie;
-                $addMovie->title = $movie['title'];
-                $addMovie->tmdb_id = $movie['id'];
+        if($search){
+            foreach($results as $movie){
+                $movieExist = Movie::where('tmdb_id', '=', $movie['id'])->count();
+                if(!$movieExist){
+                    $addMovie = new Movie;
+                    $addMovie->title = $movie['title'];
+                    $addMovie->tmdb_id = $movie['id'];
 
-                $addMovie->save();
+                    $addMovie->save();
+                }
             }
         }
         return Inertia::render('Movie/Search')
             ->with('results', $results)
-            ->with('genres', $genres);
+            ->with('genres', $genres)
+            ->with('search', $search);
     }
 
 /**----------------------------------------------------------*/
@@ -96,24 +99,55 @@ class MovieController extends Controller
         $review->user_id = $currentUser;
         $review->movie_id = $movieId;
 
-        $checkWatched = MovieRating::where('movie_id', '=', $movieId)->count();
+        $checkWatched = MovieRating::where('movie_id', '=', $movieId)
+            ->where('user_id', '=', $currentUser)
+            ->count();
             
-        if($checkWatched == 1){
-            $watched = MovieRating::where('movie_id', '=', $movieId)
-            ->orderBy('created_at', 'DESC')
-            ->take(1)
-            ->get();
-
-            $watched = $watched['0']['watched'] + 1;
+        if($checkWatched > 0){
+            $watched = $checkWatched + 1;
         }
         else{
             $watched = 1;
         }
+
         $review->watched = $watched;
         $review->rating = request('rating');
         $review->review = request('review');
         $review->notes = request('notes');
         $review->save();
+
+        $newReview = MovieRating::where('movie_id', '=', $movieId)
+            ->where('user_id', '=', $currentUser)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        return Inertia::render('Movie/ReviewShow')->with('review', $newReview);
+    }
+
+/**----------------------------------------------------------*/
+    public function showReview($id){
+        $review = MovieRating::join('movie', 'movie.id', '=', 'movie_ratings.movie_id')
+            ->join('users', 'users.id', '=', 'movie_ratings.user_id')
+            ->where('movie_ratings.id', '=', $id)
+            ->get([
+                'movie_ratings.id',
+                'movie_ratings.user_id',
+                'movie_ratings.watched',
+                'movie_ratings.review',
+                'movie_ratings.notes',
+                'movie_ratings.created_at',
+                'movie.title',
+                'movie.tmdb_id',
+                'users.name',
+                'users.profile_photo_path',
+            ]);
+
+        $review = $review[0];
+        $movie = (new TMDBController)->fetchMovieById($review['tmdb_id']);
+        
+        return Inertia::render('Movie/ReviewShow')
+            ->with('review', $review)
+            ->with('movie', $movie);
     }
 /**----------------------------------------------------------*/
     public function moviePage($movieId){
@@ -142,7 +176,10 @@ class MovieController extends Controller
         
         $globalReviews = array_filter($globalReviews);
         if(count($globalReviews)) {
-            $averageGlobalReviews = array_sum($globalReviews)/count($globalReviews);
+            $averageGlobalReviews = floor(array_sum($globalReviews)/count($globalReviews));
+        }
+        else{
+            $averageGlobalReviews = null;
         }
 
         return Inertia::render('Movie/Details')

@@ -1,21 +1,17 @@
 <template>
     <app-layout>
         <template #header>
-            <h2>Movie Search</h2>
+            <h2 v-if="search">Results for "{{ search }}"</h2>
+            <h2 v-else>PLease enter your search in the search box</h2>
         </template>
-        <form @submit.prevent = "submit">
-            <label for="search_movie">Search for a Movie</label>
-            <input type="search" name="search_movie" id="search_movie" v-model="form.search_movie">
-            <button type="submit">Submit</button>
-        </form>
 
         <inertia-link :href="'/movie/' + result.id" v-for="(result, index) in results" :key="index" class="m-5 flex items-center">
-            <div class="h-24 w-16 bg-center bg-cover" :style="{'background-image':'url(https://image.tmdb.org/t/p/w500' + result.poster_path + ')'}"></div>
+            <div class="pb-24 pl-16 bg-center bg-cover bg-blue-primary" :style="{'background-image':'url(https://image.tmdb.org/t/p/w500' + result.poster_path + ')'}"></div>
             <div class="ml-5">
                 <h3 class="text-2xl mb-4">
-                    {{ result.title }} ({{ result.release_date.substring(0, 4) }})
+                    {{ result.title }}
                 </h3>
-                <p class="text-xl">Genre, Genre</p>
+                <p class="text-2xl">({{ result.release_date.substring(0, 4) }})</p>
             </div>
         </inertia-link>
 
@@ -54,6 +50,10 @@
             genres: {
                 type: Array,
                 required: false,
+            },
+            search: {
+                type: String,
+                required: true,
             },
             errors: {
                 type: Array,
