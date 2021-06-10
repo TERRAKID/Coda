@@ -60,6 +60,9 @@ class GeneralController extends Controller
             $review = $review[0];
             $reviewMovie = (new TMDBController)->fetchMovieById($review['tmdb_id']);
         }
+        else{
+            $reviewMovie = 0;
+        }
 
         $popular = (new TMDBController)->popularMovies();
         
