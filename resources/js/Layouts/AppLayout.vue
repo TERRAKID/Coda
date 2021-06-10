@@ -31,7 +31,7 @@
                         <input
                             class="rounded-full w-full h-14 focus:outline-none focus:ring-0 border-none pl-6 pr-12 text-sm"
                              type="search" name="search_movie" id="search_movie" v-model="form.search_movie"
-                            placeholder="Search movies, communities, users..."
+                            placeholder="Search movies"
                         />
                         <button
                             class="focus:outline-none w-12 h-12 flex items-center justify-center absolute right-0 top-0 mt-4 mr-3"

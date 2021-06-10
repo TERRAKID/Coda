@@ -20226,7 +20226,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $setup.form.search_movie = $event;
     }),
-    placeholder: "Search movies, communities, users..."
+    placeholder: "Search movies"
   }, null, 512
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $setup.form.search_movie]]), _hoisted_5], 32

@@ -17,7 +17,18 @@ use Inertia\Inertia;
 
 class MovieController extends Controller
 {
-/**----------------------------------------------------------*/
+    /*
+    CONTROLLER LAYOUT:
+        Function 01: movieDiary()       -- Line 32
+        Function 02: showMovieSearch()  -- Line 54
+        Function 03: movieSearch()      -- Line 59
+        Function 04: showCreateReview() -- Line 84
+        Function 05: createReview()     -- Line 100
+        Function 06: showReview()       -- Line 138
+        Function 07: moviePage()        -- Line 163
+    */
+
+/**-FUNCTION-01----------------------------------------------------------*/
     public function movieDiary(){
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
@@ -40,12 +51,12 @@ class MovieController extends Controller
             ->with('movie', $movieDetails);
     }
 
-/**----------------------------------------------------------*/
+/**-FUNCTION-02----------------------------------------------------------*/
     public function showMovieSearch(){
         return Inertia::render('Movie/Search');
     }
 
-/**----------------------------------------------------------*/
+/**-FUNCTION-03----------------------------------------------------------*/
     public function movieSearch(Request $request){
         $search = request('search_movie');
         $results = (new TMDBController)->fetchMovieByName($search);
@@ -70,7 +81,7 @@ class MovieController extends Controller
             ->with('search', $search);
     }
 
-/**----------------------------------------------------------*/
+/**-FUNCTION-04----------------------------------------------------------*/
     public function showCreateReview($movieId){
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
@@ -86,7 +97,7 @@ class MovieController extends Controller
             ->with('communities', $communities);
     }
 
-/**----------------------------------------------------------*/
+/**-FUNCTION-05----------------------------------------------------------*/
     public function createReview(Request $request, $movieId){
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
@@ -124,7 +135,7 @@ class MovieController extends Controller
         return Inertia::render('Movie/ReviewShow')->with('review', $newReview);
     }
 
-/**----------------------------------------------------------*/
+/**-FUNCTION-06----------------------------------------------------------*/
     public function showReview($id){
         $review = MovieRating::join('movie', 'movie.id', '=', 'movie_ratings.movie_id')
             ->join('users', 'users.id', '=', 'movie_ratings.user_id')
@@ -149,7 +160,7 @@ class MovieController extends Controller
             ->with('review', $review)
             ->with('movie', $movie);
     }
-/**----------------------------------------------------------*/
+/**-FUNCTION-07----------------------------------------------------------*/
     public function moviePage($movieId){
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
