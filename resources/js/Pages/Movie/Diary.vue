@@ -11,7 +11,9 @@
                         <div class="text-3xl flex items-center justify-center text-white p-3 ml-5 mr-5 h-24 w-16 bg-green">
                             <p>{{ getDay(review.created_at) }}</p>
                         </div>
+                        <inertia-link :href="'/movie/' + movie[index].id">
                         <div class="h-24 w-16 bg-center bg-cover" :style="{'background-image':'url(https://image.tmdb.org/t/p/w500' + movie[index].poster_path + ')'}"></div>
+                        </inertia-link>
                     </div>
                     <div class="ml-5">
                         <h3 class="text-3xl">{{ movie[index].title }}</h3>

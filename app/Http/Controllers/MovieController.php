@@ -122,15 +122,19 @@ class MovieController extends Controller
             ->where('movie.tmdb_id', '=', $movieId)
             ->get();
 
-        $reviews = [];
+        $globalReviews = [];
         foreach($allReviews as $review){
-            array_push($reviews, $review['rating']);
+            array_push($globalReviews, $review['rating']);
         }
         
-        //dd($reviews);
+        $globalReviews = array_filter($globalReviews);
+        if(count($globalReviews)) {
+            $averageGlobalReviews = array_sum($globalReviews)/count($globalReviews);
+        }
 
         return Inertia::render('Movie/Details')
             ->with('movie', $movie)
+            ->with('globalReviews', $averageGlobalReviews)
             ->with('cast', $cast)
             ->with('directors', $directors);
     }
