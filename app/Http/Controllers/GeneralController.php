@@ -19,20 +19,31 @@ class GeneralController extends Controller
     public function dashboard(){
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
-            
+        
+        // 1. This section is for finding communities where the logged in user has never been a member
         $recCommunities = CommunityMember::where('community_member.user_id', '!=', $currentUser)
-            ->take(5)
             ->orderBy('id')
             ->get('community_id');
         
         $communityIds = [];
         $communitiesWithoutCurrentUserAsMember = [];
 
+        // 2. Grabs the array from our query and checks whether it has returned a community that the logged in user was a member of
         foreach($recCommunities as $community){
-            array_push($communityIds, $community['community_id']);
+            $isMember = CommunityMember::where('community_id', '=', $community['community_id'])
+                ->where('user_id', '=', $currentUser)
+                ->count();
+        
+        // 3. If not, the community's ID is added to our array
+            if($isMember == 0){
+                array_push($communityIds, $community['community_id']);
+            }
         }
+
+        // 4. We then check that there are no duplicate entries
         $communityIds = array_unique($communityIds);
 
+        // 5. Finally, we retrieve the details of the relevant communities
         foreach($communityIds as $communityId){
             $result = Community::where('id', '=', $communityId)->get();
             array_push($communitiesWithoutCurrentUserAsMember, $result['0']);
