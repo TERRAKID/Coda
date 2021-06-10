@@ -20,7 +20,6 @@ class CreateMovieRatingsTable extends Migration
             $table->integer('watched')->default('0');
             $table->integer('rating')->nullable();
             $table->longText('review')->nullable();
-            $table->longText('notes')->nullable();
             $table->timestamps();
         });
     }

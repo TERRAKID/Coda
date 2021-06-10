@@ -18254,11 +18254,11 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       starVis: true,
-      form: {
-        view_date: '',
-        rating: '',
-        review: ''
-      }
+      view_date: '',
+      rating: '',
+      review: '',
+      notes: '',
+      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute("content")
     };
   },
   props: {
@@ -18280,11 +18280,19 @@ __webpack_require__.r(__webpack_exports__);
       console.log(this.rating);
       this.starVis = !this.starVis;
     },
-    submitForm: function submitForm() {
-      axios__WEBPACK_IMPORTED_MODULE_3___default().post('/diary/' + this.movie.id + '/create', this.form).then(function (response) {
-        if (response.status === 201) {
-          console.log('success');
-        }
+    onSubmit: function onSubmit() {
+      var formData = new FormData();
+      formData.append('view_date', this.view_date);
+      formData.append('rating', this.rating);
+      formData.append('review', this.review);
+      formData.append('notes', this.notes);
+      axios__WEBPACK_IMPORTED_MODULE_3___default().post('/diary/' + this.movie.id + '/create', {
+        view_date: this.view_date,
+        rating: this.rating,
+        review: this.review,
+        notes: this.notes
+      }).then(function (res) {
+        console.log(res);
       });
     }
   }
@@ -22977,7 +22985,6 @@ var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 );
 
 var _hoisted_18 = {
-  "for": "view_date",
   "class": "block text-white text-2xl mb-3"
 };
 
@@ -22990,15 +22997,6 @@ var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 var _hoisted_20 = {
   "class": "col-span-3 text-xl"
 };
-
-var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-  "class": "cursor-pointer w-full text-center fixed bottom-16 md:bottom-0 bg-green p-5 text-3xl text-white",
-  type: "submit",
-  value: "Confirm"
-}, null, -1
-/* HOISTED */
-);
-
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_app_layout = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("app-layout");
 
@@ -23023,68 +23021,59 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), 128
       /* KEYED_FRAGMENT */
       ))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("form", {
-        onSubmit: _cache[6] || (_cache[6] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
-          return $options.submitForm && $options.submitForm.apply($options, arguments);
+        onSubmit: _cache[6] || (_cache[6] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+          return $options.onSubmit();
         }, ["prevent"])),
         "class": "mb-40"
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
         type: "hidden",
         name: "_token",
-        value: _ctx.csrf
+        value: $data.csrf
       }, null, 8
       /* PROPS */
-      , ["value"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-        "class": "hidden",
-        name: "movie_id",
-        id: 'movie_id',
-        "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
-          return $data.form.movie_id = $event;
-        })
-      }, null, 512
-      /* NEED_PATCH */
-      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.movie_id]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+      , ["value"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
         type: "date",
         name: "view_date",
         id: "view_date",
-        "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
-          return $data.form.view_date = $event;
+        "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+          return $data.view_date = $event;
         })
       }, null, 512
       /* NEED_PATCH */
-      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.view_date]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" \n                <label class=\"ml-3\" v-for=\"index in 5\" :key=\"index\">\n                    <input class=\"hidden\" type=\"radio\" name=\"rating\" :id=\"'rating-' + index\" :value=\"index\" v-model=\"form.rating\">\n                    <img @click=\"starHover\" class=\"w-10 ml-0\" src=\"/img/star-outline.svg\" alt=\"\">\n                    <img v-show=\"!starVis\" class=\"w-10 ml-0\" src=\"/img/star.svg\" alt=\"\">\n                </label>\n                "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("select", {
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.view_date]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" \n                <label class=\"ml-3\" v-for=\"index in 5\" :key=\"index\">\n                    <input class=\"hidden\" type=\"radio\" name=\"rating\" :id=\"'rating-' + index\" :value=\"index\" v-model=\"form.rating\">\n                    <img @click=\"starHover\" class=\"w-10 ml-0\" src=\"/img/star-outline.svg\" alt=\"\">\n                    <img v-show=\"!starVis\" class=\"w-10 ml-0\" src=\"/img/star.svg\" alt=\"\">\n                </label>\n                "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("select", {
         "class": "text-black",
         name: "rating",
         id: "rating",
-        "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
-          return $data.form.rating = $event;
+        "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+          return $data.rating = $event;
         })
       }, [_hoisted_9, _hoisted_10, _hoisted_11, _hoisted_12, _hoisted_13], 512
       /* NEED_PATCH */
-      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.rating]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", _hoisted_14, [_hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("textarea", {
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.rating]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", _hoisted_14, [_hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("textarea", {
         "class": "w-full h-40 text-black p-5 pt-2",
         placeholder: "Write a review...",
         name: "review",
         id: "review",
         cols: "30",
         rows: "10",
-        "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
-          return $data.form.review = $event;
+        "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+          return $data.review = $event;
         })
       }, null, 512
       /* NEED_PATCH */
-      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.review]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("textarea", {
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.review]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("textarea", {
         "class": "w-full h-40 text-black p-5 pt-2",
         placeholder: "Use this field to write down some notes such as where you saw the film, who with, film stock, etc.\n\nOnly you will be able to see this",
         name: "notes",
         id: "notes",
         cols: "30",
         rows: "10",
-        "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
-          return $data.form.notes = $event;
+        "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
+          return $data.notes = $event;
         })
       }, null, 512
       /* NEED_PATCH */
-      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.notes]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", _hoisted_18, [_hoisted_19, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.communities, function (community, index) {
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.notes]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_18, [_hoisted_19, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.communities, function (community, index) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("label", {
           key: index,
           "class": "flex items-center grid grid-cols-4 text-black m-5 mt-4 mb-0",
@@ -23104,7 +23093,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         , ["for"]);
       }), 128
       /* KEYED_FRAGMENT */
-      ))]), _hoisted_21], 32
+      ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+        onClick: _cache[5] || (_cache[5] = function () {
+          return _ctx.submitForm && _ctx.submitForm.apply(_ctx, arguments);
+        }),
+        "class": "cursor-pointer w-full text-center fixed md:inline-block bottom-16 md:bottom-0 bg-green p-5 text-3xl text-white",
+        type: "submit",
+        value: "Confirm"
+      })], 32
       /* HYDRATE_EVENTS */
       )];
     }),

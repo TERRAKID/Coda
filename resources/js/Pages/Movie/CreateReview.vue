@@ -11,11 +11,10 @@
                 </div>
             </div>
         </div>
-        <form @submit.prevent = "submitForm" class="mb-40">
+        <form @submit.prevent="onSubmit()" class="mb-40">
             <input type="hidden" name="_token" :value="csrf">
-            <input class="hidden" name="movie_id" :id="'movie_id'" v-model="form.movie_id">
             <label for="view_date" class="p-5 bg-blue-primary block flex items-center text-black text-2xl mb-3">
-                <input type="date" name="view_date" id="view_date" v-model="form.view_date">
+                <input type="date" name="view_date" id="view_date" v-model="view_date">
             </label>
 
             <div class="p-5 bg-blue-primary block flex items-center text-white text-2xl mb-3">
@@ -28,7 +27,7 @@
                 </label>
                 -->
                 <label class="text-black ml-5" for="rating">
-                    <select class="text-black" name="rating" id="rating" v-model="form.rating">
+                    <select class="text-black" name="rating" id="rating" v-model="rating">
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -42,17 +41,17 @@
                 <div class="p-5 bg-blue-primary">
                     Review
                 </div>
-                <textarea class="w-full h-40 text-black p-5 pt-2" placeholder="Write a review..." name="review" id="review" cols="30" rows="10" v-model="form.review"></textarea>
+                <textarea class="w-full h-40 text-black p-5 pt-2" placeholder="Write a review..." name="review" id="review" cols="30" rows="10" v-model="review"></textarea>
             </label>
             
             <label for="notes" class="block text-white text-2xl mb-3">
                 <div class="p-5 bg-blue-primary">
                     Notes
                 </div>
-                <textarea class="w-full h-40 text-black p-5 pt-2" placeholder="Use this field to write down some notes such as where you saw the film, who with, film stock, etc.&#10;&#10;Only you will be able to see this" name="notes" id="notes" cols="30" rows="10" v-model="form.notes"></textarea>
+                <textarea class="w-full h-40 text-black p-5 pt-2" placeholder="Use this field to write down some notes such as where you saw the film, who with, film stock, etc.&#10;&#10;Only you will be able to see this" name="notes" id="notes" cols="30" rows="10" v-model="notes"></textarea>
             </label>
 
-            <label for="view_date" class="block text-white text-2xl mb-3">
+            <div class="block text-white text-2xl mb-3">
                 <div class="p-5 bg-blue-primary">
                     Share to
                 </div>
@@ -60,8 +59,8 @@
                     <p class="col-span-3 text-xl">{{ community.name }}</p>
                     <input class="justify-self-end" type="checkbox" :value="community.id" :id="'community-' + index" :name="'community-' + index">
                 </label>
-            </label>
-            <input class="cursor-pointer w-full text-center fixed bottom-16 md:bottom-0 bg-green p-5 text-3xl text-white" type="submit" value="Confirm">
+            </div>
+            <input @click="submitForm" class="cursor-pointer w-full text-center fixed md:inline-block bottom-16 md:bottom-0 bg-green p-5 text-3xl text-white" type="submit" value="Confirm">
         </form>
     </app-layout>
 </template>
@@ -79,11 +78,13 @@
         data() {
             return {
                 starVis: true,
-                form:{
-                    view_date: '',
-                    rating: '',
-                    review: '',
-                },
+                view_date: '',
+                rating: '',
+                review: '',
+                notes: '',
+                csrf: document
+                    .querySelector('meta[name="csrf-token"]')
+                    .getAttribute("content"),
             };
         },
         props: {
@@ -105,13 +106,22 @@
                 console.log(this.rating);
                 this.starVis = !this.starVis;
             },
-            submitForm(){
-                axios.post('/diary/' + this.movie.id + '/create', this.form)
-                    .then((response) => {
-                        if(response.status === 201){
-                            console.log('success');
-                        }
-                    });
+            onSubmit() {
+
+
+                const formData = new FormData()
+                formData.append('view_date', this.view_date)
+                formData.append('rating', this.rating)
+                formData.append('review', this.review)
+                formData.append('notes', this.notes)
+                axios.post('/diary/' + this.movie.id + '/create', {
+                    view_date: this.view_date,
+                    rating: this.rating,
+                    review: this.review,
+                    notes: this.notes,
+                }).then((res) => {
+                    console.log(res)
+                })
             },
         },
     };

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMovieTable extends Migration
+class AddNotesToMovieRatings extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class CreateMovieTable extends Migration
      */
     public function up()
     {
-        Schema::create('movie', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->timestamps();
+        Schema::table('movie_ratings', function (Blueprint $table) {
+            $table->longText('notes')->after('review')->nullable();
         });
     }
 
@@ -27,6 +25,8 @@ class CreateMovieTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('movie');
+        Schema::table('movie_ratings', function (Blueprint $table) {
+            $table->dropColumn('notes');
+        });
     }
 }

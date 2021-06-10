@@ -84,23 +84,36 @@ class MovieController extends Controller
     }
 
 /**----------------------------------------------------------*/
-    public function createReview(){
+    public function createReview(Request $request, $movieId){
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
         
-        dd(request());
-        $movieId = request('movie_id');
-        dd($movieId);
         $review = new MovieRating;
+
+        $movieId = Movie::where('tmdb_id', '=', $movieId)->get();
+        $movieId = $movieId['0']['id'];
 
         $review->user_id = $currentUser;
         $review->movie_id = $movieId;
 
-        $watched = MovieRating::where('user_id', '=', $currentUser)
-            ->where('movie_id', '=', $movieId)
+        $checkWatched = MovieRating::where('movie_id', '=', $movieId)->count();
+            
+        if($checkWatched == 1){
+            $watched = MovieRating::where('movie_id', '=', $movieId)
+            ->orderBy('created_at', 'DESC')
+            ->take(1)
             ->get();
-        
-        dd($watched);
+
+            $watched = $watched['0']['watched'] + 1;
+        }
+        else{
+            $watched = 1;
+        }
+        $review->watched = $watched;
+        $review->rating = request('rating');
+        $review->review = request('review');
+        $review->notes = request('notes');
+        $review->save();
     }
 /**----------------------------------------------------------*/
     public function moviePage($movieId){
