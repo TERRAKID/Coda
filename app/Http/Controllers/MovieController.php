@@ -26,6 +26,7 @@ class MovieController extends Controller
         Function 05: createReview()     -- Line 100
         Function 06: showReview()       -- Line 138
         Function 07: moviePage()        -- Line 163
+        Function 08: showAllReviews()   -- Line 247
     */
 
 /**-FUNCTION-01----------------------------------------------------------*/
@@ -136,10 +137,10 @@ class MovieController extends Controller
     }
 
 /**-FUNCTION-06----------------------------------------------------------*/
-    public function showReview($id){
+    public function showReview($movieId, $reviewId){
         $review = MovieRating::join('movie', 'movie.id', '=', 'movie_ratings.movie_id')
             ->join('users', 'users.id', '=', 'movie_ratings.user_id')
-            ->where('movie_ratings.id', '=', $id)
+            ->where('movie_ratings.id', '=', $reviewId)
             ->get([
                 'movie_ratings.id',
                 'movie_ratings.user_id',
@@ -152,7 +153,6 @@ class MovieController extends Controller
                 'users.name',
                 'users.profile_photo_path',
             ]);
-
         $review = $review[0];
         $movie = (new TMDBController)->fetchMovieById($review['tmdb_id']);
         
@@ -171,7 +171,8 @@ class MovieController extends Controller
         $movie = (new TMDBController)->fetchMovieById($movieId);
         $cast = (new TMDBController)->fetchMovieCast($movieId);
         $crew = (new TMDBController)->fetchMovieCrew($movieId);
-
+        $trailer = (new TMDBController)->fetchMovieTrailer($movieId);
+        
         $directors = [];
         foreach($crew as $crewMember){
             if($crewMember['job'] == 'Director'){
@@ -241,6 +242,60 @@ class MovieController extends Controller
             ->with('globalReviews', $averageGlobalReviews)
             ->with('friendReviews', $averageFriendReviews)
             ->with('cast', $cast)
+            ->with('trailer', $trailer)
             ->with('directors', $directors);
+    }
+/**-FUNCTION-08----------------------------------------------------------*/
+    public function showAllReviews($movieId){
+        $allReviews = MovieRating::join('movie', 'movie.id', '=', 'movie_ratings.movie_id')
+            ->join('users', 'users.id', '=', 'movie_ratings.user_id')
+            ->where('movie.tmdb_id', '=', $movieId)
+            ->where('movie_ratings.review', '!=', '')
+            ->get([
+                'movie_ratings.user_id',
+                'users.name',
+                'users.profile_photo_path',
+                'movie.tmdb_id',
+                'movie_ratings.rating',
+                'movie_ratings.review',
+                'movie_ratings.created_at',
+            ]);
+
+        $movie = (new TMDBController)->fetchMovieById($movieId);
+
+        return Inertia::render('Movie/AllReviewsShow')
+            ->with('reviews', $allReviews)
+            ->with('movie', $movie);
+    }
+/**-FUNCTION-08----------------------------------------------------------*/
+    public function showFriendReviews($movieId){
+        $currentUser = auth()->user();
+        $currentUser = $currentUser->id;
+
+        $CodaMovieId = Movie::where('tmdb_id', '=', $movieId)->get();
+        $CodaMovieId = $CodaMovieId['0']['id'];
+
+        $friendReviews = MovieRating::join('user_friend', 'user_friend.user_id', '=', 'movie_ratings.user_id')
+            ->join('users', 'users.id', '=', 'movie_ratings.user_id')
+            ->where('movie_ratings.review', '!=', '')
+            ->where(function ($query) use ($CodaMovieId){
+                $query->where('movie_ratings.movie_id', '=', $CodaMovieId);
+            })
+            ->where(function ($query) use ($currentUser){
+                $query->where('user_friend.friend_id', '=', $currentUser)
+                ->orWhere('user_friend.user_id', '=', $currentUser);
+            })->get([
+                'movie_ratings.user_id',
+                'users.name',
+                'users.profile_photo_path',
+                'movie_ratings.rating',
+                'movie_ratings.review',
+                'movie_ratings.created_at',
+            ]);
+        $movie = (new TMDBController)->fetchMovieById($movieId);
+
+        return Inertia::render('Movie/AllReviewsShow')
+            ->with('reviews', $friendReviews)
+            ->with('movie', $movie);
     }
 }

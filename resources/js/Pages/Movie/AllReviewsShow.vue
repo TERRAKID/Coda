@@ -1,0 +1,80 @@
+<template>
+    <app-layout>
+        <div class="p-5 flex items-center justify-between">
+            <div class="flex">
+                <div class="h-24 w-16 bg-center bg-cover" :style="{'background-image':'url(https://image.tmdb.org/t/p/w500' + movie.poster_path + ')'}"></div>
+                <div class="ml-5">
+                    <h3 class="text-2xl mb-4">
+                        {{ movie.title }} ({{ movie.release_date.substring(0, 4) }})
+                    </h3>
+                    <div class="flex">
+                        <p v-for="(genre, index) in movie.genres.slice(0,2)" :key="index" class="text-xl mr-3">{{ genre.name }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="p-5 pt-0">
+            <div v-for="(review, index) in reviews" :key="index" class="border-b border-blue-primary mb-5">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="h-16 w-16 rounded-full bg-center bg-cover bg-blue-primary" :style="{'background-image':'url(/storage/' + review.profile_photo_path + ')'}"></div>
+                        <div class="ml-3">
+                            <h3>{{ review.name }}</h3>
+                            <p>{{ friendlyDate(review.created_at) }}</p>
+                        </div>
+                    </div>
+                    <div v-if="review.rating < 5" class="flex">
+                        <img class="w-8 ml-2" v-for="index in review.rating" :key="index" src="/img/star.svg" alt="Full Star">
+                        <img class="w-8 ml-2" v-for="index in 5-review.rating" :key="index" src="/img/star-outline.svg" alt="Blank Star">
+                    </div>
+                    <div v-else class="flex">
+                        <img class="w-8 ml-2" v-for="index in review.rating" :key="index" src="/img/star.svg" alt="Full Star">
+                    </div>
+                </div>
+                <div class="m-5">
+                    <p>{{ review.review }}</p>
+                </div>
+            </div>
+        </div>
+    </app-layout>
+</template>
+
+<script type="text/javascript">
+    import AppLayout from "@/Layouts/AppLayout";
+    import { reactive } from "vue";
+
+    export default {
+        components: {
+            AppLayout,
+        },
+        data() {
+            return {
+                monthYearCheck: null,
+                stars: null,
+            };
+        },
+        props: {
+            reviews: {
+                type: Array,
+                required: false,
+            },
+            movie: {
+                type: Array,
+                required: false,
+            },
+            errors: {
+                type: Array,
+                required: false,
+            },
+        },
+        methods: {
+            friendlyDate(str){
+                var dateArray = str.substring(0, 10).split("-");
+                dateArray.reverse();
+
+                var date = (dateArray[0] + "/" + dateArray[1] + "/" + dateArray[2]);
+                return date;
+            }
+        },
+    };
+</script>

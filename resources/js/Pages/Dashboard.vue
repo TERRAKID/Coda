@@ -42,7 +42,7 @@
                 <h2>
                     Most recent review
                 </h2>
-                <div class="grid grid-cols-4 grid-rows-1 mt-3 gap-8">
+                <div class="grid grid-cols-4 grid-rows-1 mt-3 gap-8 mb-10">
                     <img class="max-w-full inline-block row-span-full col-span-1" id="reviewPoster" :src="'https://image.tmdb.org/t/p/w500' + reviewMovie.poster_path" alt="">
                     <div class="col-span-3 grid-cols-1">
                         <div class="row-span-1 flex mb-8">

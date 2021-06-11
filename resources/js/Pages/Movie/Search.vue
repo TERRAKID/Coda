@@ -11,7 +11,8 @@
                 <h3 class="text-2xl mb-4">
                     {{ result.title }}
                 </h3>
-                <p class="text-2xl">({{ result.release_date.substring(0, 4) }})</p>
+                <p v-if="result.release_date" class="text-2xl">({{ result.release_date.substring(0, 4) }})</p>
+                <p v-else class="text-2xl">(tbd)</p>
             </div>
         </inertia-link>
 
