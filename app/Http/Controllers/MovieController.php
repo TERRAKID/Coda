@@ -102,38 +102,53 @@ class MovieController extends Controller
     public function createReview(Request $request, $movieId){
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
-        $review = new MovieRating;
 
-        $movieId = Movie::where('tmdb_id', '=', $movieId)->get();
-        $movieId = $movieId['0']['id'];
+        try{
+            $validator = $request->validate([
+                'view_date' => 'required',
+                'rating' => 'required',
+            ]);
 
-        $review->user_id = $currentUser;
-        $review->movie_id = $movieId;
+            $review = new MovieRating;
 
-        $checkWatched = MovieRating::where('movie_id', '=', $movieId)
-            ->where('user_id', '=', $currentUser)
-            ->count();
-            
-        if($checkWatched > 0){
-            $watched = $checkWatched + 1;
+            $movieId = Movie::where('tmdb_id', '=', $movieId)->get();
+            $movieId = $movieId['0']['id'];
+
+            $review->user_id = $currentUser;
+            $review->movie_id = $movieId;
+
+            $checkWatched = MovieRating::where('movie_id', '=', $movieId)
+                ->where('user_id', '=', $currentUser)
+                ->count();
+                
+            if($checkWatched > 0){
+                $watched = $checkWatched + 1;
+            }
+            else{
+                $watched = 1;
+            }
+
+            $review->watched = $watched;
+            $review->rating = request('rating');
+            $review->review = request('review');
+            $review->notes = request('notes');
+            $review->view_date = request('view_date');
+            $review->save();
+
+            $newReview = MovieRating::where('movie_id', '=', $movieId)
+                ->where('user_id', '=', $currentUser)
+                ->orderBy('created_at', 'DESC')
+                ->get();
+
+            return Inertia::render('Movie/ReviewShow')->with('review', $newReview);
         }
-        else{
-            $watched = 1;
+        catch (ValidationException $exception) {
+            return response()->json([
+                'status' => 'error',
+                'message'    => 'Error',
+                'errors' => $exception->errors(),
+            ], 422);
         }
-
-        $review->watched = $watched;
-        $review->rating = request('rating');
-        $review->review = request('review');
-        $review->notes = request('notes');
-        $review->view_date = request('view_date');
-        $review->save();
-
-        $newReview = MovieRating::where('movie_id', '=', $movieId)
-            ->where('user_id', '=', $currentUser)
-            ->orderBy('created_at', 'DESC')
-            ->get();
-
-        return Inertia::render('Movie/ReviewShow')->with('review', $newReview);
     }
 
 /**-FUNCTION-06----------------------------------------------------------*/

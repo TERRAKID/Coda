@@ -13,6 +13,9 @@
         </div>
         <form @submit.prevent="onSubmit()" class="mb-40">
             <input type="hidden" name="_token" :value="csrf">
+
+            <p v-if="this.errors.length" class="m-5 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">{{ this.errors['0'] }}</p>
+
             <label for="view_date" class="p-5 bg-blue-primary block flex items-center text-black text-2xl mb-3">
                 <input type="date" name="view_date" id="view_date" v-model="view_date">
             </label>
@@ -114,7 +117,18 @@
                     review: this.review,
                     notes: this.notes,
                 }).then((res) => {
-                    console.log(res)
+                    console.log('worked');
+                    console.log(res);
+                }).catch((err) => {
+                    this.errors = [];
+                    if(!this.view_date.length){
+                        this.errors.push('Please enter a date');
+                    }
+                    if(!this.rating.length){
+                        this.errors.push('Please enter a rating');
+                    }
+                    console.log(this.errors);
+                    console.log(err)
                 })
             },
         },
