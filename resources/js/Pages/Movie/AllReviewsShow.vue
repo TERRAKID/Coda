@@ -2,7 +2,7 @@
     <app-layout>
         <div class="p-5 flex items-center justify-between">
             <inertia-link :href="'/movie/' + movie.id" class="flex items-center">
-                <div class="h-24 w-16 bg-center bg-cover" :style="{'background-image':'url(https://image.tmdb.org/t/p/w500' + movie.poster_path + ')'}"></div>
+                <div class="h-24 w-16 md:h-64 md:w-48 bg-center bg-cover" :style="{'background-image':'url(https://image.tmdb.org/t/p/w500' + movie.poster_path + ')'}"></div>
                 <div class="ml-5">
                     <h3 class="text-2xl mb-4">
                         {{ movie.title }} ({{ movie.release_date.substring(0, 4) }})
@@ -13,7 +13,11 @@
                 </div>
             </inertia-link>
         </div>
-        <div class="p-5 pt-0">
+        <div v-if="reviews == null" class="p-5">
+            <h3 class="text-3xl mb-5">There are no written reviews for {{ movie.title }} right now.</h3>
+            <inertia-link :href="'/movie/' + movie.id" class="text-2xl underline">Return to the movie page</inertia-link>
+        </div>
+        <div v-else class="p-5 pt-0">
             <inertia-link v-for="(review, index) in reviews" :key="index" :href="'/movie/' + movie.id + '/review/' + review.id" class="block border-b border-blue-primary mb-5">
                 <div class="flex items-center justify-between">
                     <inertia-link :href="'/user/' + review.user_id" class="flex items-center">

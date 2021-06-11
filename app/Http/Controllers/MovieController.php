@@ -150,7 +150,7 @@ class MovieController extends Controller
                 ->orderBy('created_at', 'DESC')
                 ->get();
 
-            return redirect::to('/diary')->send();
+            return redirect()->to('/diary')->send();
         }
         catch (ValidationException $exception) {
             return response()->json([
@@ -310,6 +310,11 @@ class MovieController extends Controller
             ]);
 
         $movie = (new TMDBController)->fetchMovieById($movieId);
+        $reviewCount = count($allReviews);
+
+        if($reviewCount == 0){
+            $allReviews = null;
+        }
 
         return Inertia::render('Movie/AllReviewsShow')
             ->with('reviews', $allReviews)

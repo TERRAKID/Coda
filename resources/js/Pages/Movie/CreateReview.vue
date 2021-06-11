@@ -1,6 +1,6 @@
 <template>
     <app-layout>
-        <div class="m-5 flex items-center">
+        <inertia-link :href="'/movie/' + movie.id" class="m-5 flex items-center">
             <div class="h-24 w-16 bg-center bg-cover" :style="{'background-image':'url(https://image.tmdb.org/t/p/w500' + movie.poster_path + ')'}"></div>
             <div class="ml-5">
                 <h3 class="text-2xl mb-4">
@@ -10,51 +10,56 @@
                     <p v-for="(genre, index) in movie.genres.slice(0, 3)" :key="index" class="text-xl mr-3">{{ genre.name }}</p>
                 </div>
             </div>
-        </div>
-        <form @submit.prevent="onSubmit()" class="mb-40">
+        </inertia-link>
+        <form @submit.prevent="onSubmit()" class="mb-40 md:mb-0 md:grid grid-cols-2 gap-4">
             <input type="hidden" name="_token" :value="csrf">
+            <div>
+                <p v-if="this.errors.length" class="m-5 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">{{ this.errors['0'] }}</p>
+                <p v-if="this.success.length" class="m-5 bg-green text-white border border-greenDark text-green-700 px-4 py-3 rounded" role="alert">{{ this.success['0'] }}</p>
 
-            <p v-if="this.errors.length" class="m-5 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">{{ this.errors['0'] }}</p>
-
-            <label for="view_date" class="p-5 bg-blue-primary block flex items-center text-black text-2xl mb-3">
-                <input type="date" name="view_date" id="view_date" v-model="view_date">
-            </label>
-
-            <div class="p-5 bg-blue-primary block flex items-center text-white text-2xl mb-3">
-                Rating:
-                <!-- 
-                <label class="ml-3" v-for="index in 5" :key="index">
-                    <input class="hidden" type="radio" name="rating" :id="'rating-' + index" :value="index" v-model="form.rating">
-                    <img @click="starHover" class="w-10 ml-0" src="/img/star-outline.svg" alt="">
-                    <img v-show="!starVis" class="w-10 ml-0" src="/img/star.svg" alt="">
+                <label for="view_date" class="p-5 bg-blue-primary block flex items-center justify-between text-black text-2xl mb-3">
+                    <h3 class="text-white mr-5">View date:</h3>
+                    <input class="" type="date" name="view_date" id="view_date" v-model="view_date">
                 </label>
-                -->
-                <label class="text-black ml-5" for="rating">
-                    <select class="text-black" name="rating" id="rating" v-model="rating">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
+
+                <div class="p-5 bg-blue-primary block flex items-center justify-between text-white text-2xl mb-3">
+                    <h3>Rating:</h3>
+                    <!-- 
+                    <label class="ml-3" v-for="index in 5" :key="index">
+                        <input class="hidden" type="radio" name="rating" :id="'rating-' + index" :value="index" v-model="form.rating">
+                        <img @click="starHover" class="w-10 ml-0" src="/img/star-outline.svg" alt="">
+                        <img v-show="!starVis" class="w-10 ml-0" src="/img/star.svg" alt="">
+                    </label>
+                    -->
+                    <label class="text-black ml-5" for="rating">
+                        <select class="text-black" name="rating" id="rating" v-model="rating">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+            <div class="h-full">
+                <label for="review" class="block text-white text-2xl">
+                    <div class="p-6 bg-blue-primary">
+                        Review
+                    </div>
+                    <textarea class="w-full h-40 text-black p-5 pt-2 -mb-2 h-full" placeholder="Write a review..." name="review" id="review" cols="30" rows="10" v-model="review"></textarea>
+                </label>
+                
+                <label for="notes" class="block text-white text-2xl">
+                    <div class="p-5 bg-blue-primary">
+                        Notes
+                    </div>
+                    <textarea class="w-full h-40 text-black p-5 pt-2" placeholder="Use this field to write down some notes such as where you saw the film, who with, film stock, etc.&#10;&#10;Only you will be able to see this" name="notes" id="notes" cols="30" rows="10" v-model="notes"></textarea>
                 </label>
             </div>
 
-            <label for="review" class="block text-white text-2xl mb-3">
-                <div class="p-5 bg-blue-primary">
-                    Review
-                </div>
-                <textarea class="w-full h-40 text-black p-5 pt-2" placeholder="Write a review..." name="review" id="review" cols="30" rows="10" v-model="review"></textarea>
-            </label>
-            
-            <label for="notes" class="block text-white text-2xl mb-3">
-                <div class="p-5 bg-blue-primary">
-                    Notes
-                </div>
-                <textarea class="w-full h-40 text-black p-5 pt-2" placeholder="Use this field to write down some notes such as where you saw the film, who with, film stock, etc.&#10;&#10;Only you will be able to see this" name="notes" id="notes" cols="30" rows="10" v-model="notes"></textarea>
-            </label>
-
-            <div class="block text-white text-2xl mb-3">
+            <!--
+            <div class="block text-white text-2xl mb-3 row-start-1 col-start-1">
                 <div class="p-5 bg-blue-primary">
                     Share to
                 </div>
@@ -63,7 +68,10 @@
                     <input class="justify-self-end" type="checkbox" :value="community.id" :id="'community-' + index" :name="'community-' + index">
                 </label>
             </div>
-            <input @click="submitForm" class="cursor-pointer w-full text-center fixed md:inline-block bottom-16 md:bottom-0 bg-green p-5 text-3xl text-white" type="submit" value="Confirm">
+            -->
+            <div class="w-full fixed bottom-16 duration-200 bg-green hover:bg-greenDark md:bg-transparent md:hover:bg-transparent md:bottom-0 md:relative text-center col-span-2">
+                <input @click="submitForm" class="cursor-pointer transition-all duration-200 bg-transparent md:bg-green md:hover:bg-greenDark text-white p-3 pl-16 pr-16 text-2xl rounded-full" type="submit" value="Confirm">
+            </div>
         </form>
     </app-layout>
 </template>
@@ -82,6 +90,7 @@
             return {
                 starVis: true,
                 errors: [],
+                success: [],
                 view_date: '',
                 rating: '',
                 review: '',
@@ -117,8 +126,9 @@
                     review: this.review,
                     notes: this.notes,
                 }).then((res) => {
-                    console.log('worked');
-                    console.log(res)
+                    this.success.push('Created review successfully');
+                            window.location.href = "/diary/"; //there should be a better way to do this
+                    this.$router.push('/diary');
                 }).catch((err) => {
                     this.errors = [];
                     if(!this.view_date.length){

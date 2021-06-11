@@ -1,11 +1,14 @@
 <template>
     <app-layout>
         <div v-if="reviews == null" class="bg-green p-4 text-white text-xl">
-            <h2>Log a movie by clicking the button in the bottom right.</h2>
+            <h2>Log a movie by clicking the button in the bottom right</h2>
         </div>
-        <div v-else>
+        <div v-else class="mb-24">
+            <div class="bg-green p-4 text-white text-xl">
+                <h2>Your logged movies</h2>
+            </div>
             <div v-for="(review, index) in reviews" :key="index">
-                <div v-if="review.view_date != null">
+                <inertia-link v-if="review.view_date != null" :href="'/movie/' + movie[index].id + '/review/' + review.id">
                     <div v-if="monthYear(review.view_date) !=  monthYearCheck" class="bg-purple text-white text-2xl p-8 pt-2 pb-2">
                         <h2>{{ monthYear(review.view_date) }}</h2>
                         {{ setCheck(monthYear(review.view_date)) }}
@@ -39,7 +42,7 @@
                             <img class="w-5" src="/img/arrow-short.svg" alt="">
                         </inertia-link>
                     </div>
-                </div>
+                </inertia-link>
             </div>
         </div>
         <inertia-link href="/movie/search" class="mb-10 md:mb-0 w-20 flex items-center text-center text-white text-6xl rounded-full bg-green fixed right-5 md:right-10 bottom-10">

@@ -94,6 +94,7 @@
 
                 axios.post('/movie/' + this.movie.id + '/review/' + this.review.id + '/delete', {
                 }).then((res) => {
+                        window.location.href = "/diary"; //there should be a better way to do this
                     const status = JSON.parse(res.data.response.status);
                     if(status == '200'){
                         self.$router.push('/diary');
