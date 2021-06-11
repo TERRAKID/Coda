@@ -2,7 +2,7 @@
     <app-layout>
         <template #header>
             <h2 v-if="search">Results for "{{ search }}"</h2>
-            <h2 v-else>PLease enter your search in the search box</h2>
+            <h2 v-else>Please enter your search in the search box</h2>
         </template>
 
         <inertia-link :href="'/movie/' + result.id" v-for="(result, index) in results" :key="index" class="m-5 flex items-center">

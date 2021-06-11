@@ -118,7 +118,7 @@
                     notes: this.notes,
                 }).then((res) => {
                     console.log('worked');
-                    console.log(res);
+                    console.log(res)
                 }).catch((err) => {
                     this.errors = [];
                     if(!this.view_date.length){

@@ -14,7 +14,7 @@
             </inertia-link>
         </div>
         <div class="p-5 pt-0">
-            <div v-for="(review, index) in reviews" :key="index" class="border-b border-blue-primary mb-5">
+            <inertia-link v-for="(review, index) in reviews" :key="index" :href="'/movie/' + movie.id + '/review/' + review.id" class="block border-b border-blue-primary mb-5">
                 <div class="flex items-center justify-between">
                     <inertia-link :href="'/user/' + review.user_id" class="flex items-center">
                         <div class="h-16 w-16 rounded-full bg-center bg-cover bg-blue-primary" :style="{'background-image':'url(/storage/' + review.profile_photo_path + ')'}"></div>
@@ -34,7 +34,7 @@
                 <div class="m-5">
                     <p>{{ review.review }}</p>
                 </div>
-            </div>
+            </inertia-link>
         </div>
     </app-layout>
 </template>

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Jetstream\Jetstream;
 use Inertia\Inertia;
+use Redirect;
 
 class MovieController extends Controller
 {
@@ -36,15 +37,24 @@ class MovieController extends Controller
 
         $reviews = Movie::join('movie_ratings', 'movie_ratings.movie_id', '=', 'movie.id')
             ->where('movie_ratings.user_id', '=', $currentUser)
+            ->where('movie_ratings.active', '=', '1')
             ->orderBy('movie_ratings.view_date', 'desc')
             ->get();
 
         $movieDetails = [];
+        $reviewCount = count($reviews);
 
-        foreach($reviews as $movie){
-            $movieId = $movie->tmdb_id;
-            $movie = (new TMDBController)->fetchMovieById($movieId);
-            array_push($movieDetails, $movie);
+        if($reviewCount == 0){
+            $reviews = null;
+        }
+        else{
+    
+            foreach($reviews as $movie){
+                $movieId = $movie->tmdb_id;
+                $movie = (new TMDBController)->fetchMovieById($movieId);
+                array_push($movieDetails, $movie);
+            }
+
         }
 
         return Inertia::render('Movie/Diary')
@@ -140,7 +150,7 @@ class MovieController extends Controller
                 ->orderBy('created_at', 'DESC')
                 ->get();
 
-            return Inertia::render('Movie/ReviewShow')->with('review', $newReview);
+            return redirect::to('/diary')->send();
         }
         catch (ValidationException $exception) {
             return response()->json([
@@ -153,13 +163,23 @@ class MovieController extends Controller
 
 /**-FUNCTION-06----------------------------------------------------------*/
     public function showReview($movieId, $reviewId){
-        $review = MovieRating::join('movie', 'movie.id', '=', 'movie_ratings.movie_id')
+        $currentUser = auth()->user();
+        $currentUser = $currentUser->id;
+
+        $userCheck = MovieRating::where('user_id', '=', $currentUser)
+            ->where('id', '=', $reviewId)
+            ->count();
+        
+        if($userCheck == 1){
+            $review = MovieRating::join('movie', 'movie.id', '=', 'movie_ratings.movie_id')
             ->join('users', 'users.id', '=', 'movie_ratings.user_id')
+            ->where('movie_ratings.active', '=', '1')
             ->where('movie_ratings.id', '=', $reviewId)
             ->get([
                 'movie_ratings.id',
                 'movie_ratings.user_id',
                 'movie_ratings.watched',
+                'movie_ratings.rating',
                 'movie_ratings.review',
                 'movie_ratings.notes',
                 'movie_ratings.created_at',
@@ -168,6 +188,26 @@ class MovieController extends Controller
                 'users.name',
                 'users.profile_photo_path',
             ]);
+        }
+        else{
+            $review = MovieRating::join('movie', 'movie.id', '=', 'movie_ratings.movie_id')
+            ->join('users', 'users.id', '=', 'movie_ratings.user_id')
+            ->where('movie_ratings.active', '=', '1')
+            ->where('movie_ratings.id', '=', $reviewId)
+            ->get([
+                'movie_ratings.id',
+                'movie_ratings.user_id',
+                'movie_ratings.watched',
+                'movie_ratings.review',
+                'movie_ratings.created_at',
+                'movie.title',
+                'movie.tmdb_id',
+                'users.name',
+                'users.profile_photo_path',
+            ]);
+        }
+        
+        
         $review = $review[0];
         $movie = (new TMDBController)->fetchMovieById($review['tmdb_id']);
         
@@ -197,6 +237,7 @@ class MovieController extends Controller
 
         // This calculates the score of all reviews, rounded down
         $allReviews = MovieRating::join('movie', 'movie.id', '=', 'movie_ratings.movie_id')
+            ->where('movie_ratings.active', '=', '1')
             ->where('movie.tmdb_id', '=', $movieId)
             ->get();
 
@@ -214,18 +255,8 @@ class MovieController extends Controller
         }
 
         // This calculates the average score of the logged in user's friend's ratings
-
-        $allFriendReviews1 = MovieRating::join('user_friend', 'user_friend.user_id', '=', 'movie_ratings.user_id')
-            ->where('movie_ratings.movie_id', '=', $movieId)
-            ->where('user_friend.user_id', '=', $currentUser)
-            ->get([
-                'movie_ratings.id',
-                'movie_ratings.user_id',
-                'movie_ratings.movie_id',
-                'movie_ratings.rating',
-            ]);
-
         $allFriendReviews = MovieRating::join('user_friend', 'user_friend.user_id', '=', 'movie_ratings.user_id')
+            ->where('movie_ratings.active', '=', '1')
             ->where(function ($query) use ($CodaMovieId){
                 $query->where('movie_ratings.movie_id', '=', $CodaMovieId);
             })
@@ -266,7 +297,9 @@ class MovieController extends Controller
             ->join('users', 'users.id', '=', 'movie_ratings.user_id')
             ->where('movie.tmdb_id', '=', $movieId)
             ->where('movie_ratings.review', '!=', '')
+            ->where('movie_ratings.active', '=', '1')
             ->get([
+                'movie_ratings.id',
                 'movie_ratings.user_id',
                 'users.name',
                 'users.profile_photo_path',
@@ -293,6 +326,7 @@ class MovieController extends Controller
         $friendReviews = MovieRating::join('user_friend', 'user_friend.user_id', '=', 'movie_ratings.user_id')
             ->join('users', 'users.id', '=', 'movie_ratings.user_id')
             ->where('movie_ratings.review', '!=', '')
+            ->where('movie_ratings.active', '=', '1')
             ->where(function ($query) use ($CodaMovieId){
                 $query->where('movie_ratings.movie_id', '=', $CodaMovieId);
             })
@@ -300,6 +334,7 @@ class MovieController extends Controller
                 $query->where('user_friend.friend_id', '=', $currentUser)
                 ->orWhere('user_friend.user_id', '=', $currentUser);
             })->get([
+                'movie_ratings.id',
                 'movie_ratings.user_id',
                 'users.name',
                 'users.profile_photo_path',
@@ -312,5 +347,20 @@ class MovieController extends Controller
         return Inertia::render('Movie/AllReviewsShow')
             ->with('reviews', $friendReviews)
             ->with('movie', $movie);
+    }
+/**-FUNCTION-08----------------------------------------------------------*/
+
+    public function deleteReview($movieId, $reviewId){
+        $currentUser = auth()->user();
+        $currentUser = $currentUser->id;
+
+        $review = MovieRating::find($reviewId);
+
+        if($review){
+            $review->active = '0';
+            $review->save();
+        }
+
+        return Inertia::render('Movie/Diary');
     }
 }
