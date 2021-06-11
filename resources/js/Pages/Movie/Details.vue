@@ -35,10 +35,22 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-5">
+            <div class="flex items-center mt-5 w-full">
                 <div>
                     <h3>Friends Rating:</h3>
                     <inertia-link class="underline">Read reviews</inertia-link>
+                </div>
+                <div v-if="friendReviews == null" class="ml-5 w-64 text-right">
+                    <h4>None of your friends have reviewed this movie yet.</h4>
+                </div>
+                <div v-else class="ml-5">
+                    <div v-if="friendReviews < 5" class="flex">
+                        <img class="w-8 m-2 ml-0" v-for="index in friendReviews" :key="index" src="/img/star.svg" alt="Full Star">
+                        <img class="w-8 m-2 ml-0" v-for="index in 5-friendReviews" :key="index" src="/img/star-outline.svg" alt="Blank Star">
+                    </div>
+                    <div v-else class="flex">
+                        <img class="w-8 m-2 ml-0" v-for="index in friendReviews" :key="index" src="/img/star.svg" alt="Full Star">
+                    </div>
                 </div>
             </div>
             <div class="mt-5">
@@ -84,6 +96,10 @@
         },
         props: {
             globalReviews: {
+                type: Array,
+                required: false,
+            },
+            friendReviews: {
                 type: Array,
                 required: false,
             },

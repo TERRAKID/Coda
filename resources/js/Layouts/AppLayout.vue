@@ -165,7 +165,10 @@
                                 Your movies
                             </p>
 
-                            <jet-responsive-nav-link class="hidden md:block">
+                            <jet-responsive-nav-link 
+                                :href="route('diary')"
+                                :active="route().current('diary')"
+                                class="hidden md:block">
                                 Movie diary
                             </jet-responsive-nav-link>
 
@@ -223,7 +226,7 @@
         <footer
             class="fixed w-screen h-16 bg-blue-primary bottom-0 flex items-center justify-evenly md:hidden"
         >
-            <inertia-link>
+            <inertia-link :href="route('diary')">
                 <img class="h-10" src="/img/diary.svg" alt="Diary"
             /></inertia-link>
             <inertia-link :href="route('dashboard')">

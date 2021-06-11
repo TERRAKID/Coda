@@ -165,6 +165,9 @@ class MovieController extends Controller
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
 
+        $CodaMovieId = Movie::where('tmdb_id', '=', $movieId)->get();
+        $CodaMovieId = $CodaMovieId['0']['id'];
+
         $movie = (new TMDBController)->fetchMovieById($movieId);
         $cast = (new TMDBController)->fetchMovieCast($movieId);
         $crew = (new TMDBController)->fetchMovieCrew($movieId);
@@ -176,6 +179,7 @@ class MovieController extends Controller
             }
         }
 
+        // This calculates the score of all reviews, rounded down
         $allReviews = MovieRating::join('movie', 'movie.id', '=', 'movie_ratings.movie_id')
             ->where('movie.tmdb_id', '=', $movieId)
             ->get();
@@ -184,8 +188,8 @@ class MovieController extends Controller
         foreach($allReviews as $review){
             array_push($globalReviews, $review['rating']);
         }
-        
         $globalReviews = array_filter($globalReviews);
+
         if(count($globalReviews)) {
             $averageGlobalReviews = floor(array_sum($globalReviews)/count($globalReviews));
         }
@@ -193,9 +197,49 @@ class MovieController extends Controller
             $averageGlobalReviews = null;
         }
 
+        // This calculates the average score of the logged in user's friend's ratings
+
+        $allFriendReviews1 = MovieRating::join('user_friend', 'user_friend.user_id', '=', 'movie_ratings.user_id')
+            ->where('movie_ratings.movie_id', '=', $movieId)
+            ->where('user_friend.user_id', '=', $currentUser)
+            ->get([
+                'movie_ratings.id',
+                'movie_ratings.user_id',
+                'movie_ratings.movie_id',
+                'movie_ratings.rating',
+            ]);
+
+        $allFriendReviews = MovieRating::join('user_friend', 'user_friend.user_id', '=', 'movie_ratings.user_id')
+            ->where(function ($query) use ($CodaMovieId){
+                $query->where('movie_ratings.movie_id', '=', $CodaMovieId);
+            })
+            ->where(function ($query) use ($currentUser){
+                $query->where('user_friend.user_id', '=', $currentUser)
+                ->orWhere('user_friend.friend_id', '=', $currentUser);
+            })->get([
+                'movie_ratings.id',
+                'movie_ratings.user_id',
+                'movie_ratings.movie_id',
+                'movie_ratings.rating',]
+            );
+
+        $friendReviews = [];
+        foreach($allFriendReviews as $review){
+            array_push($friendReviews, $review['rating']);
+        }
+        $friendReviews = array_filter($friendReviews);
+
+        if(count($friendReviews)) {
+            $averageFriendReviews = floor(array_sum($friendReviews)/count($friendReviews));
+        }
+        else{
+            $averageFriendReviews = null;
+        }
+
         return Inertia::render('Movie/Details')
             ->with('movie', $movie)
             ->with('globalReviews', $averageGlobalReviews)
+            ->with('friendReviews', $averageFriendReviews)
             ->with('cast', $cast)
             ->with('directors', $directors);
     }
