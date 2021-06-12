@@ -192,6 +192,8 @@ class MovieController extends Controller
                 'users.name',
                 'users.profile_photo_path',
             ]);
+
+            $user = User::where('id', '=', $review['0']['user_id'])->first();
         }
         else{
             $review = MovieRating::join('movie', 'movie.id', '=', 'movie_ratings.movie_id')
@@ -217,6 +219,7 @@ class MovieController extends Controller
         
         return Inertia::render('Movie/ReviewShow')
             ->with('review', $review)
+            ->with('user', $user)
             ->with('movie', $movie);
     }
 /**-FUNCTION-07----------------------------------------------------------*/
@@ -312,6 +315,11 @@ class MovieController extends Controller
                 'movie_ratings.review',
                 'movie_ratings.created_at',
             ]);
+        $users = [];
+        foreach($allReviews as $review){
+            $user = User::where('id', '=', $review['user_id'])->first();
+            array_push($users, $user);
+        }
 
         $movie = (new TMDBController)->fetchMovieById($movieId);
         $reviewCount = count($allReviews);
@@ -322,7 +330,8 @@ class MovieController extends Controller
 
         return Inertia::render('Movie/AllReviewsShow')
             ->with('reviews', $allReviews)
-            ->with('movie', $movie);
+            ->with('movie', $movie)
+            ->with('users', $users);
     }
 /**-FUNCTION-08----------------------------------------------------------*/
     public function showFriendReviews($movieId){
@@ -335,7 +344,7 @@ class MovieController extends Controller
         $friendReviews = MovieRating::join('user_friend', 'user_friend.user_id', '=', 'movie_ratings.user_id')
             ->join('users', 'users.id', '=', 'movie_ratings.user_id')
             ->where('movie_ratings.review', '!=', '')
-            ->where('movie_ratings.active', '=', '1')
+            ->where('movie_ratings.accepted', '=', '1')
             ->where(function ($query) use ($CodaMovieId){
                 $query->where('movie_ratings.movie_id', '=', $CodaMovieId);
             })

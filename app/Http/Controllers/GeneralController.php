@@ -71,6 +71,7 @@ class GeneralController extends Controller
                 'movie_ratings.review',
                 'movie.tmdb_id',
             ]);
+        $user = User::where('id', '=', $review['0']['user_id'])->first();
 
         $reviewStatus = $review->count();
         if($reviewStatus != 0){
@@ -100,6 +101,7 @@ class GeneralController extends Controller
             ->with('review', $review)
             ->with('reviewMovie', $reviewMovie)
             ->with('reviewStatus', $reviewStatus)
-            ->with('popular', $popular);
+            ->with('popular', $popular)
+            ->with('user', $user);
     }
 }

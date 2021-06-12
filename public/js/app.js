@@ -18239,6 +18239,10 @@ __webpack_require__.r(__webpack_exports__);
     popular: {
       type: Array,
       required: true
+    },
+    user: {
+      type: Array,
+      required: false
     }
   },
   methods: {
@@ -18284,6 +18288,10 @@ __webpack_require__.r(__webpack_exports__);
       required: false
     },
     movie: {
+      type: Array,
+      required: false
+    },
+    users: {
       type: Array,
       required: false
     },
@@ -18584,6 +18592,7 @@ __webpack_require__.r(__webpack_exports__);
       type: Array,
       required: false
     },
+    user: {},
     errors: {
       type: Array,
       required: false
@@ -23096,7 +23105,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
             "class": "bg-blue-primary rounded-full bg-cover bg-center h-16 w-16 inline-block mr-3",
             style: {
-              'background-image': 'url(/storage/' + $props.review.profile_photo_path + ')'
+              'background-image': 'url(' + $props.user.profile_photo_url + ')'
             }
           }, null, 4
           /* STYLE */
@@ -23207,6 +23216,8 @@ var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 );
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
+  var _this = this;
+
   var _component_inertia_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("inertia-link");
 
   var _component_app_layout = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("app-layout");
@@ -23279,7 +23290,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                 return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
                   "class": "h-16 w-16 rounded-full bg-center bg-cover bg-blue-primary",
                   style: {
-                    'background-image': 'url(/storage/' + review.profile_photo_path + ')'
+                    'background-image': 'url(' + _this.users[index].profile_photo_url + ')'
                   }
                 }, null, 4
                 /* STYLE */
@@ -24231,7 +24242,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
             "class": "bg-blue-primary rounded-full bg-cover bg-center p-10 inline-block mr-3",
             style: {
-              'background-image': 'url(/storage/' + $props.review.profile_photo_path + ')'
+              'background-image': 'url(' + $props.user.profile_photo_url + ')'
             }
           }, null, 4
           /* STYLE */
