@@ -1,53 +1,104 @@
 <template>
     <app-layout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ this.activeUser.name }}
-            </h2>
-            <p v-if="this.messages[0]">
-                {{
-                    this.messages[this.messages.length - 1].message.length > 20
-                        ? this.messages[this.messages.length - 1].message.slice(
-                              0,
-                              20
-                          ) + "..."
-                        : this.messages[this.messages.length - 1].message
-                }}
-                -
-                {{
-                    (
-                        "0" +
-                        new Date(
-                            this.messages[this.messages.length - 1].created_at
-                        ).getHours()
-                    ).slice(-2) +
-                    ":" +
-                    (
-                        "0" +
-                        new Date(
-                            this.messages[this.messages.length - 1].created_at
-                        ).getMinutes()
-                    ).slice(-2)
-                }}
-            </p>
-        </template>
+            <div
+                class="flex items-center md:pl-4 gap-4"
+                @click="showingUsers = !showingUsers"
+            >
+                <img
+                    class="
+                        h-10
+                        w-10
+                        rounded-full
+                        object-cover
+                        border-2 border-black
+                    "
+                    :src="activeUser.profile_photo_url"
+                    :alt="activeUser.name"
+                />
 
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <users
-                        v-if="activeUser.id"
-                        :users="users"
-                        :lastMessages="lastMessages"
-                        :activeUser="activeUser"
-                        v-on:userchanged="getActiveUser($event)"
-                    />
-                    <messages :messages="messages" :user="activeUser" />
-                    <input-message
-                        :user="activeUser"
-                        v-on:messagesend="getMessages"
-                    />
+                <div>
+                    <h2 class="text-black">
+                        {{
+                            this.activeUser.name
+                                ? this.activeUser.name
+                                : "No user selected"
+                        }}
+                    </h2>
+                    <p class="text-base text-black" v-if="!this.messages[0]">
+                        No messages
+                    </p>
+                    <p class="text-base" v-if="this.messages[0]">
+                        <span class="font-serif text-black text-opacity-50">
+                            {{
+                                this.messages[this.messages.length - 1].message
+                                    .length > 20
+                                    ? this.messages[
+                                          this.messages.length - 1
+                                      ].message.slice(0, 20) + "..."
+                                    : this.messages[this.messages.length - 1]
+                                          .message
+                            }}</span
+                        >
+                        <span class="text-black">
+                            -
+                            {{
+                                (
+                                    "0" +
+                                    new Date(
+                                        this.messages[
+                                            this.messages.length - 1
+                                        ].created_at
+                                    ).getHours()
+                                ).slice(-2) +
+                                ":" +
+                                (
+                                    "0" +
+                                    new Date(
+                                        this.messages[
+                                            this.messages.length - 1
+                                        ].created_at
+                                    ).getMinutes()
+                                ).slice(-2)
+                            }}</span
+                        >
+                    </p>
                 </div>
+            </div>
+        </template>
+        <div class="overflow-hidden">
+            <div
+                :class="{
+                    'translate-x-0': showingUsers,
+                    '-translate-x-1/2 md:translate-x-0': !showingUsers,
+                }"
+                class="
+                    transition
+                    transform
+                    duration-150
+                    ease-in-out
+                    w-dm
+                    md:w-auto
+                    h-dmmd
+                    md:h-dm
+                    grid-cols-2 grid
+                    md:grid-cols-dm
+                    grid-rows-dm
+                    md:divide-x
+                    divide-black divide-opacity-40
+                "
+            >
+                <users
+                    :users="users"
+                    :lastMessages="lastMessages"
+                    :activeUser="activeUser"
+                    v-on:userchanged="getActiveUser($event)"
+                />
+                <messages :messages="messages" :user="activeUser" />
+                <input-message
+                    :user="activeUser"
+                    v-on:messagesend="getMessages"
+                />
             </div>
         </div>
     </app-layout>
@@ -72,6 +123,7 @@
                 activeUser: [],
                 messages: [],
                 lastMessages: [],
+                showingUsers: false,
             };
         },
         watch: {
@@ -85,6 +137,7 @@
         methods: {
             getActiveUser(user) {
                 this.activeUser = user;
+                this.showingUsers = !this.showingUsers;
             },
             listUsers() {
                 axios.get("/chat/users").then((response) => {
