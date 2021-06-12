@@ -19266,7 +19266,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "px-6 py-4"
+  "class": "px-6 py-4 text-white"
 };
 var _hoisted_2 = {
   "class": "text-lg"
@@ -22576,7 +22576,7 @@ var _hoisted_5 = {
 
 var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Cancel ");
 
-var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Log Out Everywhere ");
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Log Out ");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_jet_button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("jet-button");
@@ -23038,7 +23038,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onKeyup: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withKeys)(function ($event) {
           return $options.searchBackground();
         }, ["enter"])),
-        placeholder: "Search background image"
+        placeholder: "Search for a movie"
       }, null, 8
       /* PROPS */
       , ["modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input_error, {

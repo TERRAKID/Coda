@@ -8,7 +8,7 @@
                     class="mt-1 block w-full"
                     v-model="backgroundQuery"
                     @keyup.enter="searchBackground()"
-                    placeholder="Search background image"
+                    placeholder="Search for a movie"
                 />
                 <jet-input-error class="mt-2" />
             </div>

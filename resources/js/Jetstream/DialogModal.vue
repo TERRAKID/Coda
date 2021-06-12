@@ -5,7 +5,7 @@
         :closeable="closeable"
         @close="close"
     >
-        <div class="px-6 py-4">
+        <div class="px-6 py-4 text-white">
             <div class="text-lg">
                 <slot name="title"> </slot>
             </div>

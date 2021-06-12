@@ -48,7 +48,7 @@
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"
                     >
-                        Log Out Everywhere
+                        Log Out
                     </jet-button>
                 </template>
             </jet-dialog-modal>
