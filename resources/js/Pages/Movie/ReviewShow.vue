@@ -35,7 +35,7 @@
                 <h3 class="border-b border-blue-primary mb-2 text-lg">Notes</h3>
                 <p v-bind:key="line" v-for="line in (review.notes).split('\n')">{{line}}<br></p>
             </div>
-            <div class="p-5 pt-0 md:pt-5 col-start-1 row-start-1">
+            <div v-if="review.review" class="p-5 pt-0 md:pt-5 col-start-1 row-start-1">
                 <h3 class="border-b border-blue-primary mb-2 text-lg">Review</h3>
                 <p v-bind:key="line" v-for="line in (review.review).split('\n')">{{line}}<br></p>
             </div>

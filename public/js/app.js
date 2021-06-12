@@ -18359,6 +18359,17 @@ __webpack_require__.r(__webpack_exports__);
       console.log(this.rating);
       this.starVis = !this.starVis;
     },
+    maxDate: function maxDate() {
+      var dtToday = new Date();
+      var month = dtToday.getMonth() + 1;
+      var day = dtToday.getDate();
+      var year = dtToday.getFullYear();
+      if (month < 10) month = '0' + month.toString();
+      if (day < 10) day = '0' + day.toString();
+      var maxDate = year + '-' + month + '-' + day;
+      console.log(maxDate);
+      return maxDate;
+    },
     onSubmit: function onSubmit() {
       var _this = this;
 
@@ -23548,10 +23559,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         id: "view_date",
         "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
           return $data.view_date = $event;
-        })
-      }, null, 512
-      /* NEED_PATCH */
-      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.view_date]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" \n                    <label class=\"ml-3\" v-for=\"index in 5\" :key=\"index\">\n                        <input class=\"hidden\" type=\"radio\" name=\"rating\" :id=\"'rating-' + index\" :value=\"index\" v-model=\"form.rating\">\n                        <img @click=\"starHover\" class=\"w-10 ml-0\" src=\"/img/star-outline.svg\" alt=\"\">\n                        <img v-show=\"!starVis\" class=\"w-10 ml-0\" src=\"/img/star.svg\" alt=\"\">\n                    </label>\n                    "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("select", {
+        }),
+        max: $options.maxDate()
+      }, null, 8
+      /* PROPS */
+      , ["max"]), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.view_date]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" \n                    <label class=\"ml-3\" v-for=\"index in 5\" :key=\"index\">\n                        <input class=\"hidden\" type=\"radio\" name=\"rating\" :id=\"'rating-' + index\" :value=\"index\" v-model=\"form.rating\">\n                        <img @click=\"starHover\" class=\"w-10 ml-0\" src=\"/img/star-outline.svg\" alt=\"\">\n                        <img v-show=\"!starVis\" class=\"w-10 ml-0\" src=\"/img/star.svg\" alt=\"\">\n                    </label>\n                    "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("select", {
         "class": "text-black",
         name: "rating",
         id: "rating",
@@ -24176,6 +24188,7 @@ var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 );
 
 var _hoisted_12 = {
+  key: 1,
   "class": "p-5 pt-0 md:pt-5 col-start-1 row-start-1"
 };
 
@@ -24301,7 +24314,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         ), _hoisted_11]);
       }), 128
       /* KEYED_FRAGMENT */
-      ))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_12, [_hoisted_13, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.review.review.split('\n'), function (line) {
+      ))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.review.review ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_12, [_hoisted_13, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.review.review.split('\n'), function (line) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("p", {
           key: line
         }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(line), 1
@@ -24309,7 +24322,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         ), _hoisted_14]);
       }), 128
       /* KEYED_FRAGMENT */
-      ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+      ))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
         onClick: _cache[1] || (_cache[1] = function ($event) {
           return $data.confirmingUserDeletion = !$data.confirmingUserDeletion;
         }),

@@ -22,7 +22,7 @@
 
                 <label for="view_date" class="p-5 bg-blue-primary block flex items-center justify-between text-black text-2xl mb-3">
                     <h3 class="text-white mr-5">View date:</h3>
-                    <input class="" type="date" name="view_date" id="view_date" v-model="view_date">
+                    <input class="" type="date" name="view_date" id="view_date" v-model="view_date" :max="maxDate()">
                 </label>
 
                 <div class="p-5 bg-blue-primary block flex items-center justify-between text-white text-2xl mb-3">
@@ -121,6 +121,21 @@
             starHover(){
                 console.log(this.rating);
                 this.starVis = !this.starVis;
+            },
+            maxDate(){
+                var currenDate = new Date();
+
+                var month = currentDate.getMonth() + 1;
+                var day = currentDate.getDate();
+                var year = currentDate.getFullYear();
+
+                if(month < 10)
+                    month = '0' + month.toString();
+                if(day < 10)
+                    day = '0' + day.toString();
+
+                var maxDate = year + '-' + month + '-' + day;  
+                return maxDate;
             },
             onSubmit() {
                 axios.post('/diary/' + this.movie.id + '/create', {
