@@ -1,8 +1,12 @@
 <template>
     <app-layout>
-        <div class="p-5 flex items-center justify-between">
-            <inertia-link :href="'/movie/' + movie.id" class="flex items-center">
-                <div class="h-24 w-16 md:h-64 md:w-48 bg-center bg-cover" :style="{'background-image':'url(https://image.tmdb.org/t/p/w500' + movie.poster_path + ')'}"></div>
+        <div class="bg-cover bg-center text-white pb-2 mb-5" :style="{'background-image':'linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(https://image.tmdb.org/t/p/w500' + movie.backdrop_path + ')'}">
+            <div class="p-5 pb-0 text-3xl">
+                <h2>Reviews for:</h2>
+            </div>
+            
+            <inertia-link :href="'/movie/' + movie.id" class="p-5 flex items-center">
+                <div class="h-48 w-32 bg-center bg-cover" :style="{'background-image':'url(https://image.tmdb.org/t/p/w500' + movie.poster_path + ')'}"></div>
                 <div class="ml-5">
                     <h3 class="text-2xl mb-4">
                         {{ movie.title }} ({{ movie.release_date.substring(0, 4) }})
@@ -19,7 +23,7 @@
         </div>
         <div v-else class="p-5 pt-0 max-w-4xl">
             <inertia-link v-for="(review, index) in reviews" :key="index" :href="'/movie/' + movie.id + '/review/' + review.id" class="block border-b border-blue-primary mb-5">
-                <div class="flex items-center justify-between">
+                <div class="flex items-center justify-between flex-wrap">
                     <inertia-link :href="'/user/' + review.user_id" class="flex items-center">
                         <div class="h-16 w-16 rounded-full bg-center bg-cover bg-blue-primary" :style="{'background-image':'url(/storage/' + review.profile_photo_path + ')'}"></div>
                         <div class="ml-3">
@@ -27,12 +31,12 @@
                             <p>{{ friendlyDate(review.created_at) }}</p>
                         </div>
                     </inertia-link>
-                    <div v-if="review.rating < 5" class="flex">
-                        <img class="w-8 ml-2" v-for="index in review.rating" :key="index" src="/img/star.svg" alt="Full Star">
-                        <img class="w-8 ml-2" v-for="index in 5-review.rating" :key="index" src="/img/star-outline.svg" alt="Blank Star">
+                    <div v-if="review.rating < 5" class="flex m-5 mb-0 sm:m-0">
+                        <img class="w-6 sm:w-10 mr-2" v-for="index in review.rating" :key="index" src="/img/star.svg" alt="Full Star">
+                        <img class="w-6 sm:w-10 mr-2" v-for="index in 5-review.rating" :key="index" src="/img/star-outline.svg" alt="Blank Star">
                     </div>
-                    <div v-else class="flex">
-                        <img class="w-8 ml-2" v-for="index in review.rating" :key="index" src="/img/star.svg" alt="Full Star">
+                    <div v-else class="flex m-5 mb-0 sm:m-0">
+                        <img class="w-6 sm:w-10 mr-2" v-for="index in review.rating" :key="index" src="/img/star.svg" alt="Full Star">
                     </div>
                 </div>
                 <div class="m-5">

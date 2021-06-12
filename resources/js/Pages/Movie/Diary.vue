@@ -4,9 +4,6 @@
             <h2>Log a movie by clicking the button in the bottom right</h2>
         </div>
         <div v-else class="mb-24">
-            <div class="bg-green p-4 text-white text-xl">
-                <h2>Your logged movies</h2>
-            </div>
             <div v-for="(monthYear, index) in reviews" :key="index">
                     <div class="bg-purple text-white text-2xl p-8 pt-2 pb-2">
                         <h2>{{ this.monthYear(index) }}</h2>

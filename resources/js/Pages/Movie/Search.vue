@@ -1,5 +1,44 @@
 <template>
     <app-layout>
+
+        <form @submit.prevent = "submit" class="hidden w-64 md:inline-block flex items-center relative m-5">
+            <input
+                class="rounded-full w-full h-14 pl-6 pr-12 text-sm border-2 focus:border-4 focus:border-blue-primary border-blue-primary rounded-full "
+                    type="search" name="search_movie" id="search_movie" v-model="form.search_movie"
+                placeholder="Search movies"
+            />
+            <button
+                class="focus:outline-none w-12 h-12 flex items-center justify-center absolute right-0 top-0 mt-1 mr-3"
+            >
+                <svg
+                    class="h-1/2"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="371.39"
+                    height="265.82"
+                    viewBox="0 0 371.39 265.82"
+                >
+                    <circle
+                        cx="251.87"
+                        cy="119.52"
+                        r="102.02"
+                        fill="none"
+                        stroke="#3865ae"
+                        stroke-miterlimit="10"
+                        stroke-width="35px"
+                    />
+                    <rect
+                        x="70.07"
+                        y="112.33"
+                        width="38.2"
+                        height="196.07"
+                        rx="19.1"
+                        transform="translate(234.82 34.33) rotate(62.58)"
+                        fill="#3865ae"
+                    />
+                </svg>
+            </button>
+        </form>
+
         <template #header>
             <h2 v-if="search">Results for "{{ search }}"</h2>
             <h2 v-else>Please enter your search in the search box</h2>
