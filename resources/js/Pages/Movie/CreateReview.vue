@@ -257,7 +257,7 @@
                 console.log(this.rating);
                 this.starVis = !this.starVis;
             },
-            maxDate() {
+            maxDate(){
                 var currentDate = new Date();
 
                 var month = currentDate.getMonth() + 1;

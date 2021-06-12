@@ -48,7 +48,7 @@
                     </inertia-link>
                     <div class="col-span-3 grid-cols-1">
                         <inertia-link :href="'/user/' + review.user_id" class="row-span-1 flex mb-8">
-                            <div class="bg-blue-primary rounded-full bg-cover h-16 w-16 inline-block mr-3" :style="{'background-image':'url(/storage/' + review.profile_photo_path + ')'}"></div>
+                            <div class="bg-blue-primary rounded-full bg-cover bg-center h-16 w-16 inline-block mr-3" :style="{'background-image':'url(/storage/' + review.profile_photo_url + ')'}"></div>
                             <div>
                                 <h3>
                                     {{ review.name }}

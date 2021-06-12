@@ -23076,9 +23076,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-            "class": "bg-blue-primary rounded-full bg-cover h-16 w-16 inline-block mr-3",
+            "class": "bg-blue-primary rounded-full bg-cover bg-center h-16 w-16 inline-block mr-3",
             style: {
-              'background-image': 'url(/storage/' + $props.review.profile_photo_path + ')'
+              'background-image': 'url(/storage/' + $props.review.profile_photo_url + ')'
             }
           }, null, 4
           /* STYLE */
@@ -23261,7 +23261,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                 return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
                   "class": "h-16 w-16 rounded-full bg-center bg-cover bg-blue-primary",
                   style: {
-                    'background-image': 'url(/storage/' + review.profile_photo_path + ')'
+                    'background-image': 'url(/storage/' + review.profile_url + ')'
                   }
                 }, null, 4
                 /* STYLE */
@@ -24211,9 +24211,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-            "class": "bg-blue-primary rounded-full bg-cover p-10 inline-block mr-3",
+            "class": "bg-blue-primary rounded-full bg-cover bg-center p-10 inline-block mr-3",
             style: {
-              'background-image': 'url(/storage/' + $props.review.profile_photo_path + ')'
+              'background-image': 'url(/storage/' + $props.review.profile_photo_url + ')'
             }
           }, null, 4
           /* STYLE */

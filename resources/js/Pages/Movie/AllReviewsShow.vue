@@ -25,7 +25,7 @@
             <inertia-link v-for="(review, index) in reviews" :key="index" :href="'/movie/' + movie.id + '/review/' + review.id" class="block border-b border-blue-primary mb-5">
                 <div class="flex items-center justify-between flex-wrap">
                     <inertia-link :href="'/user/' + review.user_id" class="flex items-center">
-                        <div class="h-16 w-16 rounded-full bg-center bg-cover bg-blue-primary" :style="{'background-image':'url(/storage/' + review.profile_photo_path + ')'}"></div>
+                        <div class="h-16 w-16 rounded-full bg-center bg-cover bg-blue-primary" :style="{'background-image':'url(/storage/' + review.profile_url + ')'}"></div>
                         <div class="ml-3">
                             <h3>{{ review.name }}</h3>
                             <p>{{ friendlyDate(review.created_at) }}</p>
