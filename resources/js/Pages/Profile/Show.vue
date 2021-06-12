@@ -1,63 +1,124 @@
 <template>
     <app-layout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Profile
-            </h2>
-        </template>
-
-        <div>
-            <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                <div v-if="$page.props.jetstream.canUpdateProfileInformation">
-                    <update-profile-information-form :user="$page.props.user" />
-
-                    <jet-section-border />
+        <div
+            class="bg-cover bg-center bg-fixed"
+            :style="[
+                background
+                    ? {
+                          backgroundImage:
+                              'url(https://image.tmdb.org/t/p/w1280' +
+                              background +
+                              ')',
+                      }
+                    : '',
+            ]"
+        >
+            <div
+                class="
+                    p-4
+                    md:p-0
+                    bg-white bg-opacity-60
+                    space-y-10
+                    md:space-y-0
+                "
+            >
+                <div
+                    v-if="$page.props.jetstream.canUpdateProfileInformation"
+                    class="md:border-b border-black md:p-8"
+                >
+                    <div class="bg-opacity-60 md:w-2/5">
+                        <update-profile-information-form
+                            :user="$page.props.user"
+                        />
+                    </div>
                 </div>
 
-                <div v-if="$page.props.jetstream.canUpdatePassword">
-                    <update-password-form class="mt-10 sm:mt-0" />
+                <div
+                    class="
+                        md:bg-white
+                        space-y-10
+                        overflow-hidden
+                        md:space-y-8
+                        md:p-8
+                    "
+                >
+                    <div
+                        v-if="$page.props.jetstream.canUpdatePassword"
+                        class="md:w-2/5"
+                    >
+                        <update-password-form />
+                    </div>
 
-                    <jet-section-border />
+                    <div class="md:w-2/5">
+                        <update-background-form
+                            :user="$page.props.user"
+                            v-on:newbackground="updateBackground"
+                        />
+                    </div>
+
+                    <div
+                        class="md:w-2/5"
+                        v-if="
+                            $page.props.jetstream
+                                .canManageTwoFactorAuthentication
+                        "
+                    >
+                        <two-factor-authentication-form />
+                    </div>
+
+                    <logout-other-browser-sessions-form
+                        :sessions="sessions"
+                        class="md:w-2/5"
+                    />
+
+                    <template
+                        v-if="$page.props.jetstream.hasAccountDeletionFeatures"
+                    >
+                        <delete-user-form class="md:w-2/5" />
+                    </template>
                 </div>
-
-                <div v-if="$page.props.jetstream.canManageTwoFactorAuthentication">
-                    <two-factor-authentication-form class="mt-10 sm:mt-0" />
-
-                    <jet-section-border />
-                </div>
-
-                <logout-other-browser-sessions-form :sessions="sessions" class="mt-10 sm:mt-0" />
-
-                <template v-if="$page.props.jetstream.hasAccountDeletionFeatures">
-                    <jet-section-border />
-
-                    <delete-user-form class="mt-10 sm:mt-0" />
-                </template>
             </div>
         </div>
     </app-layout>
 </template>
 
 <script>
-    import AppLayout from '@/Layouts/AppLayout'
-    import DeleteUserForm from './DeleteUserForm'
-    import JetSectionBorder from '@/Jetstream/SectionBorder'
-    import LogoutOtherBrowserSessionsForm from './LogoutOtherBrowserSessionsForm'
-    import TwoFactorAuthenticationForm from './TwoFactorAuthenticationForm'
-    import UpdatePasswordForm from './UpdatePasswordForm'
-    import UpdateProfileInformationForm from './UpdateProfileInformationForm'
+    import AppLayout from "@/Layouts/AppLayout";
+    import DeleteUserForm from "./DeleteUserForm";
+    import LogoutOtherBrowserSessionsForm from "./LogoutOtherBrowserSessionsForm";
+    import TwoFactorAuthenticationForm from "./TwoFactorAuthenticationForm";
+    import UpdatePasswordForm from "./UpdatePasswordForm";
+    import UpdateProfileInformationForm from "./UpdateProfileInformationForm";
+    import UpdateBackgroundForm from "./UpdateBackgroundForm";
 
     export default {
-        props: ['sessions'],
+        props: ["sessions"],
+
+        data: function () {
+            return {
+                background: null,
+            };
+        },
 
         components: {
             AppLayout,
             DeleteUserForm,
-            JetSectionBorder,
             LogoutOtherBrowserSessionsForm,
             TwoFactorAuthenticationForm,
             UpdatePasswordForm,
             UpdateProfileInformationForm,
+            UpdateBackgroundForm,
         },
-    }
+
+        methods: {
+            updateBackground() {
+                axios.get("/user/background").then((response) => {
+                    this.background = response.data;
+                });
+            },
+        },
+        created() {
+            this.updateBackground();
+        },
+    };
 </script>

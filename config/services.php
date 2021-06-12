@@ -34,4 +34,8 @@ return [
         'token' => env('TMDB_KEY'),
     ],
 
+    'tmdb' => [
+        'token' => env('TMDB_KEY'),
+    ],
+
 ];

@@ -39,6 +39,6 @@ class DirectMessageController extends Controller
 
     public function listUsers(Request $request)
     {
-        return User::where('id', '!=', Auth::user()->id)->orderBy('name')->get();
+        return Auth::user()->friends()->where('accepted', true)->orderBy('name')->get();
     }
 }

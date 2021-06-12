@@ -14,9 +14,22 @@
                         <!-- Hamburger -->
                         <button
                             @click="
-                                showingNavigationDropdown = !showingNavigationDropdown
+                                showingNavigationDropdown =
+                                    !showingNavigationDropdown
                             "
-                            class="flex text-sm border-4 border-white rounded-full focus:outline-none active:ring-2 active:ring-white transition duration-150 ease-in-out items-center justify-center"
+                            class="
+                                flex
+                                text-sm
+                                border-4 border-white
+                                rounded-full
+                                focus:outline-none
+                                active:ring-2 active:ring-white
+                                transition
+                                duration-150
+                                ease-in-out
+                                items-center
+                                justify-center
+                            "
                         >
                             <img
                                 class="h-12 w-12 rounded-full object-cover"
@@ -29,12 +42,34 @@
                     <!-- Search -->
                     <div class="flex items-center relative w-full">
                         <input
-                            class="rounded-full w-full h-14 focus:outline-none focus:ring-0 border-none pl-6 pr-12 text-sm"
+                            class="
+                                rounded-full
+                                w-full
+                                h-14
+                                focus:outline-none
+                                focus:ring-0
+                                border-none
+                                pl-6
+                                pr-12
+                                text-sm
+                            "
                             type="search"
                             placeholder="Search movies, communities, users..."
                         />
                         <button
-                            class="focus:outline-none w-12 h-12 flex items-center justify-center absolute right-0 top-0 mt-4 mr-3"
+                            class="
+                                focus:outline-none
+                                w-12
+                                h-12
+                                flex
+                                items-center
+                                justify-center
+                                absolute
+                                right-0
+                                top-0
+                                mt-4
+                                mr-3
+                            "
                         >
                             <svg
                                 class="h-1/2"
@@ -73,7 +108,21 @@
                     'translate-x-0': showingNavigationDropdown,
                     '-translate-x-full': !showingNavigationDropdown,
                 }"
-                class="w-screen h-full md:w-full transition transform duration-150 ease-in-out absolute flex -translate-y-px md:static md:translate-x-0 md:translate-y-0"
+                class="
+                    w-screen
+                    h-full
+                    md:w-full
+                    transition
+                    transform
+                    duration-150
+                    ease-in-out
+                    absolute
+                    flex
+                    -translate-y-px
+                    md:static
+                    md:translate-x-0 md:translate-y-0
+                    z-10
+                "
             >
                 <div class="bg-blue-primary w-1/2 h-full px-3 pt-3 md:w-full">
                     <!-- Responsive Settings Options -->
@@ -87,17 +136,41 @@
 
                     <div class="border-b border-green text-center text-white">
                         <div
-                            class="flex flex-col items-center justify-center md:mt-6"
+                            class="
+                                flex flex-col
+                                items-center
+                                justify-center
+                                md:mt-6
+                            "
                         >
                             <div
-                                class="items-center w-1/4 md:w-auto mb-3 hidden md:flex"
+                                class="
+                                    items-center
+                                    w-1/4
+                                    md:w-auto
+                                    mb-3
+                                    hidden
+                                    md:flex
+                                "
                             >
                                 <!-- Hamburger -->
                                 <div
-                                    class="flex text-sm border-4 border-white rounded-full items-center justify-center"
+                                    class="
+                                        flex
+                                        text-sm
+                                        border-4 border-white
+                                        rounded-full
+                                        items-center
+                                        justify-center
+                                    "
                                 >
                                     <img
-                                        class="h-12 w-12 rounded-full object-cover"
+                                        class="
+                                            h-12
+                                            w-12
+                                            rounded-full
+                                            object-cover
+                                        "
                                         :src="
                                             $page.props.user.profile_photo_url
                                         "
@@ -105,19 +178,20 @@
                                     />
                                 </div>
                             </div>
-                            <div class="flex flex-col justify-center">
-                                <div class="font-semibold text-base">
-                                    {{ $page.props.user.name }}
-                                </div>
-                                <div class="text-sm">
-                                    {{ $page.props.user.email }}
-                                </div>
+                            <div class="font-semibold text-base">
+                                {{ $page.props.user.name }}
                             </div>
                         </div>
 
                         <div class="mt-3 divide-y divide-green md:mt-0">
                             <p
-                                class="hidden md:block text-left text-xl pb-3 pt-6"
+                                class="
+                                    hidden
+                                    md:block
+                                    text-left text-xl
+                                    pb-3
+                                    pt-6
+                                "
                             >
                                 Main
                             </p>
@@ -160,7 +234,13 @@
                             </form>
 
                             <p
-                                class="hidden md:block text-left text-xl pb-3 pt-6"
+                                class="
+                                    hidden
+                                    md:block
+                                    text-left text-xl
+                                    pb-3
+                                    pt-6
+                                "
                             >
                                 Your movies
                             </p>
@@ -214,14 +294,25 @@
                 </header>
 
                 <!-- Page Content -->
-                <main class="mb-16 md:mb-0">
+                <main class="mb-16 md:mb-0 flex-auto">
                     <slot></slot>
                 </main>
             </div>
         </div>
 
         <footer
-            class="fixed w-screen h-16 bg-blue-primary bottom-0 flex items-center justify-evenly md:hidden"
+            class="
+                fixed
+                w-screen
+                h-16
+                bg-blue-primary
+                bottom-0
+                flex
+                items-center
+                justify-evenly
+                md:hidden
+                z-20
+            "
         >
             <inertia-link>
                 <img class="h-10" src="/img/diary.svg" alt="Diary"
