@@ -1,10 +1,21 @@
 <template>
-    <div>
+    <div class="p-4 md:pt-4 md:px-8 md:pb-12">
         <input
             type="text"
             placeholder="Start typing..."
             v-model="message"
             @keyup.enter="sendMessage()"
+            class="
+                border-black border-opacity-40
+                w-full
+                rounded-full
+                font-detail
+                px-5
+                focus:outline-none
+                focus:ring-2 focus:ring-green
+                focus:border-green
+                bg-white
+            "
         />
     </div>
 </template>

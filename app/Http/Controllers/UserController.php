@@ -67,7 +67,7 @@ class UserController extends Controller
             $isFriend = true;
         }
 
-        $amountFriends = UserFriend::where('user_id', $userId)->get()->count();
+        $amountFriends = UserFriend::where('user_id', $userId)->where('accepted', true)->get()->count();
 
         return Inertia::render('User', [
             'otherUser' => $user,
@@ -105,7 +105,7 @@ class UserController extends Controller
 
     public function getProfileInfo()
     {
-        $amountFriends = UserFriend::where('user_id', Auth::user()->id)->get()->count();
+        $amountFriends = UserFriend::where('user_id', Auth::user()->id)->where('accepted', true)->get()->count();
 
         return ['amountFriends' => $amountFriends];
     }

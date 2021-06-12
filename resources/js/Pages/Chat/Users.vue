@@ -1,13 +1,16 @@
 <template>
-    <div>
-        <ul v-for="(user, index) in users" :key="index">
+    <div class="row-span-2 overflow-y-auto">
+        <div v-for="(user, index) in users" :key="index">
             <user
                 :user="user"
                 :message="this.lastMessages[index]"
                 @click="$emit('userchanged', user)"
                 class="cursor-pointer"
             />
-        </ul>
+        </div>
+        <p v-if="!activeUser.id" class="text-center">
+            You don't have any friends yet...
+        </p>
     </div>
 </template>
 

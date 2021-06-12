@@ -11425,6 +11425,14 @@ select {
   height: 100vh;
 }
 
+.h-dm {
+  height: calc(100vh - 84px);
+}
+
+.h-dmmd {
+  height: calc(100vh - 84px - 64px - 80px);
+}
+
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
@@ -26169,6 +26177,10 @@ select {
   width: max-content;
 }
 
+.w-dm {
+  width: 200vw;
+}
+
 .z-0 {
   z-index: 0;
 }
@@ -26784,6 +26796,10 @@ select {
   grid-template-columns: auto 1fr 1fr;
 }
 
+.grid-cols-dm {
+  grid-template-columns: 33.333333% 1fr;
+}
+
 .auto-cols-auto {
   grid-auto-columns: auto;
 }
@@ -26996,6 +27012,10 @@ select {
 
 .grid-rows-none {
   grid-template-rows: none;
+}
+
+.grid-rows-dm {
+  grid-template-rows: 1fr auto;
 }
 
 .auto-rows-auto {
@@ -40935,6 +40955,14 @@ select {
 
   .sm\:h-screen {
     height: 100vh;
+  }
+
+  .sm\:h-dm {
+    height: calc(100vh - 84px);
+  }
+
+  .sm\:h-dmmd {
+    height: calc(100vh - 84px - 64px - 80px);
   }
 
   .sm\:text-xs {
@@ -55668,6 +55696,10 @@ select {
     width: max-content;
   }
 
+  .sm\:w-dm {
+    width: 200vw;
+  }
+
   .sm\:z-0 {
     z-index: 0;
   }
@@ -56283,6 +56315,10 @@ select {
     grid-template-columns: auto 1fr 1fr;
   }
 
+  .sm\:grid-cols-dm {
+    grid-template-columns: 33.333333% 1fr;
+  }
+
   .sm\:auto-cols-auto {
     grid-auto-columns: auto;
   }
@@ -56495,6 +56531,10 @@ select {
 
   .sm\:grid-rows-none {
     grid-template-rows: none;
+  }
+
+  .sm\:grid-rows-dm {
+    grid-template-rows: 1fr auto;
   }
 
   .sm\:auto-rows-auto {
@@ -70369,6 +70409,14 @@ select {
 
   .md\:h-screen {
     height: 100vh;
+  }
+
+  .md\:h-dm {
+    height: calc(100vh - 84px);
+  }
+
+  .md\:h-dmmd {
+    height: calc(100vh - 84px - 64px - 80px);
   }
 
   .md\:text-xs {
@@ -85102,6 +85150,10 @@ select {
     width: max-content;
   }
 
+  .md\:w-dm {
+    width: 200vw;
+  }
+
   .md\:z-0 {
     z-index: 0;
   }
@@ -85717,6 +85769,10 @@ select {
     grid-template-columns: auto 1fr 1fr;
   }
 
+  .md\:grid-cols-dm {
+    grid-template-columns: 33.333333% 1fr;
+  }
+
   .md\:auto-cols-auto {
     grid-auto-columns: auto;
   }
@@ -85929,6 +85985,10 @@ select {
 
   .md\:grid-rows-none {
     grid-template-rows: none;
+  }
+
+  .md\:grid-rows-dm {
+    grid-template-rows: 1fr auto;
   }
 
   .md\:auto-rows-auto {
@@ -99803,6 +99863,14 @@ select {
 
   .lg\:h-screen {
     height: 100vh;
+  }
+
+  .lg\:h-dm {
+    height: calc(100vh - 84px);
+  }
+
+  .lg\:h-dmmd {
+    height: calc(100vh - 84px - 64px - 80px);
   }
 
   .lg\:text-xs {
@@ -114536,6 +114604,10 @@ select {
     width: max-content;
   }
 
+  .lg\:w-dm {
+    width: 200vw;
+  }
+
   .lg\:z-0 {
     z-index: 0;
   }
@@ -115151,6 +115223,10 @@ select {
     grid-template-columns: auto 1fr 1fr;
   }
 
+  .lg\:grid-cols-dm {
+    grid-template-columns: 33.333333% 1fr;
+  }
+
   .lg\:auto-cols-auto {
     grid-auto-columns: auto;
   }
@@ -115363,6 +115439,10 @@ select {
 
   .lg\:grid-rows-none {
     grid-template-rows: none;
+  }
+
+  .lg\:grid-rows-dm {
+    grid-template-rows: 1fr auto;
   }
 
   .lg\:auto-rows-auto {
@@ -129237,6 +129317,14 @@ select {
 
   .xl\:h-screen {
     height: 100vh;
+  }
+
+  .xl\:h-dm {
+    height: calc(100vh - 84px);
+  }
+
+  .xl\:h-dmmd {
+    height: calc(100vh - 84px - 64px - 80px);
   }
 
   .xl\:text-xs {
@@ -143970,6 +144058,10 @@ select {
     width: max-content;
   }
 
+  .xl\:w-dm {
+    width: 200vw;
+  }
+
   .xl\:z-0 {
     z-index: 0;
   }
@@ -144585,6 +144677,10 @@ select {
     grid-template-columns: auto 1fr 1fr;
   }
 
+  .xl\:grid-cols-dm {
+    grid-template-columns: 33.333333% 1fr;
+  }
+
   .xl\:auto-cols-auto {
     grid-auto-columns: auto;
   }
@@ -144797,6 +144893,10 @@ select {
 
   .xl\:grid-rows-none {
     grid-template-rows: none;
+  }
+
+  .xl\:grid-rows-dm {
+    grid-template-rows: 1fr auto;
   }
 
   .xl\:auto-rows-auto {
@@ -158671,6 +158771,14 @@ select {
 
   .\32xl\:h-screen {
     height: 100vh;
+  }
+
+  .\32xl\:h-dm {
+    height: calc(100vh - 84px);
+  }
+
+  .\32xl\:h-dmmd {
+    height: calc(100vh - 84px - 64px - 80px);
   }
 
   .\32xl\:text-xs {
@@ -173404,6 +173512,10 @@ select {
     width: max-content;
   }
 
+  .\32xl\:w-dm {
+    width: 200vw;
+  }
+
   .\32xl\:z-0 {
     z-index: 0;
   }
@@ -174019,6 +174131,10 @@ select {
     grid-template-columns: auto 1fr 1fr;
   }
 
+  .\32xl\:grid-cols-dm {
+    grid-template-columns: 33.333333% 1fr;
+  }
+
   .\32xl\:auto-cols-auto {
     grid-auto-columns: auto;
   }
@@ -174231,6 +174347,10 @@ select {
 
   .\32xl\:grid-rows-none {
     grid-template-rows: none;
+  }
+
+  .\32xl\:grid-rows-dm {
+    grid-template-rows: 1fr auto;
   }
 
   .\32xl\:auto-rows-auto {

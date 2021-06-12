@@ -33,7 +33,18 @@ module.exports = {
             gridTemplateColumns: {
                 'main': '20% 80%',
                 'user': 'auto 1fr 1fr',
+                'dm': '33.333333% 1fr',
             },
+            gridTemplateRows: {
+                'dm': '1fr auto',
+            },
+            height: {
+                dm: 'calc(100vh - 84px)',
+                dmmd: 'calc(100vh - 84px - 64px - 80px)'
+            },
+            width: {
+                dm: '200vw',
+            }
         },
     },
 
