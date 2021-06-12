@@ -23096,7 +23096,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
             "class": "bg-blue-primary rounded-full bg-cover bg-center h-16 w-16 inline-block mr-3",
             style: {
-              'background-image': 'url(/storage/' + $props.review.profile_photo_url + ')'
+              'background-image': 'url(' + $props.review.profile_photo_url + ')'
             }
           }, null, 4
           /* STYLE */
