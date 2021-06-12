@@ -2,7 +2,7 @@
     <app-layout>
         <div class="bg-cover bg-center text-white pb-2" :style="{'background-image':'linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(https://image.tmdb.org/t/p/w500' + movie.backdrop_path + ')'}">
             <inertia-link :href="'/user/' + review.user_id" class="p-5 pb-0 flex items-center text-3xl">
-                <div class="bg-blue-primary rounded-full bg-cover bg-center p-10 inline-block mr-3" :style="{'background-image':'url('+ user.profile_photo_url + ')'}"></div>
+                <div class="bg-blue-primary rounded-full bg-cover bg-center p-10 inline-block mr-3" :style="{'background-image':'url('+ userDetails.profile_photo_url + ')'}"></div>
                 <div>
                     <div class="flex flex-wrap justify-between">
                         <p class="text-lg">{{ friendlyDate(review.created_at) }}</p>
@@ -40,10 +40,10 @@
                 <p v-bind:key="line" v-for="line in (review.review).split('\n')">{{line}}<br></p>
             </div>
         </div>
-        <div class="w-full text-center">
+        <div v-if="deletePermissions == 1" class="w-full text-center">
             <input v-on:click="confirmingUserDeletion = !confirmingUserDeletion" class="m-5 cursor-pointer transition-all duration-200 bg-purple hover:bg-purpleDark text-white p-3 pl-10 pr-10 text-2xl rounded-full" type="button" value="Delete">
         </div>
-        <form @submit.prevent="onSubmit()" v-on:click="confirmingUserDeletion = !confirmingUserDeletion" v-show="confirmingUserDeletion" id="leave-community-form" class="min-w-screen h-screen animated fadeIn faster fixed left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-blue-primary bg-opacity-70">
+        <form v-if="deletePermissions == 1" @submit.prevent="onSubmit()" v-on:click="confirmingUserDeletion = !confirmingUserDeletion" v-show="confirmingUserDeletion" id="leave-community-form" class="min-w-screen h-screen animated fadeIn faster fixed left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-blue-primary bg-opacity-70">
             <div v-on:click="confirmingUserDeletion = !confirmingUserDeletion" class="bg-white rounded-2xl h-64 max-w-3/4 p-5 text-center flex flex-col justify-center items-center">
                 <input type="hidden" name="_token" :value="csrf">
                 <h3 class="text-2xl">Are you sure you want to delete this review?</h3>
@@ -78,8 +78,13 @@
                 type: Array,
                 required: false,
             },
-            user: {
-
+            userDetails: {
+                type: Array,
+                required: false,
+            },
+            deletePermissions: {
+                type: String,
+                required: true,
             },
             errors: {
                 type: Array,
@@ -95,16 +100,18 @@
                 return date;
             },
             onSubmit() {
-                axios.post('/movie/' + this.movie.id + '/review/' + this.review.id + '/delete', {
-                }).then((res) => {
-                    if(res.status === 200){
-                        window.location.href = "/diary"; //there should be a better way to do this
-                        this.$router.push('/diary');
-                    }
-                    console.log('deleted');
-                }).catch((err) => {
-                    this.errors = [];
-                })
+                if(this.reviewPermissions == 1){
+                    axios.post('/movie/' + this.movie.id + '/review/' + this.review.id + '/delete', {
+                    }).then((res) => {
+                        if(res.status === 200){
+                            window.location.href = "/diary"; //there should be a better way to do this
+                            this.$router.push('/diary');
+                        }
+                        console.log('deleted');
+                    }).catch((err) => {
+                        this.errors = [];
+                    })
+                }
             },
         },
     };

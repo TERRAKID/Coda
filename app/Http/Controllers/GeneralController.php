@@ -102,6 +102,6 @@ class GeneralController extends Controller
             ->with('reviewMovie', $reviewMovie)
             ->with('reviewStatus', $reviewStatus)
             ->with('popular', $popular)
-            ->with('user', $user);
+            ->with('userDetails', $user);
     }
 }

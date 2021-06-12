@@ -192,8 +192,6 @@ class MovieController extends Controller
                 'users.name',
                 'users.profile_photo_path',
             ]);
-
-            $user = User::where('id', '=', $review['0']['user_id'])->first();
         }
         else{
             $review = MovieRating::join('movie', 'movie.id', '=', 'movie_ratings.movie_id')
@@ -212,15 +210,22 @@ class MovieController extends Controller
                 'users.profile_photo_path',
             ]);
         }
-        
+
+        $user = User::where('id', '=', $review['0']['user_id'])->first();
+        if($user['id'] == $currentUser){
+            $deletePermissions = 1;
+        }
+        else{
+            $deletePermissions = 0;
+        }
         $review = $review[0];
-        //dd($review);
         $movie = (new TMDBController)->fetchMovieById($review['tmdb_id']);
         
         return Inertia::render('Movie/ReviewShow')
             ->with('review', $review)
-            ->with('user', $user)
-            ->with('movie', $movie);
+            ->with('userDetails', $user)
+            ->with('movie', $movie)
+            ->with('deletePermissions', $deletePermissions);
     }
 /**-FUNCTION-07----------------------------------------------------------*/
     public function moviePage($movieId){
@@ -343,11 +348,11 @@ class MovieController extends Controller
 
         $friendReviews = MovieRating::join('user_friend', 'user_friend.user_id', '=', 'movie_ratings.user_id')
             ->join('users', 'users.id', '=', 'movie_ratings.user_id')
-            ->where('movie_ratings.review', '!=', '')
-            ->where('movie_ratings.active', '=', '1')
-            ->where('user_friend.accepted', '=', '1')
             ->where(function ($query) use ($CodaMovieId){
-                $query->where('movie_ratings.movie_id', '=', $CodaMovieId);
+                $query->where('movie_ratings.movie_id', '=', $CodaMovieId)
+                ->where('movie_ratings.review', '!=', '')
+                ->where('movie_ratings.active', '=', '1')
+                ->where('user_friend.accepted', '=', '1');
             })
             ->where(function ($query) use ($currentUser){
                 $query->where('user_friend.friend_id', '=', $currentUser)
@@ -361,10 +366,23 @@ class MovieController extends Controller
                 'movie_ratings.review',
                 'movie_ratings.created_at',
             ]);
+        $users = [];
+
+        foreach($friendReviews as $review){
+            $user = User::where('id', '=', $review['user_id'])->first();
+            array_push($users, $user);
+        }
+
         $movie = (new TMDBController)->fetchMovieById($movieId);
+        $reviewCount = count($friendReviews);
+
+        if($reviewCount == 0){
+            $friendReviews = null;
+        }
 
         return Inertia::render('Movie/AllReviewsShow')
             ->with('reviews', $friendReviews)
+            ->with('users', $users)
             ->with('movie', $movie);
     }
 /**-FUNCTION-08----------------------------------------------------------*/

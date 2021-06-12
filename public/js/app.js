@@ -18240,7 +18240,7 @@ __webpack_require__.r(__webpack_exports__);
       type: Array,
       required: true
     },
-    user: {
+    userDetails: {
       type: Array,
       required: false
     }
@@ -18592,7 +18592,14 @@ __webpack_require__.r(__webpack_exports__);
       type: Array,
       required: false
     },
-    user: {},
+    userDetails: {
+      type: Array,
+      required: false
+    },
+    deletePermissions: {
+      type: String,
+      required: true
+    },
     errors: {
       type: Array,
       required: false
@@ -18608,17 +18615,19 @@ __webpack_require__.r(__webpack_exports__);
     onSubmit: function onSubmit() {
       var _this = this;
 
-      axios.post('/movie/' + this.movie.id + '/review/' + this.review.id + '/delete', {}).then(function (res) {
-        if (res.status === 200) {
-          window.location.href = "/diary"; //there should be a better way to do this
+      if (this.reviewPermissions == 1) {
+        axios.post('/movie/' + this.movie.id + '/review/' + this.review.id + '/delete', {}).then(function (res) {
+          if (res.status === 200) {
+            window.location.href = "/diary"; //there should be a better way to do this
 
-          _this.$router.push('/diary');
-        }
+            _this.$router.push('/diary');
+          }
 
-        console.log('deleted');
-      })["catch"](function (err) {
-        _this.errors = [];
-      });
+          console.log('deleted');
+        })["catch"](function (err) {
+          _this.errors = [];
+        });
+      }
     }
   }
 });
@@ -23105,7 +23114,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
             "class": "bg-blue-primary rounded-full bg-cover bg-center h-16 w-16 inline-block mr-3",
             style: {
-              'background-image': 'url(' + $props.user.profile_photo_url + ')'
+              'background-image': 'url(' + $props.userDetails.profile_photo_url + ')'
             }
           }, null, 4
           /* STYLE */
@@ -24213,6 +24222,7 @@ var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 );
 
 var _hoisted_15 = {
+  key: 0,
   "class": "w-full text-center"
 };
 
@@ -24242,7 +24252,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
             "class": "bg-blue-primary rounded-full bg-cover bg-center p-10 inline-block mr-3",
             style: {
-              'background-image': 'url(' + $props.user.profile_photo_url + ')'
+              'background-image': 'url(' + $props.userDetails.profile_photo_url + ')'
             }
           }, null, 4
           /* STYLE */
@@ -24332,14 +24342,15 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         ), _hoisted_14]);
       }), 128
       /* KEYED_FRAGMENT */
-      ))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+      ))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), $props.deletePermissions == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
         onClick: _cache[1] || (_cache[1] = function ($event) {
           return $data.confirmingUserDeletion = !$data.confirmingUserDeletion;
         }),
         "class": "m-5 cursor-pointer transition-all duration-200 bg-purple hover:bg-purpleDark text-white p-3 pl-10 pr-10 text-2xl rounded-full",
         type: "button",
         value: "Delete"
-      })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("form", {
+      })])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.deletePermissions == 1 ? (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("form", {
+        key: 1,
         onSubmit: _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
           return $options.onSubmit();
         }, ["prevent"])),
@@ -24377,7 +24388,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "class": "bg-white underline cursor-pointer"
       })])], 544
       /* HYDRATE_EVENTS, NEED_PATCH */
-      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.confirmingUserDeletion]])];
+      )), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.confirmingUserDeletion]]) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
     }),
     _: 1
     /* STABLE */
