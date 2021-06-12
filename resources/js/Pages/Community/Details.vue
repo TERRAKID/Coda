@@ -20,7 +20,7 @@
             <div>
                 <inertia-link v-for="(member, index) in communityMembers" :key="index" :href="'/user/' + member.id" class="m-4 inline-block w-48">
                     <div class="flex inline-block">
-                        <div class="bg-blue-primary rounded-full bg-cover p-8 inline-block mr-3" :style="{'background-image':'url(/storage/' + member.profile_photo_path + ')'}"></div>
+                        <div class="bg-blue-primary rounded-full bg-cover bg-center p-8 inline-block mr-3" :style="{'background-image':'url(/storage/' + member.profile_photo_path + ')'}"></div>
                         <p class="mt-4 text-black text-lg truncate">{{ member.name }}</p>
                     </div>
                 </inertia-link>

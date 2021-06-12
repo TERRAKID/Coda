@@ -22472,7 +22472,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         }, {
           "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
             return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-              "class": "bg-blue-primary rounded-full bg-cover p-8 inline-block mr-3",
+              "class": "bg-blue-primary rounded-full bg-cover bg-center p-8 inline-block mr-3",
               style: {
                 'background-image': 'url(/storage/' + member.profile_photo_path + ')'
               }
@@ -23096,7 +23096,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
             "class": "bg-blue-primary rounded-full bg-cover bg-center h-16 w-16 inline-block mr-3",
             style: {
-              'background-image': 'url(' + $props.review.profile_photo_url + ')'
+              'background-image': 'url(/storage/' + $props.review.profile_photo_path + ')'
             }
           }, null, 4
           /* STYLE */
@@ -23279,7 +23279,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                 return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
                   "class": "h-16 w-16 rounded-full bg-center bg-cover bg-blue-primary",
                   style: {
-                    'background-image': 'url(' + review.profile_url + ')'
+                    'background-image': 'url(/storage/' + review.profile_photo_path + ')'
                   }
                 }, null, 4
                 /* STYLE */
@@ -24231,7 +24231,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
             "class": "bg-blue-primary rounded-full bg-cover bg-center p-10 inline-block mr-3",
             style: {
-              'background-image': 'url(' + $props.review.profile_photo_url + ')'
+              'background-image': 'url(/storage/' + $props.review.profile_photo_path + ')'
             }
           }, null, 4
           /* STYLE */
