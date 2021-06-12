@@ -344,7 +344,8 @@ class MovieController extends Controller
         $friendReviews = MovieRating::join('user_friend', 'user_friend.user_id', '=', 'movie_ratings.user_id')
             ->join('users', 'users.id', '=', 'movie_ratings.user_id')
             ->where('movie_ratings.review', '!=', '')
-            ->where('movie_ratings.accepted', '=', '1')
+            ->where('movie_ratings.active', '=', '1')
+            ->where('user_friend.accepted', '=', '1')
             ->where(function ($query) use ($CodaMovieId){
                 $query->where('movie_ratings.movie_id', '=', $CodaMovieId);
             })
