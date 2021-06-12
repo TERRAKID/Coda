@@ -7,12 +7,11 @@
             <div class="bg-green p-4 text-white text-xl">
                 <h2>Your logged movies</h2>
             </div>
-            <div v-for="(review, index) in reviews" :key="index">
-                <inertia-link v-if="review.view_date != null" :href="'/movie/' + movie[index].id + '/review/' + review.id">
-                    <div v-if="monthYear(review.view_date) !=  monthYearCheck" class="bg-purple text-white text-2xl p-8 pt-2 pb-2">
-                        <h2>{{ monthYear(review.view_date) }}</h2>
-                        {{ setCheck(monthYear(review.view_date)) }}
+            <div v-for="(monthYear, index) in reviews" :key="index">
+                    <div class="bg-purple text-white text-2xl p-8 pt-2 pb-2">
+                        <h2>{{ this.monthYear(index) }}</h2>
                     </div>
+                <inertia-link v-for="(review, index) in monthYear" :key="index" :href="'/movie/' + movie[index].id + '/review/' + review.id">
                     <div class="flex justify-between mt-5 mb-5">
                         <div class="flex">
                             <div class="flex items-center">
@@ -89,13 +88,13 @@
             monthYear(str){
                 var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-                var dateArray = str.substring(0, 10).split("-");
+                var dateArray = str.substring(0, 7).split("-");
                 dateArray.reverse();
                 
-                return months[dateArray[1] - 1] + ' ' + dateArray[2];
+                return months[dateArray[0] - 1] + ' ' + dateArray[1];
             },
             setCheck(str){
-                    this.monthYearCheck = str;
+                this.monthYearCheck = str;
                 
             }
         },

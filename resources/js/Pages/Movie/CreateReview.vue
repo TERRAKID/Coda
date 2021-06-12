@@ -15,7 +15,10 @@
             <input type="hidden" name="_token" :value="csrf">
             <div>
                 <p v-if="this.errors.length" class="m-5 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">{{ this.errors['0'] }}</p>
-                <p v-if="this.success.length" class="m-5 bg-green text-white border border-greenDark text-green-700 px-4 py-3 rounded" role="alert">{{ this.success['0'] }}</p>
+                <div v-if="this.success.length" class="m-5 bg-successGreen text-successGreenBorder border border-successGreenBorder text-green-700 px-4 py-3 rounded">
+                    <p role="alert">Your review was submitted successfully</p>
+                    <p class="mt-1"><inertia-link class="underline" href="/diary">Return to diary</inertia-link> or <inertia-link class="underline" href="/movie/search" >Create another review</inertia-link></p>
+                </div>
 
                 <label for="view_date" class="p-5 bg-blue-primary block flex items-center justify-between text-black text-2xl mb-3">
                     <h3 class="text-white mr-5">View date:</h3>
@@ -126,19 +129,22 @@
                     review: this.review,
                     notes: this.notes,
                 }).then((res) => {
-                    this.success.push('Created review successfully');
-                            window.location.href = "/diary/"; //there should be a better way to do this
-                    this.$router.push('/diary');
+                    console.log(res.status);
+                    if(res.status === 200){
+                        this.success.push('Created review successfully');
+                        window.scrollTo({top: 0, behavior: 'smooth'});
+                        this.errors = [];
+                    }
                 }).catch((err) => {
                     this.errors = [];
                     if(!this.view_date.length){
                         this.errors.push('Please enter a date');
+                        window.scrollTo({top: 0, behavior: 'smooth'});
                     }
                     if(!this.rating.length){
                         this.errors.push('Please enter a rating');
+                        window.scrollTo({top: 0, behavior: 'smooth'});
                     }
-                    console.log(this.errors);
-                    console.log(err)
                 })
             },
         },

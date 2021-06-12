@@ -17,7 +17,7 @@
             <h3 class="text-3xl mb-5">There are no written reviews for {{ movie.title }} right now.</h3>
             <inertia-link :href="'/movie/' + movie.id" class="text-2xl underline">Return to the movie page</inertia-link>
         </div>
-        <div v-else class="p-5 pt-0">
+        <div v-else class="p-5 pt-0 max-w-4xl">
             <inertia-link v-for="(review, index) in reviews" :key="index" :href="'/movie/' + movie.id + '/review/' + review.id" class="block border-b border-blue-primary mb-5">
                 <div class="flex items-center justify-between">
                     <inertia-link :href="'/user/' + review.user_id" class="flex items-center">
@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="m-5">
-                    <p>{{ review.review }}</p>
+                    <p v-bind:key="line" v-for="line in (review.review).split('\n')">{{line}}<br></p>
                 </div>
             </inertia-link>
         </div>

@@ -7,6 +7,7 @@ use App\Models\Community;
 use App\Models\CommunityMember;
 use App\Models\UserFriend;
 use App\Models\MovieRating;
+use App\Models\Movie;
 use App\Traits\UploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -54,12 +55,15 @@ class GeneralController extends Controller
 
         $review = User::join('movie_ratings', 'movie_ratings.user_id', '=', 'users.id')
             ->join('movie', 'movie.id', '=', 'movie_ratings.movie_id')
+            ->where('movie_ratings.active', '=', '1')
+            ->where('movie_ratings.review', '!=', '')
             ->orderBy('movie_ratings.created_at', 'DESC')
             ->take(1)
             ->get([
-                'users.id', 
                 'users.name', 
-                'users.profile_photo_path', 
+                'users.profile_photo_path',
+                'movie_ratings.id',
+                'movie_ratings.user_id',
                 'movie_ratings.created_at', 
                 'movie_ratings.movie_id', 
                 'movie_ratings.watched', 
@@ -77,7 +81,18 @@ class GeneralController extends Controller
             $reviewMovie = 0;
         }
 
+        //This adds the movie to our database in case it doesn't exist yet
         $popular = (new TMDBController)->popularMovies();
+        foreach($popular as $movie){
+            $movieExist = Movie::where('tmdb_id', '=', $movie['id'])->count();
+            if(!$movieExist){
+                $addMovie = new Movie;
+                $addMovie->title = $movie['title'];
+                $addMovie->tmdb_id = $movie['id'];
+
+                $addMovie->save();
+            }
+        }
         
         return Inertia::render('Dashboard')
             ->with('recCommunities', $communitiesWithoutCurrentUserAsMember)

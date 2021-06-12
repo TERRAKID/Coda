@@ -30,13 +30,15 @@
                 </div>
             </inertia-link>
         </div>
-        <div class="p-5">
-            <h3 class="border-b border-blue-primary mb-2 text-lg">Review</h3>
-            <p>{{ review.review }}</p>
-        </div>
-        <div v-if="review.notes" class="p-5 pt-0">
-            <h3 class="border-b border-blue-primary mb-2 text-lg">Notes</h3>
-            <p>{{ review.notes }}</p>
+        <div class="md:grid grid-cols-2 grid-rows-1">
+            <div v-if="review.notes" class="p-5 col-start-2">
+                <h3 class="border-b border-blue-primary mb-2 text-lg">Notes</h3>
+                <p v-bind:key="line" v-for="line in (review.notes).split('\n')">{{line}}<br></p>
+            </div>
+            <div class="p-5 pt-0 md:pt-5 col-start-1 row-start-1">
+                <h3 class="border-b border-blue-primary mb-2 text-lg">Review</h3>
+                <p v-bind:key="line" v-for="line in (review.review).split('\n')">{{line}}<br></p>
+            </div>
         </div>
         <div class="w-full text-center">
             <input v-on:click="confirmingUserDeletion = !confirmingUserDeletion" class="m-5 cursor-pointer transition-all duration-200 bg-purple hover:bg-purpleDark text-white p-3 pl-10 pr-10 text-2xl rounded-full" type="button" value="Delete">
@@ -90,14 +92,11 @@
                 return date;
             },
             onSubmit() {
-                let self = this;
-
                 axios.post('/movie/' + this.movie.id + '/review/' + this.review.id + '/delete', {
                 }).then((res) => {
+                    if(res.status === 200){
                         window.location.href = "/diary"; //there should be a better way to do this
-                    const status = JSON.parse(res.data.response.status);
-                    if(status == '200'){
-                        self.$router.push('/diary');
+                        this.$router.push('/diary');
                     }
                     console.log('deleted');
                 }).catch((err) => {

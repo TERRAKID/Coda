@@ -38,27 +38,31 @@ class MovieController extends Controller
         $reviews = Movie::join('movie_ratings', 'movie_ratings.movie_id', '=', 'movie.id')
             ->where('movie_ratings.user_id', '=', $currentUser)
             ->where('movie_ratings.active', '=', '1')
+            ->where('movie_ratings.view_date', '!=', '')
             ->orderBy('movie_ratings.view_date', 'desc')
             ->get();
 
         $movieDetails = [];
+        $groupedReviews = [];
         $reviewCount = count($reviews);
 
         if($reviewCount == 0){
-            $reviews = null;
+            $groupedReviews = null;
         }
         else{
-    
             foreach($reviews as $movie){
                 $movieId = $movie->tmdb_id;
                 $movie = (new TMDBController)->fetchMovieById($movieId);
                 array_push($movieDetails, $movie);
             }
-
+            foreach($reviews as $key => $item){
+                $groupedReviews[substr($item['view_date'], 0, -3)][$key] = $item;
+            }
+            //dd($groupedReviews);
         }
 
         return Inertia::render('Movie/Diary')
-            ->with('reviews', $reviews)
+            ->with('reviews', $groupedReviews)
             ->with('movie', $movieDetails);
     }
 
@@ -73,7 +77,7 @@ class MovieController extends Controller
         $results = (new TMDBController)->fetchMovieByName($search);
         $genres = TMDBController::fetchGenres();
 
-        //this adds the title and 
+        //This adds the movie to our database in case it doesn't exist yet
         if($search){
             foreach($results as $movie){
                 $movieExist = Movie::where('tmdb_id', '=', $movie['id'])->count();
@@ -207,8 +211,8 @@ class MovieController extends Controller
             ]);
         }
         
-        
         $review = $review[0];
+        //dd($review);
         $movie = (new TMDBController)->fetchMovieById($review['tmdb_id']);
         
         return Inertia::render('Movie/ReviewShow')
@@ -366,6 +370,6 @@ class MovieController extends Controller
             $review->save();
         }
 
-        return Inertia::render('Movie/Diary');
+        return redirect()->to('/diary')->send();
     }
 }
