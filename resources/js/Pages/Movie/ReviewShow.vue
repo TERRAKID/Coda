@@ -2,7 +2,7 @@
     <app-layout>
         <div class="bg-cover bg-center text-white pb-2" :style="{'background-image':'linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(https://image.tmdb.org/t/p/w500' + movie.backdrop_path + ')'}">
             <inertia-link :href="'/user/' + review.user_id" class="p-5 pb-0 flex items-center text-3xl">
-                <div class="bg-blue-primary rounded-full bg-cover bg-center p-10 inline-block mr-3" :style="{'background-image':'url(/storage/' + review.profile_photo_url + ')'}"></div>
+                <div class="bg-blue-primary rounded-full bg-cover bg-center p-10 inline-block mr-3" :style="{'background-image':'url('+ review.profile_photo_url + ')'}"></div>
                 <div>
                     <div class="flex flex-wrap justify-between">
                         <p class="text-lg">{{ friendlyDate(review.created_at) }}</p>
