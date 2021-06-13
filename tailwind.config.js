@@ -28,6 +28,8 @@ module.exports = {
                 greenDark: '#3b7fbf',
                 black: '#212125',
                 white: '#fefdfb',
+                successGreen: '#F0FFF4',
+                successGreenBorder: '#38A169',
             },
             backgroundImage: theme => ({
                 'hero-auth': "url('/img/hero-auth.png')",
@@ -41,6 +43,7 @@ module.exports = {
                 '1/4': '25%',
                 '1/2': '50%',
                 '3/4': '75%',
+                '9/10': '90%',
                 'full': '100%',
             },
             borderRadius: {

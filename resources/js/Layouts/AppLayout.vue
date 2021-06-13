@@ -40,21 +40,11 @@
                     </div>
 
                     <!-- Search -->
-                    <div class="flex items-center relative w-full">
+                    <form @submit.prevent = "submit" class="flex items-center relative w-full">
                         <input
-                            class="
-                                rounded-full
-                                w-full
-                                h-14
-                                focus:outline-none
-                                focus:ring-0
-                                border-none
-                                pl-6
-                                pr-12
-                                text-sm
-                            "
-                            type="search"
-                            placeholder="Search movies, communities, users..."
+                            class="rounded-full w-full h-14 focus:outline-none focus:ring-0 border-none pl-6 pr-12 text-sm"
+                             type="search" name="search_movie" id="search_movie" v-model="form.search_movie"
+                            placeholder="Search movies"
                         />
                         <button
                             class="
@@ -98,7 +88,7 @@
                                 />
                             </svg>
                         </button>
-                    </div>
+                    </form>
                 </div>
             </div>
 
@@ -245,7 +235,10 @@
                                 Your movies
                             </p>
 
-                            <jet-responsive-nav-link class="hidden md:block">
+                            <jet-responsive-nav-link 
+                                :href="route('diary')"
+                                :active="route().current('diary')"
+                                class="hidden md:block">
                                 Movie diary
                             </jet-responsive-nav-link>
 
@@ -314,7 +307,7 @@
                 z-20
             "
         >
-            <inertia-link>
+            <inertia-link :href="route('diary')">
                 <img class="h-10" src="/img/diary.svg" alt="Diary"
             /></inertia-link>
             <inertia-link :href="route('dashboard')">
@@ -329,6 +322,8 @@
 
 <script>
     import JetResponsiveNavLink from "@/Jetstream/ResponsiveNavLink";
+    import { reactive } from "vue";
+    import { Inertia } from '@inertiajs/inertia';
 
     export default {
         components: {
@@ -339,6 +334,17 @@
             return {
                 showingNavigationDropdown: false,
             };
+        },
+        setup(){
+            const form = reactive({
+                search_movie: null,
+            })
+
+            function submit(){
+                Inertia.post('/movie/search', form)
+            }
+
+            return { form, submit }
         },
 
         methods: {

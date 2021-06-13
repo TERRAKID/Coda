@@ -53,7 +53,6 @@ class CommunityController extends Controller
             ->where('active', 1)
             ->count();
 
-        //dd($community);
         return Inertia::render('Community/Show')->with('community', $community)->with('isMember', $member);
     }
 
