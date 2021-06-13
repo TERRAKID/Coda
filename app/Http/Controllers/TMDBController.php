@@ -16,6 +16,16 @@ class TMDBController extends Controller
         return $movie;
     }
 
+    public function fetchMovieByName($search){
+        $apiKey = '?api_key=' . config('services.tmdb.token');
+        $query = '&query=' . $search;
+
+        $movies = Http::get('https://api.themoviedb.org/3/search/movie' . $apiKey . $query)
+            ->json(['results']);
+
+        return $movies;
+    }
+
     public function popularMovies(){
         $apiKey = '?api_key=' . config('services.tmdb.token');
 
@@ -39,16 +49,6 @@ class TMDBController extends Controller
         return $genres;
     }
 
-    public function fetchMovieByName($search){
-        $apiKey = '?api_key=' . config('services.tmdb.token');
-        $query = '&query=' . $search;
-
-        $movies = Http::get('https://api.themoviedb.org/3/search/movie' . $apiKey . $query)
-            ->json(['results']);
-
-        return $movies;
-    }
-
     public function fetchMovieCast($movieId){
         $apiKey = '?api_key=' . config('services.tmdb.token');
 
@@ -69,6 +69,21 @@ class TMDBController extends Controller
         $crew = $credits['crew'];
             
         return $crew;
+    }
+
+    public function fetchMovieTrailer($movieId){
+        $apiKey = '?api_key=' . config('services.tmdb.token');
+
+        $videos = Http::get('https://api.themoviedb.org/3/movie/' . $movieId . '/videos' . $apiKey)
+            ->json();
+
+        if($videos['results']){
+            $trailer = $videos['results']['0']['key'];
+        }
+        else{
+            $trailer = null;
+        }
+        return $trailer;
 
     }
 }

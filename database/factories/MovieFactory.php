@@ -23,6 +23,7 @@ class MovieFactory extends Factory
     {
         return [
             'title' => $this->faker->cityPrefix,
+            'tmdb_id' => $this->faker->randomDigitNotNull,
         ];
     }
 }

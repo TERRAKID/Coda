@@ -42,11 +42,13 @@
                 <h2>
                     Most recent review
                 </h2>
-                <div class="grid grid-cols-4 grid-rows-1 mt-3 gap-8">
-                    <img class="max-w-full inline-block row-span-full col-span-1" id="reviewPoster" :src="'https://image.tmdb.org/t/p/w500' + reviewMovie.poster_path" alt="">
+                <div class="grid grid-cols-4 grid-rows-1 mt-3 gap-8 mb-10">
+                    <inertia-link :href="'/movie/' + reviewMovie.id">      
+                        <img class="max-w-full inline-block row-span-full col-span-1" id="reviewPoster" :src="'https://image.tmdb.org/t/p/w500' + reviewMovie.poster_path" alt="">
+                    </inertia-link>
                     <div class="col-span-3 grid-cols-1">
-                        <div class="row-span-1 flex mb-8">
-                            <div class="bg-blue-primary rounded-full bg-cover h-16 w-16 inline-block mr-3" :style="{'background-image':'url(/storage/' + review.profile_photo_path + ')'}"></div>
+                        <inertia-link :href="'/user/' + review.user_id" class="row-span-1 flex mb-8">
+                            <div class="bg-blue-primary rounded-full bg-cover bg-center h-16 w-16 inline-block mr-3" :style="{'background-image':'url('+ userDetails.profile_photo_url + ')'}"></div>
                             <div>
                                 <h3>
                                     {{ review.name }}
@@ -55,12 +57,10 @@
                                     {{ friendlyDate(review.created_at) }}
                                 </p>
                             </div>
-                        </div>
-                        <div class="row-span-2">
-                            <p>
-                                {{ review.review }}
-                            </p>
-                        </div>
+                        </inertia-link>
+                        <inertia-link :href="'/movie/' + reviewMovie.id + '/review/' + review.id" class="row-span-2">
+                            <p v-bind:key="line" v-for="line in (review.review).split('\n')">{{line}}<br></p>
+                        </inertia-link>
                     </div>
                 </div>
             </div>
@@ -105,7 +105,11 @@
             popular: {
                 type: Array,
                 required: true,
-            }
+            },
+            userDetails: {
+                type: Array,
+                required: false
+            },
         },
         methods: {
             friendlyDate(str){
