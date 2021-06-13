@@ -88,7 +88,7 @@
                                     md:justify-self-start
                                 "
                             >
-                                <span>618</span>
+                                <span>{{ this.amountFilms }}</span>
                                 <p>films</p>
                             </div>
 
@@ -169,6 +169,7 @@
             otherUser: Object,
             isFriend: Boolean,
             amountFriends: Number,
+            amountFilms: Number,
         },
 
         data() {

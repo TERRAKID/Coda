@@ -88,7 +88,7 @@
                         md:justify-self-start
                     "
                 >
-                    <span>618</span>
+                    <span>{{ profileInfo.amountFilms }}</span>
                     <p>films</p>
                 </div>
 

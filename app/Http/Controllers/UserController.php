@@ -9,6 +9,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Http;
 use App\Models\ProfileInfo;
 use App\Models\UserFriend;
+use App\Models\MovieRating;
 
 class UserController extends Controller
 {
@@ -68,11 +69,13 @@ class UserController extends Controller
         }
 
         $amountFriends = UserFriend::where('user_id', $userId)->where('accepted', true)->get()->count();
+        $amountFilms = MovieRating::where('user_id', $userId)->where('active', true)->get()->count();
 
         return Inertia::render('User', [
             'otherUser' => $user,
             'isFriend' => $isFriend,
             'amountFriends' => $amountFriends,
+            'amountFilms' => $amountFilms,
         ]);
     }
 
@@ -106,7 +109,11 @@ class UserController extends Controller
     public function getProfileInfo()
     {
         $amountFriends = UserFriend::where('user_id', Auth::user()->id)->where('accepted', true)->get()->count();
+        $amountFilms = MovieRating::where('user_id', Auth::user()->id)->where('active', true)->get()->count();
 
-        return ['amountFriends' => $amountFriends];
+        return [
+            'amountFriends' => $amountFriends,
+            'amountFilms' => $amountFilms,
+        ];
     }
 }
