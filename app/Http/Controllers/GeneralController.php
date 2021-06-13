@@ -71,15 +71,16 @@ class GeneralController extends Controller
                 'movie_ratings.review',
                 'movie.tmdb_id',
             ]);
-        $user = User::where('id', '=', $review['0']['user_id'])->first();
 
         $reviewStatus = $review->count();
         if($reviewStatus != 0){
             $review = $review[0];
             $reviewMovie = (new TMDBController)->fetchMovieById($review['tmdb_id']);
+            $user = User::where('id', '=', $review['user_id'])->first();
         }
         else{
             $reviewMovie = 0;
+            $user = null;
         }
 
         //This adds the movie to our database in case it doesn't exist yet
