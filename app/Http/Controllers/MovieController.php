@@ -346,31 +346,39 @@ class MovieController extends Controller
         $CodaMovieId = Movie::where('tmdb_id', '=', $movieId)->get();
         $CodaMovieId = $CodaMovieId['0']['id'];
 
-        $friendReviews = MovieRating::join('user_friend', 'user_friend.user_id', '=', 'movie_ratings.user_id')
-            ->join('users', 'users.id', '=', 'movie_ratings.user_id')
-            ->where(function ($query) use ($CodaMovieId){
-                $query->where('movie_ratings.movie_id', '=', $CodaMovieId)
-                ->where('movie_ratings.review', '!=', '')
-                ->where('movie_ratings.active', '=', '1')
-                ->where('user_friend.accepted', '=', '1');
-            })
-            ->where(function ($query) use ($currentUser){
-                $query->where('user_friend.friend_id', '=', $currentUser)
-                ->orWhere('user_friend.user_id', '=', $currentUser);
-            })->get([
-                'movie_ratings.id',
-                'movie_ratings.user_id',
-                'users.name',
-                'users.profile_photo_path',
-                'movie_ratings.rating',
-                'movie_ratings.review',
-                'movie_ratings.created_at',
-            ]);
-        $users = [];
+        $friends = [];
+        $friends1 = UserFriend::where('user_friend.user_id', '=', $currentUser)
+            ->where('user_friend.accepted', '=', '1')
+            ->get('friend_id');
 
-        foreach($friendReviews as $review){
-            $user = User::where('id', '=', $review['user_id'])->first();
-            array_push($users, $user);
+        $friends2 = UserFriend::where('user_friend.friend_id', '=', $currentUser)
+            ->where('user_friend.accepted', '=', '1')
+            ->get('user_id');
+        
+        foreach($friends1 as $friend){
+            array_push($friends, $friend['friend_id']);
+        }
+        foreach($friends2 as $friend){
+            array_push($friends, $friend['user_id']);
+        }
+        $friends = array_unique($friends);
+
+        $friendReviews = [];
+        $friendDetails = [];
+
+        foreach($friends as $friend){
+            $friendReview = MovieRating::where('user_id', '=', $friend)
+                ->where('movie_ratings.movie_id', '=', $CodaMovieId)
+                ->get();
+
+            foreach($friendReview as $extractedFriendReview){
+                array_push($friendReviews, $extractedFriendReview);
+
+                $users = User::where('id', '=', $extractedFriendReview['user_id'])->get();
+                foreach($users as $user){
+                    array_push($friendDetails, $user);
+                }
+            }
         }
 
         $movie = (new TMDBController)->fetchMovieById($movieId);
@@ -382,7 +390,7 @@ class MovieController extends Controller
 
         return Inertia::render('Movie/AllReviewsShow')
             ->with('reviews', $friendReviews)
-            ->with('users', $users)
+            ->with('users', $friendDetails)
             ->with('movie', $movie);
     }
 /**-FUNCTION-08----------------------------------------------------------*/
