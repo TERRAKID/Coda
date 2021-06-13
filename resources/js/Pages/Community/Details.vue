@@ -18,10 +18,10 @@
                 <p class="text-lg place-self-end mb-5 mr-5">{{ memberCount }}/100</p>
             </div>
             <div>
-                <inertia-link v-for="(member, index) in communityMembers" :key="index" :href="'/user/' + member.id" class="m-4 inline-block w-48">
+                <inertia-link v-for="(user, index) in communityMembers" :key="index" :href="'/user/' + user.id" class="m-4 inline-block w-48">
                     <div class="flex inline-block">
-                        <div class="bg-blue-primary rounded-full bg-cover bg-center p-8 inline-block mr-3" :style="{'background-image':'url(/storage/' + member.profile_photo_path + ')'}"></div>
-                        <p class="mt-4 text-black text-lg truncate">{{ member.name }}</p>
+                        <div class="bg-blue-primary rounded-full bg-cover bg-center p-8 inline-block mr-3" :style="{'background-image':'url(' + user.profile_photo_url + ')'}"></div>
+                        <p class="mt-4 text-black text-lg truncate">{{ user.name }}</p>
                     </div>
                 </inertia-link>
             </div>
@@ -85,14 +85,24 @@
             </div>
         </div>
         <div class="w-full text-center">
-            <input v-on:click="confirmingUserDeletion = !confirmingUserDeletion" class="m-5 cursor-pointer transition-all duration-200 bg-purple hover:bg-purpleDark text-white p-3 pl-10 pr-10 text-2xl rounded-full" type="button" value="Leave Community">
+            <input v-on:click="confirmingUserLeave = !confirmingUserLeave" class="m-5 cursor-pointer transition-all duration-200 bg-purple hover:bg-purpleDark text-white p-3 pl-10 pr-10 text-2xl rounded-full" type="button" value="Leave Community">
         </div>
-        <form v-on:click="confirmingUserDeletion = !confirmingUserDeletion" v-show="confirmingUserDeletion" id="leave-community-form" :action="'/community/' + this.community.id + '/details'" method="POST" class="min-w-screen h-screen animated fadeIn faster fixed left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-blue-primary bg-opacity-70">
-            <div v-on:click="confirmingUserDeletion = !confirmingUserDeletion" class="bg-white rounded-2xl h-64 p-5 text-center flex flex-col justify-center items-center">
-                <input type="hidden" name="_token" :value="csrf">
+        <form v-on:click="confirmingUserLeave = !confirmingUserLeave" v-show="confirmingUserLeave" id="leave-community-form" :action="'/community/' + this.community.id + '/details'" method="POST" class="min-w-screen h-screen animated fadeIn faster fixed left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-blue-primary bg-opacity-70">
+            <div v-on:click="confirmingUserLeave = !confirmingUserLeave" class="bg-white rounded-2xl h-64 p-5 text-center flex flex-col justify-center items-center">
                 <h3 class="text-2xl">Are you sure you want to leave {{ this.community.name }}?</h3>
                 <input id="leave-confirm" class="m-5 cursor-pointer transition-all duration-200 bg-purple hover:bg-purpleDark text-white p-3 pl-10 pr-10 text-2xl rounded-full" type="submit" value="Leave Community">
-                <input v-on:click="confirmingUserDeletion = !confirmingUserDeletion" id="leave-cancel" type="button" value="Cancel" class="bg-white underline cursor-pointer">
+                <input v-on:click="confirmingUserLeave = !confirmingUserLeave" id="leave-cancel" type="button" value="Cancel" class="bg-white underline cursor-pointer">
+            </div>
+        </form>
+
+        <div v-if="deletePermissions == 1" class="w-full text-center">
+            <input v-on:click="confirmingCommunityDeletion = !confirmingCommunityDeletion" class="m-5 cursor-pointer transition-all duration-200 bg-purple hover:bg-purpleDark text-white p-3 pl-10 pr-10 text-2xl rounded-full" type="button" value="Delete">
+        </div>
+        <form v-if="deletePermissions == 1" @submit.prevent="onSubmit()" v-on:click="confirmingCommunityDeletion = !confirmingCommunityDeletion" v-show="confirmingCommunityDeletion" id="leave-community-form" class="min-w-screen h-screen animated fadeIn faster fixed left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-blue-primary bg-opacity-70">
+            <div v-on:click="confirmingCommunityDeletion = !confirmingCommunityDeletion" class="bg-white rounded-2xl h-64 max-w-3/4 p-5 text-center flex flex-col justify-center items-center">
+                <h3 class="text-2xl">Are you sure you want to delete this review?</h3>
+                <input @click="submitForm" id="leave-confirm" class="m-5 cursor-pointer transition-all duration-200 bg-purple hover:bg-purpleDark text-white p-3 pl-10 pr-10 text-2xl rounded-full" type="submit" value="Delete">
+                <input v-on:click="confirmingCommunityDeletion = !confirmingCommunityDeletion" id="leave-cancel" type="button" value="Cancel" class="bg-white underline cursor-pointer">
             </div>
         </form>
     </div>
@@ -110,9 +120,9 @@ export default{
     },
     data(){
         return{
-            confirmingUserDeletion: false,
+            confirmingUserLeave: false,
+            confirmingCommunityDeletion: false,
             inviteVis: false,
-            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
         }
     },
     setups(){
@@ -146,9 +156,25 @@ export default{
         errors: {
             type: Array,
             required: false,
-        }
+        },
+        deletePermissions: {
+            type: String,
+            required: true,
+        },
     },
     methods: {
+        onSubmit() {
+                axios.post('/community/' + this.community.id + '/delete', {
+                }).then((res) => {
+                    if(res.status === 200){
+                        window.location.href = "/dashboard"; //there should be a better way to do this
+                        this.$router.push('/dashboard');
+                    }
+                    console.log('deleted');
+                }).catch((err) => {
+                    this.errors = [];
+                })
+        },
     }
 }
 </script>

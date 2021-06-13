@@ -23,6 +23,7 @@ class CommunityFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
+            'created_by' => $this->faker->randomDigitNotNull,
         ];
     }
 }

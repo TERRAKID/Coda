@@ -55,6 +55,7 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/chat/{userId}', [DirectM
 /** Communities */
 Route::middleware(['auth:sanctum', 'verified'])->get('/community/create', [CommunityController::class, 'createCommunityShowUsers']);
 Route::middleware(['auth:sanctum', 'verified'])->post('/community/create', [CommunityController::class, 'createCommunity']);
+Route::middleware(['auth:sanctum', 'verified'])->post('/community/{id}/delete', [CommunityController::class, 'deleteCommunity']);
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/community', [CommunityController::class, 'showAllCommunities'])->name('community');
 Route::middleware(['auth:sanctum', 'verified'])->get('/community/{id}', [CommunityController::class, 'showCommunity']);
@@ -88,5 +89,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/movie/{movieId}/review/{r
 Route::middleware(['auth:sanctum', 'verified'])->get('/movie/{movieId}/reviews/friends', [MovieController::class, 'showFriendReviews']);
 Route::middleware(['auth:sanctum', 'verified'])->get('/movie/{movieId}/reviews', [MovieController::class, 'showAllReviews']);
 
+/** Movie Extras */
 Route::middleware(['auth:sanctum', 'verified'])->get('/reviews/recent', [MovieController::class, 'recentReviews']);
+Route::middleware(['auth:sanctum', 'verified'])->get('/random', [MovieController::class, 'randomMovie'])->name('randomMovie');
 

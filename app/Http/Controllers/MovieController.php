@@ -437,6 +437,7 @@ class MovieController extends Controller
                 array_push($movies, $movie);
             }
         }
+
         else{
             $recentReviews = null;
         }
@@ -446,4 +447,21 @@ class MovieController extends Controller
             ->with('movie', $movies)
             ->with('users', $users);
     }
+/**-FUNCTION-10----------------------------------------------------------*/
+    public function randomMovie(){
+        $randomMovie = TMDBController::fetchRandomMovie();
+
+        $movieExist = Movie::where('tmdb_id', '=', $randomMovie['id'])->count();
+        if(!$movieExist){
+            $addMovie = new Movie;
+            $addMovie->title = $randomMovie['title'];
+            $addMovie->tmdb_id = $randomMovie['id'];
+
+            $addMovie->save();
+        }
+
+        return Inertia::render('Movie/RandomMovie')
+            ->with('movie', $randomMovie);
+    }
 }
+

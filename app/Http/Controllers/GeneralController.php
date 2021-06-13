@@ -46,12 +46,15 @@ class GeneralController extends Controller
 
         // 5. Finally, we retrieve the details of the relevant communities
         foreach($communityIds as $communityId){
-            $result = Community::where('id', '=', $communityId)->get();
+            $result = Community::where('id', '=', $communityId)
+                ->where('community.active', '=', '1')
+                ->get();
             array_push($communitiesWithoutCurrentUserAsMember, $result['0']);
         }
 
         $userCommunities = Community::join('community_member', 'community_member.community_id', '=', 'community.id')
             ->where('community_member.active', '=', '1')
+            ->where('community.active', '=', '1')
             ->where('community_member.user_id', '=', $currentUser)
             ->take(5)
             ->get();
@@ -63,6 +66,7 @@ class GeneralController extends Controller
         $inviteCommunities = Community::join('community_member', 'community_member.community_id', '=', 'community.id')
             ->where('community_member.invited', '=', '1')
             ->where('community_member.active', '=', '0')
+            ->where('community.active', '=', '1')
             ->where('community_member.user_id', '=', $currentUser)
             ->take(5)
             ->get();
