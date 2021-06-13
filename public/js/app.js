@@ -18580,7 +18580,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       confirmingUserDeletion: false,
       monthYearCheck: null,
-      stars: null
+      stars: null,
+      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute("content")
     };
   },
   props: {
@@ -18615,19 +18616,17 @@ __webpack_require__.r(__webpack_exports__);
     onSubmit: function onSubmit() {
       var _this = this;
 
-      if (this.reviewPermissions == 1) {
-        axios.post('/movie/' + this.movie.id + '/review/' + this.review.id + '/delete', {}).then(function (res) {
-          if (res.status === 200) {
-            window.location.href = "/diary"; //there should be a better way to do this
+      axios.post('/movie/' + this.movie.id + '/review/' + this.review.id + '/delete', {}).then(function (res) {
+        if (res.status === 200) {
+          window.location.href = "/diary"; //there should be a better way to do this
 
-            _this.$router.push('/diary');
-          }
+          _this.$router.push('/diary');
+        }
 
-          console.log('deleted');
-        })["catch"](function (err) {
-          _this.errors = [];
-        });
-      }
+        console.log('deleted');
+      })["catch"](function (err) {
+        _this.errors = [];
+      });
     }
   }
 });
@@ -24367,7 +24366,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
         type: "hidden",
         name: "_token",
-        value: _ctx.csrf
+        value: $data.csrf
       }, null, 8
       /* PROPS */
       , ["value"]), _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {

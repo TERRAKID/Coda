@@ -67,6 +67,9 @@
                 confirmingUserDeletion: false,
                 monthYearCheck: null,
                 stars: null,
+                csrf: document
+                    .querySelector('meta[name="csrf-token"]')
+                    .getAttribute("content"),
             };
         },
         props: {
@@ -100,7 +103,6 @@
                 return date;
             },
             onSubmit() {
-                if(this.reviewPermissions == 1){
                     axios.post('/movie/' + this.movie.id + '/review/' + this.review.id + '/delete', {
                     }).then((res) => {
                         if(res.status === 200){
@@ -111,7 +113,6 @@
                     }).catch((err) => {
                         this.errors = [];
                     })
-                }
             },
         },
     };
