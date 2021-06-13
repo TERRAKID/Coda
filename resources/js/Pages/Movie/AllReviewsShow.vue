@@ -27,7 +27,7 @@
                     <inertia-link :href="'/user/' + review.user_id" class="flex items-center">
                         <div class="h-16 w-16 rounded-full bg-center bg-cover bg-blue-primary" :style="{'background-image':'url('+ this.users[index].profile_photo_url + ')'}"></div>
                         <div class="ml-3">
-                            <h3>{{ review.name }}</h3>
+                            <h3>{{ users[index].name }}</h3>
                             <p>{{ friendlyDate(review.created_at) }}</p>
                         </div>
                     </inertia-link>
