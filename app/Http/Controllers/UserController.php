@@ -69,13 +69,37 @@ class UserController extends Controller
         }
 
         $amountFriends = UserFriend::where('user_id', $userId)->where('accepted', true)->get()->count();
-        $amountFilms = MovieRating::where('user_id', $userId)->where('active', true)->get()->count();
+        $films = MovieRating::where('user_id', $userId)->where('active', true)->get();
+
+        $amountFilms = $films->count();
+        $filmIds = $films->pluck('id')->toArray();
+        $genres = array();
+        $favoriteGenre = false;
+
+        foreach ($filmIds as $filmId) {
+            $response = Http::get('https://api.themoviedb.org/3/movie/'. $filmId .'?api_key=' . config('services.tmdb.token') . '&language=en-US');
+
+            $filmGenres = $response->json()['genres'];
+
+            if (isset($filmGenres[0]['name'])) {
+                foreach ($filmGenres as $filmGenre) {
+                    array_push($genres, $filmGenre['name']);
+                }
+            }
+        }
+
+        $values = array_count_values($genres);
+        arsort($values);
+        if (isset(array_keys($values)[0])) {
+            $favoriteGenre = array_keys($values)[0];
+        }
 
         return Inertia::render('User', [
             'otherUser' => $user,
             'isFriend' => $isFriend,
             'amountFriends' => $amountFriends,
             'amountFilms' => $amountFilms,
+            'favoriteGenre' => $favoriteGenre,
         ]);
     }
 
@@ -109,11 +133,36 @@ class UserController extends Controller
     public function getProfileInfo()
     {
         $amountFriends = UserFriend::where('user_id', Auth::user()->id)->where('accepted', true)->get()->count();
-        $amountFilms = MovieRating::where('user_id', Auth::user()->id)->where('active', true)->get()->count();
+        $films = MovieRating::where('user_id', Auth::user()->id)->where('active', true)->get();
+
+        $amountFilms = $films->count();
+        $filmIds = $films->pluck('id')->toArray();
+        $genres = array();
+        $favoriteGenre = false;
+
+        foreach ($filmIds as $filmId) {
+            $response = Http::get('https://api.themoviedb.org/3/movie/'. $filmId .'?api_key=' . config('services.tmdb.token') . '&language=en-US');
+
+            $filmGenres = $response->json()['genres'];
+
+            if (isset($filmGenres[0]['name'])) {
+                foreach ($filmGenres as $filmGenre) {
+                    array_push($genres, $filmGenre['name']);
+                }
+            }
+        }
+
+        $values = array_count_values($genres);
+        arsort($values);
+        if (isset(array_keys($values)[0])) {
+            $favoriteGenre = array_keys($values)[0];
+        }
+
 
         return [
             'amountFriends' => $amountFriends,
             'amountFilms' => $amountFilms,
+            'favoriteGenre' => $favoriteGenre,
         ];
     }
 }

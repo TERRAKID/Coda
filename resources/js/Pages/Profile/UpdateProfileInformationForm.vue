@@ -88,7 +88,9 @@
                         md:justify-self-start
                     "
                 >
-                    <span>{{ profileInfo.amountFilms }}</span>
+                    <span>{{
+                        profileInfo.amountFilms ? profileInfo.amountFilms : 0
+                    }}</span>
                     <p>films</p>
                 </div>
 
@@ -101,7 +103,11 @@
                         md:col-start-3
                     "
                 >
-                    <span>{{ profileInfo.amountFriends }}</span>
+                    <span>{{
+                        profileInfo.amountFriends
+                            ? profileInfo.amountFriends
+                            : 0
+                    }}</span>
                     <p>friends</p>
                 </div>
 
@@ -159,6 +165,14 @@
             </jet-button>
         </template>
     </jet-form-section>
+    <p class="text-xl my-4">
+        Favorite genre:
+        {{
+            profileInfo.favoriteGenre
+                ? profileInfo.favoriteGenre
+                : "no genre found"
+        }}
+    </p>
 </template>
 
 <script>

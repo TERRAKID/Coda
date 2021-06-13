@@ -88,7 +88,9 @@
                                     md:justify-self-start
                                 "
                             >
-                                <span>{{ this.amountFilms }}</span>
+                                <span>{{
+                                    this.amountFilms ? this.amountFilms : 0
+                                }}</span>
                                 <p>films</p>
                             </div>
 
@@ -101,7 +103,9 @@
                                     md:col-start-2
                                 "
                             >
-                                <span>{{ this.amountFriends }}</span>
+                                <span>{{
+                                    this.amountFriends ? this.amountFriends : 0
+                                }}</span>
                                 <p>friends</p>
                             </div>
 
@@ -151,7 +155,16 @@
                         md:p-8
                         min-h-screen
                     "
-                ></div>
+                >
+                    <p class="text-xl">
+                        Favorite genre:
+                        {{
+                            this.favoriteGenre
+                                ? this.favoriteGenre
+                                : "no genre found"
+                        }}
+                    </p>
+                </div>
             </div>
         </div>
     </app-layout>
@@ -170,6 +183,7 @@
             isFriend: Boolean,
             amountFriends: Number,
             amountFilms: Number,
+            favoriteGenre: String,
         },
 
         data() {
