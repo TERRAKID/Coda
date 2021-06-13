@@ -32,7 +32,6 @@
             @submit.prevent="onSubmit()"
             class="mb-40 md:mb-0 md:grid grid-cols-2 gap-4"
         >
-            <input type="hidden" name="_token" :value="csrf" />
             <div>
                 <p
                     v-if="this.errors.length"
@@ -233,9 +232,6 @@
                 rating: "",
                 review: "",
                 notes: "",
-                csrf: document
-                    .querySelector('meta[name="csrf-token"]')
-                    .getAttribute("content"),
             };
         },
         props: {

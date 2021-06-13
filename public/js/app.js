@@ -18344,8 +18344,7 @@ __webpack_require__.r(__webpack_exports__);
       view_date: "",
       rating: "",
       review: "",
-      notes: "",
-      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+      notes: ""
     };
   },
   props: {
@@ -18580,8 +18579,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       confirmingUserDeletion: false,
       monthYearCheck: null,
-      stars: null,
-      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+      stars: null
     };
   },
   props: {
@@ -23542,13 +23540,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           return $options.onSubmit();
         }, ["prevent"])),
         "class": "mb-40 md:mb-0 md:grid grid-cols-2 gap-4"
-      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-        type: "hidden",
-        name: "_token",
-        value: $data.csrf
-      }, null, 8
-      /* PROPS */
-      , ["value"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [_this.errors.length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("p", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_this.errors["0"]), 1
+      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [_this.errors.length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("p", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_this.errors["0"]), 1
       /* TEXT */
       )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _this.success.length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_5, [_hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_inertia_link, {
         "class": "underline",
@@ -24363,13 +24355,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           return $data.confirmingUserDeletion = !$data.confirmingUserDeletion;
         }),
         "class": "bg-white rounded-2xl h-64 max-w-3/4 p-5 text-center flex flex-col justify-center items-center"
-      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-        type: "hidden",
-        name: "_token",
-        value: $data.csrf
-      }, null, 8
-      /* PROPS */
-      , ["value"]), _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+      }, [_hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
         onClick: _cache[2] || (_cache[2] = function () {
           return _ctx.submitForm && _ctx.submitForm.apply(_ctx, arguments);
         }),
