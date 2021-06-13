@@ -88,3 +88,5 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/movie/{movieId}/review/{r
 Route::middleware(['auth:sanctum', 'verified'])->get('/movie/{movieId}/reviews/friends', [MovieController::class, 'showFriendReviews']);
 Route::middleware(['auth:sanctum', 'verified'])->get('/movie/{movieId}/reviews', [MovieController::class, 'showAllReviews']);
 
+Route::middleware(['auth:sanctum', 'verified'])->get('/reviews/recent', [MovieController::class, 'recentReviews']);
+

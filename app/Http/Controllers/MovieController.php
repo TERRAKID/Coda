@@ -394,7 +394,6 @@ class MovieController extends Controller
             ->with('movie', $movie);
     }
 /**-FUNCTION-08----------------------------------------------------------*/
-
     public function deleteReview($movieId, $reviewId){
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
@@ -407,5 +406,44 @@ class MovieController extends Controller
         }
 
         return redirect()->to('/diary')->send();
+    }
+/**-FUNCTION-09----------------------------------------------------------*/
+    public function recentReviews(){
+        $recentReviews = MovieRating::join('movie', 'movie.id', '=', 'movie_ratings.movie_id')
+            ->join('users', 'users.id', '=', 'movie_ratings.user_id')
+            ->where('movie_ratings.review', '!=', '')
+            ->where('movie_ratings.active', '=', '1')
+            ->orderBy('movie_ratings.created_at', 'DESC')
+            ->get([
+                'movie_ratings.id',
+                'movie_ratings.user_id',
+                'users.name',
+                'users.profile_photo_path',
+                'movie.tmdb_id',
+                'movie_ratings.rating',
+                'movie_ratings.review',
+                'movie_ratings.created_at',
+            ]);
+
+        $users = [];
+        $movies = [];
+        
+        if($recentReviews->count()!= 0){
+            foreach($recentReviews as $review){
+                $user = User::where('id', '=', $review['user_id'])->first();
+                $movie = (new TMDBController)->fetchMovieById($review['tmdb_id']);
+    
+                array_push($users, $user);
+                array_push($movies, $movie);
+            }
+        }
+        else{
+            $recentReviews = null;
+        }
+
+        return Inertia::render('Movie/RecentReviews')
+            ->with('reviews', $recentReviews)
+            ->with('movie', $movies)
+            ->with('users', $users);
     }
 }
