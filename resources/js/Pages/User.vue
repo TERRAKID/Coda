@@ -179,6 +179,82 @@
                             />
                         </div>
                     </div>
+                    <div>
+                        <p class="text-xl mb-4">Recent reviews</p>
+                        <div class="flex flex-col justify-between gap-4">
+                            <inertia-link
+                                class="
+                                    flex
+                                    justify-between
+                                    md:justify-start
+                                    gap-4
+                                "
+                                v-for="(review, index) in reviews"
+                                :key="index"
+                                :href="
+                                    '/movie/' +
+                                    review.movie_id +
+                                    '/review/' +
+                                    review.id
+                                "
+                            >
+                                <img
+                                    class="w-1/6 md:w-16"
+                                    :src="
+                                        'https://image.tmdb.org/t/p/w185' +
+                                        reviewMovies[index].poster_path
+                                    "
+                                    :alt="reviewMovies[index].original_title"
+                                />
+                                <div
+                                    class="flex flex-col justify-evenly w-full"
+                                >
+                                    <div class="flex justify-between gap-4">
+                                        <p
+                                            class="
+                                                font-serif
+                                                truncate
+                                                whitespace-nowrap
+                                            "
+                                        >
+                                            {{
+                                                reviewMovies[index]
+                                                    .original_title
+                                            }}
+                                        </p>
+                                        <p class="underline w-1/2 text-right">
+                                            Read review
+                                        </p>
+                                    </div>
+                                    <div v-if="review.rating < 5" class="flex">
+                                        <img
+                                            class="w-6 sm:w-10 mr-2"
+                                            v-for="index in review.rating"
+                                            :key="index"
+                                            src="/img/star.svg"
+                                            alt="Full Star"
+                                        />
+                                        <img
+                                            class="w-6 sm:w-10 mr-2"
+                                            v-for="index in 5 - review.rating"
+                                            :key="index"
+                                            src="/img/star-outline.svg"
+                                            alt="Blank Star"
+                                        />
+                                    </div>
+                                    <div v-else class="flex">
+                                        <img
+                                            class="w-6 sm:w-10 mr-2"
+                                            v-for="index in review.rating"
+                                            :key="index"
+                                            src="/img/star.svg"
+                                            alt="Full Star"
+                                        />
+                                    </div>
+                                </div>
+                            </inertia-link>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -200,6 +276,8 @@
             amountFilms: Number,
             favoriteGenre: String,
             favoriteMovies: Object,
+            reviews: Object,
+            reviewMovies: Object,
         },
 
         data() {

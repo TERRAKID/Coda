@@ -73,22 +73,33 @@ class UserController extends Controller
 
         $amountFilms = $films->groupBy('movie_id')->count();
         $filmIds = $films->where('rating', '>', $films->avg('rating'))->sortByDesc('watched')->unique('movie_id')->take(5);
+        $reviews = $films->whereNotNull('review')->sortBy('created_at')->take(3)->values()->all();
 
         $genres = array();
         $favMovies = array();
         $favoriteGenre = false;
+        $reviewMovies = array();
+        $movies = array('genre' => $filmIds, 'review' => $reviews);
 
-        foreach ($filmIds as $filmId) {
-            $response = Http::get('https://api.themoviedb.org/3/movie/'. $filmId->movie->tmdb_id .'?api_key=' . config('services.tmdb.token') . '&language=en-US');
+        foreach ($movies as $index => $movie) {
+            foreach ($movie as $m) {
+                $response = Http::get('https://api.themoviedb.org/3/movie/'. $m->movie->tmdb_id .'?api_key=' . config('services.tmdb.token') . '&language=en-US');
 
-            $favMovie = $response->json();
-            $filmGenres = $favMovie['genres'];
+                if ($index === 'genre') {
+                    $favMovie = $response->json();
+                    $filmGenres = $favMovie['genres'];
 
-            array_push($favMovies, $favMovie);
+                    array_push($favMovies, $favMovie);
 
-            if (isset($filmGenres[0]['name'])) {
-                foreach ($filmGenres as $filmGenre) {
-                    array_push($genres, $filmGenre['name']);
+                    if (isset($filmGenres[0]['name'])) {
+                        foreach ($filmGenres as $filmGenre) {
+                            array_push($genres, $filmGenre['name']);
+                        }
+                    }
+                }
+
+                if ($index === 'review') {
+                    array_push($reviewMovies, $response->json());
                 }
             }
         }
@@ -106,6 +117,8 @@ class UserController extends Controller
             'amountFilms' => $amountFilms,
             'favoriteGenre' => $favoriteGenre,
             'favoriteMovies' => $favMovies,
+            'reviews' => $reviews,
+            'reviewMovies' => $reviewMovies,
         ]);
     }
 
