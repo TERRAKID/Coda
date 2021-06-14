@@ -83,6 +83,18 @@
         <inertia-link :href="'/diary/' + movie.id + '/create'" class="mb-10 md:mb-0 w-20 flex items-center text-center text-white text-6xl rounded-full bg-green fixed right-5 md:right-10 bottom-10">
             <img src="/img/create.svg" alt="Log a movie">
         </inertia-link>
+
+        <div class="w-full text-center">
+            <form  @submit.prevent="addToCollection()">
+                <input v-on:click="addingToCollection = !addingToCollection" v-show="!addingToCollection" class="m-5 cursor-pointer transition-all duration-200 bg-purple hover:bg-purpleDark text-white p-3 pl-10 pr-10 text-2xl rounded-full" type="submit" value="Add to collection">
+            </form>
+        </div>
+
+        <div class="w-full text-center">
+            <form  @submit.prevent="removeFromCollection()">
+                <input v-on:click="addingToCollection = !addingToCollection" v-show="addingToCollection" class="m-5 cursor-pointer transition-all duration-200 bg-purple hover:bg-purpleDark text-white p-3 pl-10 pr-10 text-2xl rounded-full" type="submit" value="Remove from collection">
+            </form>
+        </div>
     </app-layout>
 </template>
 
@@ -98,6 +110,7 @@
         data() {
             return {
                 starVis: true,
+                addingToCollection: this.collectionStatus,
             };
         },
         props: {
@@ -125,6 +138,10 @@
                 type: Array,
                 required: false,
             },
+            collectionStatus: {
+                type: Array,
+                required: false,
+            },
             errors: {
                 type: Array,
                 required: false,
@@ -141,7 +158,27 @@
                 var hours = Math.floor(str / 60);  
                 var minutes = str % 60;
                 return hours + "h " + minutes + "m";  
-            }
+            },
+            addToCollection() {
+                axios.post('/collection/' + this.movie.id + '/add', {
+                }).then((res) => {
+                    if(res.status === 200){
+                        this.collectionStatus = false;
+                    }
+                }).catch((err) => {
+                    this.errors = [];
+                })
+            },
+            removeFromCollection() {
+                axios.post('/collection/' + this.movie.id + '/remove', {
+                }).then((res) => {
+                    if(res.status === 200){
+                        this.collectionStatus = true;
+                    }
+                }).catch((err) => {
+                    this.errors = [];
+                })
+            },
         },
     };
 </script>

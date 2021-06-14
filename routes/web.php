@@ -8,6 +8,7 @@ use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\MovieCollectionController;
 use App\Http\Controllers\TMDBController;
 
 /*
@@ -92,4 +93,8 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/movie/{movieId}/reviews',
 /** Movie Extras */
 Route::middleware(['auth:sanctum', 'verified'])->get('/reviews/recent', [MovieController::class, 'recentReviews']);
 Route::middleware(['auth:sanctum', 'verified'])->get('/random', [MovieController::class, 'randomMovie'])->name('randomMovie');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/collection', [MovieCollectionController::class, 'showMovieCollection'])->name('movieCollection');
+Route::middleware(['auth:sanctum', 'verified'])->post('/collection/{id}/add', [MovieCollectionController::class, 'addMovieToCollection']);
+Route::middleware(['auth:sanctum', 'verified'])->post('/collection/{id}/remove', [MovieCollectionController::class, 'removeMovieFromCollection']);
 

@@ -7,6 +7,7 @@ use App\Models\Community;
 use App\Models\CommunityMember;
 use App\Models\UserFriend;
 use App\Models\MovieRating;
+use App\Models\UserMovieCollection;
 use App\Models\Movie;
 use App\Traits\UploadTrait;
 use Illuminate\Http\Request;
@@ -295,13 +296,26 @@ class MovieController extends Controller
             $averageFriendReviews = null;
         }
 
+        $collectionStatus = UserMovieCollection::where('user_id', '=', $currentUser)
+            ->where('movie_id', '=', $CodaMovieId)
+            ->where('active', '=', 1)
+            ->count();
+        
+        if($collectionStatus == 0){
+            $collectionStatus = false;
+        }
+        else{
+            $collectionStatus = true;
+        }
+
         return Inertia::render('Movie/Details')
             ->with('movie', $movie)
             ->with('globalReviews', $averageGlobalReviews)
             ->with('friendReviews', $averageFriendReviews)
             ->with('cast', $cast)
             ->with('trailer', $trailer)
-            ->with('directors', $directors);
+            ->with('directors', $directors)
+            ->with('collectionStatus', $collectionStatus);
     }
 /**-FUNCTION-08----------------------------------------------------------*/
     public function showAllReviews($movieId){
