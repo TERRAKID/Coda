@@ -36,7 +36,15 @@
                         md:flex-row
                     "
                 >
-                    <div class="bg-opacity-60 md:w-2/5">
+                    <div
+                        class="
+                            bg-opacity-60
+                            w-full
+                            md:w-2/5
+                            flex-grow
+                            md:flex-grow-0
+                        "
+                    >
                         <div class="grid grid-cols-user items-center gap-4">
                             <div
                                 class="
@@ -65,11 +73,11 @@
                                                 "
                                                 :alt="otherUser.name"
                                                 class="
-                                                    h-24
+                                                    h-auto
                                                     w-24
                                                     rounded-full
                                                     object-cover
-                                                    md:h-32
+                                                    md:h-auto
                                                     md:w-32
                                                 "
                                             />
@@ -100,7 +108,8 @@
                                     md:text-xl
                                     justify-self-end
                                     md:row-start-2
-                                    md:col-start-2
+                                    md:col-start-3
+                                    md:justify-self-start
                                 "
                             >
                                 <span>{{
@@ -166,17 +175,20 @@
                     </p>
                     <div>
                         <p class="text-xl mb-4">My favorite movies</p>
-                        <div class="flex justify-between">
-                            <img
+                        <div class="grid grid-cols-5 gap-4">
+                            <inertia-link
                                 v-for="(favoriteMovie, index) in favoriteMovies"
                                 :key="index"
-                                :src="
-                                    'https://image.tmdb.org/t/p/w185/' +
-                                    favoriteMovie.poster_path
-                                "
-                                :alt="favoriteMovie.original_title"
-                                class="w-1/6"
-                            />
+                                :href="'/movie/' + favoriteMovie.id"
+                            >
+                                <img
+                                    :src="
+                                        'https://image.tmdb.org/t/p/w185/' +
+                                        favoriteMovie.poster_path
+                                    "
+                                    :alt="favoriteMovie.original_title"
+                                />
+                            </inertia-link>
                         </div>
                     </div>
                     <div>

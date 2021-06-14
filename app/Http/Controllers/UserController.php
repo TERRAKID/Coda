@@ -73,7 +73,7 @@ class UserController extends Controller
 
         $amountFilms = $films->groupBy('movie_id')->count();
         $filmIds = $films->where('rating', '>', $films->avg('rating'))->sortByDesc('watched')->unique('movie_id')->take(5);
-        $reviews = $films->whereNotNull('review')->sortBy('created_at')->take(3)->values()->all();
+        $reviews = $films->whereNotNull('review')->sortByDesc('created_at')->take(3)->values()->all();
 
         $genres = array();
         $favMovies = array();

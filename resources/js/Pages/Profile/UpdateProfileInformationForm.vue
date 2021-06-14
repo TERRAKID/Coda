@@ -45,11 +45,11 @@
                                     :src="user.profile_photo_url"
                                     :alt="user.name"
                                     class="
-                                        h-24
+                                        h-auto
                                         w-24
                                         rounded-full
                                         object-cover
-                                        md:h-32
+                                        md:h-auto
                                         md:w-32
                                     "
                                 />

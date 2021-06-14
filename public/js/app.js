@@ -25608,7 +25608,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
         src: $props.user.profile_photo_url,
         alt: $props.user.name,
-        "class": "\n                                        h-24\n                                        w-24\n                                        rounded-full\n                                        object-cover\n                                        md:h-32\n                                        md:w-32\n                                    "
+        "class": "\n                                        h-auto\n                                        w-24\n                                        rounded-full\n                                        object-cover\n                                        md:h-auto\n                                        md:w-32\n                                    "
       }, null, 8
       /* PROPS */
       , ["src", "alt"])], 512
@@ -25765,7 +25765,7 @@ var _hoisted_2 = {
   "class": "\n                        md:border-b\n                        border-black\n                        md:p-8\n                        flex\n                        justify-between\n                        items-end\n                        md:items-center\n                        flex-col-reverse\n                        md:flex-row\n                    "
 };
 var _hoisted_3 = {
-  "class": "bg-opacity-60 md:w-2/5"
+  "class": "\n                            bg-opacity-60\n                            w-full\n                            md:w-2/5\n                            flex-grow\n                            md:flex-grow-0\n                        "
 };
 var _hoisted_4 = {
   "class": "grid grid-cols-user items-center gap-4"
@@ -25788,7 +25788,7 @@ var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 );
 
 var _hoisted_10 = {
-  "class": "\n                                    text-3xl text-center\n                                    md:text-xl\n                                    justify-self-end\n                                    md:row-start-2\n                                    md:col-start-2\n                                "
+  "class": "\n                                    text-3xl text-center\n                                    md:text-xl\n                                    justify-self-end\n                                    md:row-start-2\n                                    md:col-start-3\n                                    md:justify-self-start\n                                "
 };
 
 var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", null, "friends", -1
@@ -25815,7 +25815,7 @@ var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 );
 
 var _hoisted_17 = {
-  "class": "flex justify-between"
+  "class": "grid grid-cols-5 gap-4"
 };
 
 var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
@@ -25868,7 +25868,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Profile Photo "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
         src: $props.otherUser.profile_photo_url,
         alt: $props.otherUser.name,
-        "class": "\n                                                    h-24\n                                                    w-24\n                                                    rounded-full\n                                                    object-cover\n                                                    md:h-32\n                                                    md:w-32\n                                                "
+        "class": "\n                                                    h-auto\n                                                    w-24\n                                                    rounded-full\n                                                    object-cover\n                                                    md:h-auto\n                                                    md:w-32\n                                                "
       }, null, 8
       /* PROPS */
       , ["src", "alt"])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_this.amountFilms ? _this.amountFilms : 0), 1
@@ -25891,14 +25891,24 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       , ["disabled"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_15, " Favorite genre: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_this.favoriteGenre ? _this.favoriteGenre : "no genre found"), 1
       /* TEXT */
       ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [_hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_17, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.favoriteMovies, function (favoriteMovie, index) {
-        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("img", {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_inertia_link, {
           key: index,
-          src: 'https://image.tmdb.org/t/p/w185/' + favoriteMovie.poster_path,
-          alt: favoriteMovie.original_title,
-          "class": "w-1/6"
-        }, null, 8
-        /* PROPS */
-        , ["src", "alt"]);
+          href: '/movie/' + favoriteMovie.id
+        }, {
+          "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+            return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+              src: 'https://image.tmdb.org/t/p/w185/' + favoriteMovie.poster_path,
+              alt: favoriteMovie.original_title
+            }, null, 8
+            /* PROPS */
+            , ["src", "alt"])];
+          }),
+          _: 2
+          /* DYNAMIC */
+
+        }, 1032
+        /* PROPS, DYNAMIC_SLOTS */
+        , ["href"]);
       }), 128
       /* KEYED_FRAGMENT */
       ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [_hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_19, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.reviews, function (review, index) {
