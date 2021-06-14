@@ -64,28 +64,40 @@ class CommunityController extends Controller
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
 
-        $community = Community::where('id', $id)
-            ->get();
-        $community = $community[0];
+        $checkCurrentUserIsMember = CommunityMember::where('user_id', '=', $currentUser)
+            ->where('community_id', '=', $id)
+            ->where('active', '=', '1')->count();
 
-        $users = User::join('community_member', 'community_member.user_id', '=', 'users.id')
-                ->where('community_member.community_id', '=', $community->id)
-                ->where('community_member.active', '=', '1')
-                ->get(['users.id']);
-        $memberCount = $users->count();
-        
-        $communityMembers = [];
+        if($checkCurrentUserIsMember != 0){
+            $community = Community::where('id', $id)
+                ->get();
+            $community = $community[0];
 
-        foreach($users as $user){
-            $communityMember = User::where('id', '=', $user['id'])->first();
-            array_push($communityMembers, $communityMember);
-        }
-        
-        if($community['created_by'] == $currentUser){
-            $deletePermissions = 1;
+            $users = User::join('community_member', 'community_member.user_id', '=', 'users.id')
+                    ->where('community_member.community_id', '=', $community->id)
+                    ->where('community_member.active', '=', '1')
+                    ->get(['users.id']);
+            $memberCount = $users->count();
+            
+            $communityMembers = [];
+
+            foreach($users as $user){
+                $communityMember = User::where('id', '=', $user['id'])->first();
+                array_push($communityMembers, $communityMember);
+            }
+            
+            if($community['created_by'] == $currentUser){
+                $deletePermissions = 1;
+            }
+            else{
+                $deletePermissions = 0;
+            }
         }
         else{
-            $deletePermissions = 0;
+            $community = null;
+            $communityMembers = null;
+            $memberCount = null;
+            $deletePermissions = null;
         }
 
         return Inertia::render('Community/Details')
