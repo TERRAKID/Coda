@@ -36,6 +36,7 @@ class CommunityController extends Controller
         }
 
         $community = Community::where('id', $id)
+            ->where('active', '=', 1)
             ->get();
         
         if($community->isEmpty()){
@@ -55,7 +56,9 @@ class CommunityController extends Controller
             ->where('active', 1)
             ->count();
 
-        return Inertia::render('Community/Show')->with('community', $community)->with('isMember', $member);
+        return Inertia::render('Community/Show')
+            ->with('community', $community)
+            ->with('isMember', $member);
     }
 
     //-----------------------------------------------------------------------

@@ -86,7 +86,7 @@
                 <div class="w-full text-center">
                     <input v-on:click="confirmingUserLeave = !confirmingUserLeave" class="m-5 cursor-pointer transition-all duration-200 bg-purple hover:bg-purpleDark text-white p-3 pl-10 pr-10 text-2xl rounded-full" type="button" value="Leave Community">
                 </div>
-                <form v-on:click="confirmingUserLeave = !confirmingUserLeave" v-show="confirmingUserLeave" id="leave-community-form" :action="'/community/' + this.community.id + '/details'" method="POST" class="min-w-screen h-screen animated fadeIn faster fixed left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-blue-primary bg-opacity-70">
+                <form @submit.prevent="leaveCommunity()" v-on:click="confirmingUserLeave = !confirmingUserLeave" v-show="confirmingUserLeave" id="leave-community-form" class="min-w-screen h-screen animated fadeIn faster fixed left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-blue-primary bg-opacity-70">
                     <div v-on:click="confirmingUserLeave = !confirmingUserLeave" class="bg-white rounded-2xl h-64 p-5 text-center flex flex-col justify-center items-center">
                         <h3 class="text-2xl">Are you sure you want to leave {{ this.community.name }}?</h3>
                         <input id="leave-confirm" class="m-5 cursor-pointer transition-all duration-200 bg-purple hover:bg-purpleDark text-white p-3 pl-10 pr-10 text-2xl rounded-full" type="submit" value="Leave Community">
@@ -97,7 +97,7 @@
                 <div v-if="deletePermissions == 1" class="w-full text-center">
                     <input v-on:click="confirmingCommunityDeletion = !confirmingCommunityDeletion" class="m-5 cursor-pointer transition-all duration-200 bg-purple hover:bg-purpleDark text-white p-3 pl-10 pr-10 text-2xl rounded-full" type="button" value="Delete">
                 </div>
-                <form v-if="deletePermissions == 1" @submit.prevent="onSubmit()" v-on:click="confirmingCommunityDeletion = !confirmingCommunityDeletion" v-show="confirmingCommunityDeletion" id="leave-community-form" class="min-w-screen h-screen animated fadeIn faster fixed left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-blue-primary bg-opacity-70">
+                <form v-if="deletePermissions == 1" @submit.prevent="deleteCommunity()" v-on:click="confirmingCommunityDeletion = !confirmingCommunityDeletion" v-show="confirmingCommunityDeletion" id="leave-community-form" class="min-w-screen h-screen animated fadeIn faster fixed left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-blue-primary bg-opacity-70">
                     <div v-on:click="confirmingCommunityDeletion = !confirmingCommunityDeletion" class="bg-white rounded-2xl h-64 max-w-3/4 p-5 text-center flex flex-col justify-center items-center">
                         <h3 class="text-2xl">Are you sure you want to delete this review?</h3>
                         <input @click="submitForm" id="leave-confirm" class="m-5 cursor-pointer transition-all duration-200 bg-purple hover:bg-purpleDark text-white p-3 pl-10 pr-10 text-2xl rounded-full" type="submit" value="Delete">
@@ -132,21 +132,6 @@ export default{
             inviteVis: false,
         }
     },
-    setups(){
-        const form = reactive({
-            avatar: null,
-            banner: null,
-            name: null,
-            visibility: null,
-            inviteVis: false,
-        })
-
-        function submit(){
-            Inertia.post('/community/' + this.community.id + '/details', form)
-        }
-
-        return { form, submit }
-    },
     props: {
         community: {
             type: Array,
@@ -170,18 +155,31 @@ export default{
         },
     },
     methods: {
-        onSubmit() {
-                axios.post('/community/' + this.community.id + '/delete', {
-                }).then((res) => {
-                    if(res.status === 200){
-                        window.location.href = "/dashboard"; //there should be a better way to do this
-                        this.$router.push('/dashboard');
-                    }
-                    console.log('deleted');
-                }).catch((err) => {
-                    this.errors = [];
-                })
+        deleteCommunity() {
+            axios.post('/community/' + this.community.id + '/delete', {
+            }).then((res) => {
+                if(res.status === 200){
+                    window.location.href = "/dashboard"; //there should be a better way to do this
+                    this.$router.push('/dashboard');
+                }
+                console.log('deleted');
+            }).catch((err) => {
+                this.errors = [];
+            })
         },
+        leaveCommunity() {
+            axios.post('/community/' + this.community.id + '/leave', {
+            }).then((res) => {
+                if(res.status === 200){
+                    window.location.href = "/dashboard"; //there should be a better way to do this
+                    this.$router.push('/dashboard');
+                }
+                console.log('left');
+            }).catch((err) => {
+                this.errors = [];
+            })
+        },
+        
     }
 }
 </script>

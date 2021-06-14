@@ -18048,24 +18048,6 @@ __webpack_require__.r(__webpack_exports__);
       inviteVis: false
     };
   },
-  setups: function setups() {
-    var form = (0,vue__WEBPACK_IMPORTED_MODULE_1__.reactive)({
-      avatar: null,
-      banner: null,
-      name: null,
-      visibility: null,
-      inviteVis: false
-    });
-
-    function submit() {
-      Inertia.post('/community/' + this.community.id + '/details', form);
-    }
-
-    return {
-      form: form,
-      submit: submit
-    };
-  },
   props: {
     community: {
       type: Array,
@@ -18089,7 +18071,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    onSubmit: function onSubmit() {
+    deleteCommunity: function deleteCommunity() {
       var _this = this;
 
       axios.post('/community/' + this.community.id + '/delete', {}).then(function (res) {
@@ -18102,6 +18084,21 @@ __webpack_require__.r(__webpack_exports__);
         console.log('deleted');
       })["catch"](function (err) {
         _this.errors = [];
+      });
+    },
+    leaveCommunity: function leaveCommunity() {
+      var _this2 = this;
+
+      axios.post('/community/' + this.community.id + '/leave', {}).then(function (res) {
+        if (res.status === 200) {
+          window.location.href = "/dashboard"; //there should be a better way to do this
+
+          _this2.$router.push('/dashboard');
+        }
+
+        console.log('left');
+      })["catch"](function (err) {
+        _this2.errors = [];
       });
     }
   }
@@ -22925,12 +22922,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         type: "button",
         value: "Leave Community"
       })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("form", {
-        onClick: _cache[8] || (_cache[8] = function ($event) {
+        onSubmit: _cache[8] || (_cache[8] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+          return $options.leaveCommunity();
+        }, ["prevent"])),
+        onClick: _cache[9] || (_cache[9] = function ($event) {
           return $data.confirmingUserLeave = !$data.confirmingUserLeave;
         }),
         id: "leave-community-form",
-        action: '/community/' + _this.community.id + '/details',
-        method: "POST",
         "class": "min-w-screen h-screen animated fadeIn faster fixed left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-blue-primary bg-opacity-70"
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
         onClick: _cache[7] || (_cache[7] = function ($event) {
@@ -22947,10 +22945,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         type: "button",
         value: "Cancel",
         "class": "bg-white underline cursor-pointer"
-      })])], 8
-      /* PROPS */
-      , ["action"]), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.confirmingUserLeave]]), $props.deletePermissions == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-        onClick: _cache[9] || (_cache[9] = function ($event) {
+      })])], 544
+      /* HYDRATE_EVENTS, NEED_PATCH */
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.confirmingUserLeave]]), $props.deletePermissions == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+        onClick: _cache[10] || (_cache[10] = function ($event) {
           return $data.confirmingCommunityDeletion = !$data.confirmingCommunityDeletion;
         }),
         "class": "m-5 cursor-pointer transition-all duration-200 bg-purple hover:bg-purpleDark text-white p-3 pl-10 pr-10 text-2xl rounded-full",
@@ -22958,21 +22956,21 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         value: "Delete"
       })])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.deletePermissions == 1 ? (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("form", {
         key: 1,
-        onSubmit: _cache[13] || (_cache[13] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
-          return $options.onSubmit();
+        onSubmit: _cache[14] || (_cache[14] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+          return $options.deleteCommunity();
         }, ["prevent"])),
-        onClick: _cache[14] || (_cache[14] = function ($event) {
+        onClick: _cache[15] || (_cache[15] = function ($event) {
           return $data.confirmingCommunityDeletion = !$data.confirmingCommunityDeletion;
         }),
         id: "leave-community-form",
         "class": "min-w-screen h-screen animated fadeIn faster fixed left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-blue-primary bg-opacity-70"
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-        onClick: _cache[12] || (_cache[12] = function ($event) {
+        onClick: _cache[13] || (_cache[13] = function ($event) {
           return $data.confirmingCommunityDeletion = !$data.confirmingCommunityDeletion;
         }),
         "class": "bg-white rounded-2xl h-64 max-w-3/4 p-5 text-center flex flex-col justify-center items-center"
       }, [_hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-        onClick: _cache[10] || (_cache[10] = function () {
+        onClick: _cache[11] || (_cache[11] = function () {
           return _ctx.submitForm && _ctx.submitForm.apply(_ctx, arguments);
         }),
         id: "leave-confirm",
@@ -22980,7 +22978,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         type: "submit",
         value: "Delete"
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-        onClick: _cache[11] || (_cache[11] = function ($event) {
+        onClick: _cache[12] || (_cache[12] = function ($event) {
           return $data.confirmingCommunityDeletion = !$data.confirmingCommunityDeletion;
         }),
         id: "leave-cancel",

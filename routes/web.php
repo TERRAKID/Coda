@@ -61,7 +61,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/community', [CommunityCon
 Route::middleware(['auth:sanctum', 'verified'])->get('/community/{id}', [CommunityController::class, 'showCommunity']);
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/community/{id}/details', [CommunityController::class, 'communityDetails']);
-Route::middleware(['auth:sanctum', 'verified'])->post('/community/{id}/details', [CommunityController::class, 'leaveCommunity']);
+Route::middleware(['auth:sanctum', 'verified'])->post('/community/{id}/leave', [CommunityController::class, 'leaveCommunity']);
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/community/{id}/invite', [CommunityController::class, 'communityInvite']);
 Route::middleware(['auth:sanctum', 'verified'])->post('/community/{id}/invite', [CommunityController::class, 'acceptInvite']);
