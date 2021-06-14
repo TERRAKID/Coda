@@ -468,8 +468,21 @@ class MovieController extends Controller
 
         $movies = UserMovieCollection::where('user_id', '=', $currentUser)
             ->where('active', '=', '1')
-            ->get();
+            ->get(['movie_id']);
 
+        if($movies->count() == 0){
+            $randomMovie = null;
+        }
+        else{
+            
+        $movieIds = [];
+            foreach($movies as $movie){
+                $movieId = Movie::where('id', '=', $movie['movie_id'])->first('tmdb_id');
+                array_push($movieIds, $movieId['tmdb_id']);
+            }
+
+            $randomMovie = (new TMDBController)->fetchMovieById($movieIds[rand(0, count($movieIds) - 1)]);
+        }
         return Inertia::render('Movie/RandomMovie')
             ->with('movie', $randomMovie);
     }

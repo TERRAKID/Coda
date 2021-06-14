@@ -1,6 +1,6 @@
 <template>
     <app-layout>
-        <div class="bg-cover bg-center text-white pb-2" :style="{'background-image':'linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(https://image.tmdb.org/t/p/w500' + movie.backdrop_path + ')'}">
+        <div class="bg-cover bg-center text-white pb-2" :style="{'background-image':'linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(https://image.tmdb.org/t/p/w1280' + movie.backdrop_path + ')'}">
             <div class="p-5 flex items-center justify-between">
                 <div class="flex items-center">
                     <div class="h-24 w-16 md:h-64 md:w-48 bg-center bg-cover" :style="{'background-image':'url(https://image.tmdb.org/t/p/w500' + movie.poster_path + ')'}"></div>
