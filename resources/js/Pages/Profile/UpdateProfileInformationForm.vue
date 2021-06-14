@@ -1,7 +1,7 @@
 <template>
     <jet-form-section @submitted="updateProfileInformation">
         <template #form>
-            <div class="grid grid-cols-user items-center gap-4">
+            <div class="grid grid-cols-user items-center gap-4 md:w-80">
                 <div
                     class="
                         items-center
@@ -45,11 +45,11 @@
                                     :src="user.profile_photo_url"
                                     :alt="user.name"
                                     class="
-                                        h-auto
+                                        h-24
                                         w-24
                                         rounded-full
                                         object-cover
-                                        md:h-auto
+                                        md:h-32
                                         md:w-32
                                     "
                                 />

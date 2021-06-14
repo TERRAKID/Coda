@@ -25539,7 +25539,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "grid grid-cols-user items-center gap-4"
+  "class": "grid grid-cols-user items-center gap-4 md:w-80"
 };
 var _hoisted_2 = {
   "class": "\n                        items-center\n                        justify-self-center\n                        md:row-span-3\n                        md:self-start\n                    "
@@ -25608,7 +25608,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
         src: $props.user.profile_photo_url,
         alt: $props.user.name,
-        "class": "\n                                        h-auto\n                                        w-24\n                                        rounded-full\n                                        object-cover\n                                        md:h-auto\n                                        md:w-32\n                                    "
+        "class": "\n                                        h-24\n                                        w-24\n                                        rounded-full\n                                        object-cover\n                                        md:h-32\n                                        md:w-32\n                                    "
       }, null, 8
       /* PROPS */
       , ["src", "alt"])], 512
@@ -25768,7 +25768,7 @@ var _hoisted_3 = {
   "class": "\n                            bg-opacity-60\n                            w-full\n                            md:w-2/5\n                            flex-grow\n                            md:flex-grow-0\n                        "
 };
 var _hoisted_4 = {
-  "class": "grid grid-cols-user items-center gap-4"
+  "class": "\n                                grid grid-cols-user\n                                items-center\n                                gap-4\n                                md:w-80\n                            "
 };
 var _hoisted_5 = {
   "class": "\n                                    items-center\n                                    justify-self-center\n                                    md:row-span-2\n                                    md:self-start\n                                "
@@ -25868,7 +25868,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Profile Photo "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
         src: $props.otherUser.profile_photo_url,
         alt: $props.otherUser.name,
-        "class": "\n                                                    h-auto\n                                                    w-24\n                                                    rounded-full\n                                                    object-cover\n                                                    md:h-auto\n                                                    md:w-32\n                                                "
+        "class": "\n                                                    h-24\n                                                    w-24\n                                                    rounded-full\n                                                    object-cover\n                                                    md:h-32\n                                                    md:w-32\n                                                "
       }, null, 8
       /* PROPS */
       , ["src", "alt"])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_this.amountFilms ? _this.amountFilms : 0), 1
