@@ -19307,7 +19307,8 @@ __webpack_require__.r(__webpack_exports__);
     isFriend: Boolean,
     amountFriends: Number,
     amountFilms: Number,
-    favoriteGenre: String
+    favoriteGenre: String,
+    favoriteMovies: Object
   },
   data: function data() {
     return {
@@ -25572,9 +25573,6 @@ var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNo
 
 var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Save ");
 
-var _hoisted_12 = {
-  "class": "text-xl my-4"
-};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_jet_input = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("jet-input");
 
@@ -25586,7 +25584,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   var _component_jet_form_section = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("jet-form-section");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_form_section, {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_form_section, {
     onSubmitted: $options.updateProfileInformation
   }, {
     form: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -25696,11 +25694,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   }, 8
   /* PROPS */
-  , ["onSubmitted"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_12, " Favorite genre: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.profileInfo.favoriteGenre ? $data.profileInfo.favoriteGenre : "no genre found"), 1
-  /* TEXT */
-  )], 64
-  /* STABLE_FRAGMENT */
-  );
+  , ["onSubmitted"]);
 }
 
 /***/ }),
@@ -25811,6 +25805,16 @@ var _hoisted_14 = {
 var _hoisted_15 = {
   "class": "text-xl"
 };
+
+var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
+  "class": "text-xl mb-4"
+}, "My favorite movies", -1
+/* HOISTED */
+);
+
+var _hoisted_17 = {
+  "class": "flex justify-between"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _this = this;
 
@@ -25848,7 +25852,18 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* TEXT, CLASS, PROPS */
       , ["disabled"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_15, " Favorite genre: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_this.favoriteGenre ? _this.favoriteGenre : "no genre found"), 1
       /* TEXT */
-      )])])], 4
+      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [_hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_17, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.favoriteMovies, function (favoriteMovie, index) {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("img", {
+          key: index,
+          src: 'https://image.tmdb.org/t/p/w185/' + favoriteMovie.poster_path,
+          alt: favoriteMovie.original_title,
+          "class": "w-1/6"
+        }, null, 8
+        /* PROPS */
+        , ["src", "alt"]);
+      }), 128
+      /* KEYED_FRAGMENT */
+      ))])])])])], 4
       /* STYLE */
       )];
     }),

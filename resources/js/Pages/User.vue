@@ -164,6 +164,21 @@
                                 : "no genre found"
                         }}
                     </p>
+                    <div>
+                        <p class="text-xl mb-4">My favorite movies</p>
+                        <div class="flex justify-between">
+                            <img
+                                v-for="(favoriteMovie, index) in favoriteMovies"
+                                :key="index"
+                                :src="
+                                    'https://image.tmdb.org/t/p/w185/' +
+                                    favoriteMovie.poster_path
+                                "
+                                :alt="favoriteMovie.original_title"
+                                class="w-1/6"
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -184,6 +199,7 @@
             amountFriends: Number,
             amountFilms: Number,
             favoriteGenre: String,
+            favoriteMovies: Object,
         },
 
         data() {

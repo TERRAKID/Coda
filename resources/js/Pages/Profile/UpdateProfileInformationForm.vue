@@ -165,14 +165,6 @@
             </jet-button>
         </template>
     </jet-form-section>
-    <p class="text-xl my-4">
-        Favorite genre:
-        {{
-            profileInfo.favoriteGenre
-                ? profileInfo.favoriteGenre
-                : "no genre found"
-        }}
-    </p>
 </template>
 
 <script>
