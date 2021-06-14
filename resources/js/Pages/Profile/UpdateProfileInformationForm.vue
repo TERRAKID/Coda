@@ -1,7 +1,7 @@
 <template>
     <jet-form-section @submitted="updateProfileInformation">
         <template #form>
-            <div class="grid grid-cols-user items-center gap-4">
+            <div class="grid grid-cols-user items-center gap-4 md:w-80">
                 <div
                     class="
                         items-center
@@ -88,7 +88,9 @@
                         md:justify-self-start
                     "
                 >
-                    <span>618</span>
+                    <span>{{
+                        profileInfo.amountFilms ? profileInfo.amountFilms : 0
+                    }}</span>
                     <p>films</p>
                 </div>
 
@@ -101,7 +103,11 @@
                         md:col-start-3
                     "
                 >
-                    <span>{{ profileInfo.amountFriends }}</span>
+                    <span>{{
+                        profileInfo.amountFriends
+                            ? profileInfo.amountFriends
+                            : 0
+                    }}</span>
                     <p>friends</p>
                 </div>
 

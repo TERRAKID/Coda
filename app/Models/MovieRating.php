@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class MovieRating extends Model
 {
     use HasFactory;
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -28,4 +28,11 @@ class MovieRating extends Model
      * @var string
      */
     protected $table = 'movie_ratings';
+
+
+
+    public function movie()
+    {
+        return $this->belongsTo(Movie::class);
+    }
 }
