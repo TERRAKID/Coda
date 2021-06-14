@@ -47,6 +47,7 @@ class GeneralController extends Controller
         // 5. Finally, we retrieve the details of the relevant communities
         foreach($communityIds as $communityId){
             $result = Community::where('id', '=', $communityId)
+                ->where('community.visibility', '=', '1')
                 ->where('community.active', '=', '1')
                 ->first();
             array_push($communitiesWithoutCurrentUserAsMember, $result);
