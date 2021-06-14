@@ -463,16 +463,12 @@ class MovieController extends Controller
     }
 /**-FUNCTION-10----------------------------------------------------------*/
     public function randomMovie(){
-        $randomMovie = TMDBController::fetchRandomMovie();
+        $currentUser = auth()->user();
+        $currentUser = $currentUser->id;
 
-        $movieExist = Movie::where('tmdb_id', '=', $randomMovie['id'])->count();
-        if(!$movieExist){
-            $addMovie = new Movie;
-            $addMovie->title = $randomMovie['title'];
-            $addMovie->tmdb_id = $randomMovie['id'];
-
-            $addMovie->save();
-        }
+        $movies = UserMovieCollection::where('user_id', '=', $currentUser)
+            ->where('active', '=', '1')
+            ->get();
 
         return Inertia::render('Movie/RandomMovie')
             ->with('movie', $randomMovie);
