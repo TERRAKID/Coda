@@ -48,9 +48,10 @@ class GeneralController extends Controller
         foreach($communityIds as $communityId){
             $result = Community::where('id', '=', $communityId)
                 ->where('community.active', '=', '1')
-                ->get();
-            array_push($communitiesWithoutCurrentUserAsMember, $result['0']);
+                ->first();
+            array_push($communitiesWithoutCurrentUserAsMember, $result);
         }
+        $communitiesWithoutCurrentUserAsMember = array_filter($communitiesWithoutCurrentUserAsMember);
 
         $userCommunities = Community::join('community_member', 'community_member.community_id', '=', 'community.id')
             ->where('community_member.active', '=', '1')

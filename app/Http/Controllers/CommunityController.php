@@ -215,21 +215,39 @@ class CommunityController extends Controller
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
 
-        $friends1 = User::join('user_friend', 'user_friend.user_id', '=', 'users.id')
-                ->where('user_friend.friend_id', '=', $currentUser)->get();
+        $friends = [];
+        $friends1 = UserFriend::where('user_friend.user_id', '=', $currentUser)
+            ->where('user_friend.accepted', '=', '1')
+            ->get('friend_id');
 
-        $friends2 = auth()->user()->friends()->get();
+        $friends2 = UserFriend::where('user_friend.friend_id', '=', $currentUser)
+            ->where('user_friend.accepted', '=', '1')
+            ->get('user_id');
 
-        $allFriends = $friends1->merge($friends2);
+        $allFriends = [];
 
-        if($allFriends->isEmpty()){
-            $hasFriends = false;
-            return Inertia::render('Community/Create')->with('hasFriends', $hasFriends);
+        if($friends1->count() > 0 || $friends2->count() > 0){
+            foreach($friends1 as $friend){
+                array_push($friends, $friend['friend_id']);
+            }
+            foreach($friends2 as $friend){
+                array_push($friends, $friend['user_id']);
+            }
+            $friends = array_unique($friends);
+    
+            foreach($friends as $friend){
+                $users = User::where('id', '=', $friend)->get();
+                foreach($users as $user){
+                    array_push($allFriends, $user);
+                }
+            }
         }
         else{
-            $hasFriends = true;
-            return Inertia::render('Community/Create')->with('friends', $allFriends)->with('hasFriends', $hasFriends);
+            $allFriends = null;
         }
+
+        return Inertia::render('Community/Create')
+            ->with('friends', $allFriends);
 
     }
 
