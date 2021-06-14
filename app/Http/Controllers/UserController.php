@@ -9,6 +9,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Http;
 use App\Models\ProfileInfo;
 use App\Models\UserFriend;
+use App\Models\MovieRating;
 
 class UserController extends Controller
 {
@@ -68,11 +69,56 @@ class UserController extends Controller
         }
 
         $amountFriends = UserFriend::where('user_id', $userId)->where('accepted', true)->get()->count();
+        $films = MovieRating::where('user_id', $userId)->where('active', true)->get();
+
+        $amountFilms = $films->groupBy('movie_id')->count();
+        $filmIds = $films->where('rating', '>', $films->avg('rating'))->sortByDesc('watched')->unique('movie_id')->take(5);
+        $reviews = $films->whereNotNull('review')->sortByDesc('created_at')->take(3)->values()->all();
+
+        $genres = array();
+        $favMovies = array();
+        $favoriteGenre = false;
+        $reviewMovies = array();
+        $movies = array('genre' => $filmIds, 'review' => $reviews);
+
+        foreach ($movies as $index => $movie) {
+            foreach ($movie as $m) {
+                $response = Http::get('https://api.themoviedb.org/3/movie/'. $m->movie->tmdb_id .'?api_key=' . config('services.tmdb.token') . '&language=en-US');
+
+                if ($index === 'genre') {
+                    $favMovie = $response->json();
+                    $filmGenres = $favMovie['genres'];
+
+                    array_push($favMovies, $favMovie);
+
+                    if (isset($filmGenres[0]['name'])) {
+                        foreach ($filmGenres as $filmGenre) {
+                            array_push($genres, $filmGenre['name']);
+                        }
+                    }
+                }
+
+                if ($index === 'review') {
+                    array_push($reviewMovies, $response->json());
+                }
+            }
+        }
+
+        $values = array_count_values($genres);
+        arsort($values);
+        if (isset(array_keys($values)[0])) {
+            $favoriteGenre = array_keys($values)[0];
+        }
 
         return Inertia::render('User', [
             'otherUser' => $user,
             'isFriend' => $isFriend,
             'amountFriends' => $amountFriends,
+            'amountFilms' => $amountFilms,
+            'favoriteGenre' => $favoriteGenre,
+            'favoriteMovies' => $favMovies,
+            'reviews' => $reviews,
+            'reviewMovies' => $reviewMovies,
         ]);
     }
 
@@ -106,7 +152,13 @@ class UserController extends Controller
     public function getProfileInfo()
     {
         $amountFriends = UserFriend::where('user_id', Auth::user()->id)->where('accepted', true)->get()->count();
+        $films = MovieRating::where('user_id', Auth::user()->id)->where('active', true)->get();
 
-        return ['amountFriends' => $amountFriends];
+        $amountFilms = $films->groupBy('movie_id')->count();
+
+        return [
+            'amountFriends' => $amountFriends,
+            'amountFilms' => $amountFilms,
+        ];
     }
 }
