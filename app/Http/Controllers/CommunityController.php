@@ -209,11 +209,6 @@ class CommunityController extends Controller
 
             if($query){
                 return Inertia::render('Community/Show')->with('community', $community)->with('isMember', $member);
-                /*
-                return redirect('/community' . '/' . $id)
-                    ->with(['community' => $community], ['member' => $member])
-                    ->withSuccess('You have joined ' . $community->name);
-                */
             }
             else{
                 return back()

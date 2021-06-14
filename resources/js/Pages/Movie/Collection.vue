@@ -1,7 +1,12 @@
 <template>
     <app-layout>
-        <div v-if="collection == null" class="bg-green p-4 text-white text-xl">
-            <h2>You can use this page to track the films you own or simply use it as a watchlist</h2>
+        <div v-if="collection == null">
+            <div class="bg-green p-4 text-white text-xl">
+                <h2>You can use this page to track the films you own or simply use it as a watchlist</h2>
+            </div>
+            <div class="h-screen flex justify-center items-center" :style="{'background-image':'linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9))'}">
+                <h3 class="text-white -mt-20">Movies in your collection will appear here</h3>
+            </div>
         </div>
 
         <div v-else>

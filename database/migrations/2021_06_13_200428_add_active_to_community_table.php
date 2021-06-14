@@ -15,7 +15,7 @@ class AddActiveToCommunityTable extends Migration
     {
         Schema::table('community', function (Blueprint $table) {
             $table->boolean('active')->after('visibility')->default('1');
-            $table->boolean('created_by')->after('active');
+            $table->boolean('created_by')->after('active')->default('1');
         });
     }
 

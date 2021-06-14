@@ -428,6 +428,7 @@ class MovieController extends Controller
             ->where('movie_ratings.review', '!=', '')
             ->where('movie_ratings.active', '=', '1')
             ->orderBy('movie_ratings.created_at', 'DESC')
+            ->take(10)
             ->get([
                 'movie_ratings.id',
                 'movie_ratings.user_id',

@@ -60,40 +60,45 @@
                 
             </div>
         </div>
-        <div class="p-5">
-            <h3 class="text-xl">Directed by: 
-                <span v-for="(director, index) in directors" :key="index">
-                    <span v-if="index > 0">, </span>
-                    {{ director.name }}
-                </span>
-            </h3>
-            <h3 class="mt-2 text-xl">Synopsis:</h3>
-            <p>{{ movie.overview }}</p>
-        </div>
-        <div class="p-5">
-            <h3 class="text-xl">Cast:</h3>
-            <div class="flex flex-wrap content-center text-center justify-around mt-2 md:justify-start">
-                <article class="w-24 m-2" v-for="(castMember, index) in cast.slice(0, 6)" :key="index">
-                    <div class="h-20 w-20 rounded-full bg-center bg-cover inline-block" :style="{'background-image':'url(https://image.tmdb.org/t/p/w500' + castMember.profile_path + ')'}"></div>
-                    <h3 class="">{{ castMember.name }}</h3>
-                </article>
+
+        <div class="xl:grid grid-cols-3">
+            <div class="md:mb-0 flex flex-col items-center text-center text-white bottom-10 w-auto col-start-3">
+                <inertia-link :href="'/diary/' + movie.id + '/create'" class="w-full text-center inline-block">
+                    <input type="submit" value="Log this movie" class="mt-5 cursor-pointer transition-all duration-200 bg-green hover:bg-greenDark text-white text-center p-3 pl-16 pr-16 text-2xl rounded-full inline-block">
+                </inertia-link>
+                <div class="w-full text-center">
+                    <form  @submit.prevent="addToCollection()">
+                        <input v-on:click="addingToCollection = !addingToCollection" v-show="!addingToCollection" class="mt-5 cursor-pointer transition-all duration-200 bg-green hover:bg-greenDark text-white p-3 pl-16 pr-16 text-2xl rounded-full" type="submit" value="Add to collection">
+                    </form>
+                </div>
+
+                <div class="w-full text-center">
+                    <form  @submit.prevent="removeFromCollection()">
+                        <input v-on:click="addingToCollection = !addingToCollection" v-show="addingToCollection" class="mt-5 cursor-pointer transition-all duration-200 bg-green hover:bg-greenDark text-white p-3 pl-7 pr-7 text-2xl rounded-full" type="submit" value="Remove from collection">
+                    </form>
+                </div>
             </div>
-        </div>
-        
-        <inertia-link :href="'/diary/' + movie.id + '/create'" class="mb-10 md:mb-0 w-20 flex items-center text-center text-white text-6xl rounded-full bg-green fixed right-5 md:right-10 bottom-10">
-            <img src="/img/create.svg" alt="Log a movie">
-        </inertia-link>
-
-        <div class="w-full text-center">
-            <form  @submit.prevent="addToCollection()">
-                <input v-on:click="addingToCollection = !addingToCollection" v-show="!addingToCollection" class="m-5 cursor-pointer transition-all duration-200 bg-purple hover:bg-purpleDark text-white p-3 pl-10 pr-10 text-2xl rounded-full" type="submit" value="Add to collection">
-            </form>
-        </div>
-
-        <div class="w-full text-center">
-            <form  @submit.prevent="removeFromCollection()">
-                <input v-on:click="addingToCollection = !addingToCollection" v-show="addingToCollection" class="m-5 cursor-pointer transition-all duration-200 bg-purple hover:bg-purpleDark text-white p-3 pl-10 pr-10 text-2xl rounded-full" type="submit" value="Remove from collection">
-            </form>
+            <div class="col-span-2 row-start-1">
+                <div class="p-5">
+                    <h3 class="text-xl">Directed by: 
+                        <span v-for="(director, index) in directors" :key="index">
+                            <span v-if="index > 0">, </span>
+                            {{ director.name }}
+                        </span>
+                    </h3>
+                    <h3 class="mt-2 text-xl">Synopsis:</h3>
+                    <p>{{ movie.overview }}</p>
+                </div>
+                <div class="p-5 mb-5 md:mb-48">
+                    <h3 class="text-xl">Cast:</h3>
+                    <div class="flex flex-wrap content-center text-center justify-around mt-2 md:justify-start">
+                        <article class="w-24 m-2" v-for="(castMember, index) in cast.slice(0, 6)" :key="index">
+                            <div class="h-20 w-20 rounded-full bg-center bg-cover inline-block" :style="{'background-image':'url(https://image.tmdb.org/t/p/w500' + castMember.profile_path + ')'}"></div>
+                            <h3 class="">{{ castMember.name }}</h3>
+                        </article>
+                    </div>
+                </div>
+            </div>
         </div>
     </app-layout>
 </template>
