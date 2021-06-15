@@ -63,18 +63,18 @@
 
         <div class="xl:grid grid-cols-3">
             <div class="md:mb-0 flex flex-col items-center text-center text-white bottom-10 w-auto col-start-3">
-                <inertia-link :href="'/diary/' + movie.id + '/create'" class="w-full text-center inline-block">
-                    <input type="submit" value="Log this movie" class="mt-5 cursor-pointer transition-all duration-200 bg-green hover:bg-greenDark text-white text-center p-3 pl-16 pr-16 text-2xl rounded-full inline-block">
+                <inertia-link :href="'/diary/' + movie.id + '/create'" class="w-full text-center inline-block pl-5 pr-5">
+                    <input type="submit" value="Log this movie" class="mt-5 cursor-pointer transition-all duration-200 bg-green hover:bg-greenDark text-white text-center p-3 pl-16 pr-16 text-2xl rounded-full inline-block w-full">
                 </inertia-link>
-                <div class="w-full text-center">
+                <div class="w-full text-center pl-5 pr-5">
                     <form  @submit.prevent="addToCollection()">
-                        <input v-on:click="addingToCollection = !addingToCollection" v-show="!addingToCollection" class="mt-5 cursor-pointer transition-all duration-200 bg-green hover:bg-greenDark text-white p-3 pl-16 pr-16 text-2xl rounded-full" type="submit" value="Add to collection">
+                        <input v-on:click="addingToCollection = !addingToCollection" v-show="!addingToCollection" class="mt-5 cursor-pointer transition-all duration-200 bg-green hover:bg-greenDark text-white p-3 pl-16 pr-16 text-2xl rounded-full w-full" type="submit" value="Add to collection">
                     </form>
                 </div>
 
-                <div class="w-full text-center">
+                <div class="w-full text-center pl-5 pr-5">
                     <form  @submit.prevent="removeFromCollection()">
-                        <input v-on:click="addingToCollection = !addingToCollection" v-show="addingToCollection" class="mt-5 cursor-pointer transition-all duration-200 bg-green hover:bg-greenDark text-white p-3 pl-7 pr-7 text-2xl rounded-full" type="submit" value="Remove from collection">
+                        <input v-on:click="addingToCollection = !addingToCollection" v-show="addingToCollection" class="mt-5 cursor-pointer transition-all duration-200 bg-green hover:bg-greenDark text-white p-3 pl-7 pr-7 text-2xl rounded-full w-full" type="submit" value="Remove from collection">
                     </form>
                 </div>
             </div>

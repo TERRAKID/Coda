@@ -24520,16 +24520,16 @@ var _hoisted_27 = {
 var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
   type: "submit",
   value: "Log this movie",
-  "class": "mt-5 cursor-pointer transition-all duration-200 bg-green hover:bg-greenDark text-white text-center p-3 pl-16 pr-16 text-2xl rounded-full inline-block"
+  "class": "mt-5 cursor-pointer transition-all duration-200 bg-green hover:bg-greenDark text-white text-center p-3 pl-16 pr-16 text-2xl rounded-full inline-block w-full"
 }, null, -1
 /* HOISTED */
 );
 
 var _hoisted_29 = {
-  "class": "w-full text-center"
+  "class": "w-full text-center pl-5 pr-5"
 };
 var _hoisted_30 = {
-  "class": "w-full text-center"
+  "class": "w-full text-center pl-5 pr-5"
 };
 var _hoisted_31 = {
   "class": "col-span-2 row-start-1"
@@ -24694,7 +24694,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* STYLE */
       ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_27, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_inertia_link, {
         href: '/diary/' + $props.movie.id + '/create',
-        "class": "w-full text-center inline-block"
+        "class": "w-full text-center inline-block pl-5 pr-5"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [_hoisted_28];
@@ -24712,7 +24712,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onClick: _cache[1] || (_cache[1] = function ($event) {
           return $data.addingToCollection = !$data.addingToCollection;
         }),
-        "class": "mt-5 cursor-pointer transition-all duration-200 bg-green hover:bg-greenDark text-white p-3 pl-16 pr-16 text-2xl rounded-full",
+        "class": "mt-5 cursor-pointer transition-all duration-200 bg-green hover:bg-greenDark text-white p-3 pl-16 pr-16 text-2xl rounded-full w-full",
         type: "submit",
         value: "Add to collection"
       }, null, 512
@@ -24727,7 +24727,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onClick: _cache[3] || (_cache[3] = function ($event) {
           return $data.addingToCollection = !$data.addingToCollection;
         }),
-        "class": "mt-5 cursor-pointer transition-all duration-200 bg-green hover:bg-greenDark text-white p-3 pl-7 pr-7 text-2xl rounded-full",
+        "class": "mt-5 cursor-pointer transition-all duration-200 bg-green hover:bg-greenDark text-white p-3 pl-7 pr-7 text-2xl rounded-full w-full",
         type: "submit",
         value: "Remove from collection"
       }, null, 512
