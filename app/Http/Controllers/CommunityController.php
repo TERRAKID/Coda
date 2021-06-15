@@ -187,7 +187,7 @@ class CommunityController extends Controller
         if($member != 0){
             $query = CommunityMember::where('user_id', $currentUser)
                 ->where('community_id', $id)
-                ->update(['active' => 1]);
+                ->update(['active' => 1, 'invited' => 0]);
 
             if($query){
                 return Inertia::render('Community/Show')->with('community', $community)->with('isMember', $member);
@@ -204,6 +204,7 @@ class CommunityController extends Controller
             $communityMember->user_id = $currentUser;
             $communityMember->community_id = $id;
             $communityMember->active = 1;
+            $communityMember->invited = 0;
     
             $query = $communityMember->save();
 

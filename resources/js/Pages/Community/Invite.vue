@@ -17,8 +17,7 @@
                 <div class="rounded-full bg-cover bg-center h-24 w-24 inline-block col-span-2" :style="{'background-image':'url(/storage/' + community.community_photo_path + ')'}"></div>
                 <h1 class="text-lg">You have been invited to join</h1>
                 <span class="text-2xl m-5 inline-block"> {{ this.community.name }}</span>
-                <form :action="'/community/' + this.community.id + '/invite'" method="POST">
-                    <input type="hidden" name="_token" :value="csrf" />
+                <form @submit.prevent="onSubmit()">
                     <input class="cursor-pointer transition-all duration-100 bg-green transform hover:bg-greenDark text-white p-2 pl-24 pr-24 text-2xl rounded-xl" type="submit" value="Join now" />
                 </form>
                 <div>
@@ -46,24 +45,7 @@
         },
         data() {
             return {
-                csrf: document
-                    .querySelector('meta[name="csrf-token"]')
-                    .getAttribute("content"),
             };
-        },
-        setups() {
-            const form = reactive({
-                avatar: null,
-                banner: null,
-                name: null,
-                visibility: null,
-            });
-
-            function submit() {
-                Inertia.post("/community" + this.community.id + "/invite", form);
-            }
-
-            return { form, submit };
         },
         props: {
             community: {
@@ -79,6 +61,18 @@
                 required: false,
             },
         },
-        methods: {},
+        methods: {
+            onSubmit() {
+                axios
+                    .post("/community/" + this.community.id + "/invite", {
+                    })
+                    .then((res) => {
+                        if(res.status === 200){
+                            window.location.href = "/community/" + this.community.id; //there should be a better way to do this
+                        }
+                    })
+                    .catch((err) => {
+                    });
+            },},
     };
 </script>

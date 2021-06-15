@@ -18149,26 +18149,7 @@ __webpack_require__.r(__webpack_exports__);
     AppLayout: _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_0__.default
   },
   data: function data() {
-    return {
-      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute("content")
-    };
-  },
-  setups: function setups() {
-    var form = (0,vue__WEBPACK_IMPORTED_MODULE_1__.reactive)({
-      avatar: null,
-      banner: null,
-      name: null,
-      visibility: null
-    });
-
-    function submit() {
-      Inertia.post("/community" + this.community.id + "/invite", form);
-    }
-
-    return {
-      form: form,
-      submit: submit
-    };
+    return {};
   },
   props: {
     community: {
@@ -18184,7 +18165,17 @@ __webpack_require__.r(__webpack_exports__);
       required: false
     }
   },
-  methods: {}
+  methods: {
+    onSubmit: function onSubmit() {
+      var _this = this;
+
+      axios.post("/community/" + this.community.id + "/invite", {}).then(function (res) {
+        if (res.status === 200) {
+          window.location.href = "/community/" + _this.community.id; //there should be a better way to do this
+        }
+      })["catch"](function (err) {});
+    }
+  }
 });
 
 /***/ }),
@@ -23309,17 +23300,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ), _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.community.name), 1
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("form", {
-    action: '/community/' + this.community.id + '/invite',
-    method: "POST"
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-    type: "hidden",
-    name: "_token",
-    value: $data.csrf
-  }, null, 8
-  /* PROPS */
-  , ["value"]), _hoisted_9], 8
-  /* PROPS */
-  , ["action"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_inertia_link, null, {
+    onSubmit: _cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+      return $options.onSubmit();
+    }, ["prevent"]))
+  }, [_hoisted_9], 32
+  /* HYDRATE_EVENTS */
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_inertia_link, null, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_11];
     }),
