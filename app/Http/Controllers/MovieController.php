@@ -129,10 +129,12 @@ class MovieController extends Controller
             $results = null;
             $communities = null;
         }
+        
         return Inertia::render('Movie/Search')
             ->with('movies', $results)
             ->with('genres', $genres)
             ->with('search', $search)
+            ->with('users', $users)
             ->with('communities', $communities);
     }
 

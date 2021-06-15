@@ -43,7 +43,7 @@
             <h2 v-if="search">Results for "{{ search }}"</h2>
             <h2 v-else>Please enter your search in the search box</h2>
         </template>
-
+        
         <div class="p-5 w-full text-2xl" v-if="users != null">
             <h3 class="border-b-2 border-blue-primary w-full">Users</h3>
             <inertia-link :href="'/user/' + user.id" v-for="(user, index) in users" :key="index" class="m-5 flex items-center">
