@@ -125,7 +125,6 @@ class MovieController extends Controller
         else{
             $genres = null;
             $search = null;
-            $searchMessage = 'Your search did not return any results, please try again.';
             $users = null;
             $results = null;
             $communities = null;
