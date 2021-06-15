@@ -44,7 +44,7 @@
                         <input
                             class="rounded-full w-full h-14 focus:outline-none focus:ring-0 border-none pl-6 pr-12 text-sm"
                              type="search" name="search_movie" id="search_movie" v-model="form.search_movie"
-                            placeholder="Search movies"
+                            placeholder="Search movies, users, and communities"
                         />
                         <button
                             class="
@@ -208,8 +208,11 @@
                                 My communities
                             </jet-responsive-nav-link>
 
-                            <jet-responsive-nav-link>
-                                Newsfeed
+                            <jet-responsive-nav-link
+                                :href="route('search')"
+                                :active="route().current('search')"
+                            >
+                                Search
                             </jet-responsive-nav-link>
 
                             <!-- Authentication -->

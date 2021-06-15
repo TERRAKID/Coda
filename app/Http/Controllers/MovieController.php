@@ -77,8 +77,18 @@ class MovieController extends Controller
         $results = (new TMDBController)->fetchMovieByName($search);
         $genres = TMDBController::fetchGenres();
 
-        //This adds the movie to our database in case it doesn't exist yet
-        if($search){
+        if($search != null){
+            $users = User::search(request('search_movie'))->get();
+            if($users->count() == 0){
+                $users = null;
+            }
+
+            $communities = Community::search(request('search_movie'))->get();
+            if($communities->count() == 0){
+                $communities = null;
+            }
+            
+            //This adds the movie to our database in case it doesn't exist yet
             foreach($results as $movie){
                 $movieExist = Movie::where('tmdb_id', '=', $movie['id'])->count();
                 if(!$movieExist){
@@ -90,10 +100,18 @@ class MovieController extends Controller
                 }
             }
         }
+        else{
+            $search = null;
+            $users = null;
+            $communities = null;
+        }
+
         return Inertia::render('Movie/Search')
-            ->with('results', $results)
+            ->with('movies', $results)
             ->with('genres', $genres)
-            ->with('search', $search);
+            ->with('search', $search)
+            ->with('users', $users)
+            ->with('communities', $communities);
     }
 
 /**-FUNCTION-04----------------------------------------------------------*/
