@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use Laravel\Scout\Searchable;
 
 class Community extends Model
 {
     use HasFactory;
+    use Searchable;
 
     public function user(){
         return $this->hasMany(User::class);
@@ -31,4 +33,8 @@ class Community extends Model
      * @var string
      */
     protected $table = 'community';
+
+    public function searchableAs(){
+        return 'community_index';
+    }
 }

@@ -72,7 +72,7 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/user/friend', [UserContr
 Route::middleware(['auth:sanctum', 'verified'])->get('/user/{id}', [UserController::class, 'getUser']);
 
 /** Movies */
-Route::middleware(['auth:sanctum', 'verified'])->get('/movie/search', [MovieController::class, 'showMovieSearch']);
+Route::middleware(['auth:sanctum', 'verified'])->get('/movie/search', [MovieController::class, 'showMovieSearch'])->name('search');
 Route::middleware(['auth:sanctum', 'verified'])->post('/movie/search', [MovieController::class, 'movieSearch']);
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/movie/{movieId}', [MovieController::class, 'moviePage']);

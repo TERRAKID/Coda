@@ -58,6 +58,7 @@ module.exports = {
             },
             width: {
                 dm: '200vw',
+                '9/10': '95%',
             }
         },
     },

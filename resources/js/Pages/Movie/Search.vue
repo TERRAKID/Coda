@@ -1,11 +1,11 @@
 <template>
     <app-layout>
-
-        <form @submit.prevent = "submit" class="hidden w-64 md:inline-block flex items-center relative m-5">
-            <input
+        <div class="bg-blue-primary ">
+        <form @submit.prevent = "submit" class="hidden w-64 md:inline-block flex items-center relative m-5 w-9/10">
+            <input autofocus ref="search"
                 class="rounded-full w-full h-14 pl-6 pr-12 text-sm border-2 focus:border-4 focus:border-blue-primary border-blue-primary rounded-full "
                     type="search" name="search_movie" id="search_movie" v-model="form.search_movie"
-                placeholder="Search movies"
+                placeholder="Search movies, users, communities"
             />
             <button
                 class="focus:outline-none w-12 h-12 flex items-center justify-center absolute right-0 top-0 mt-1 mr-3"
@@ -38,22 +38,49 @@
                 </svg>
             </button>
         </form>
-
+        </div>
         <template #header>
             <h2 v-if="search">Results for "{{ search }}"</h2>
             <h2 v-else>Please enter your search in the search box</h2>
         </template>
 
-        <inertia-link :href="'/movie/' + result.id" v-for="(result, index) in results" :key="index" class="m-5 flex items-center">
-            <div class="pb-24 pl-16 bg-center bg-cover bg-blue-primary" :style="{'background-image':'url(https://image.tmdb.org/t/p/w500' + result.poster_path + ')'}"></div>
-            <div class="ml-5">
-                <h3 class="text-2xl mb-4">
-                    {{ result.title }}
-                </h3>
-                <p v-if="result.release_date" class="text-2xl">({{ result.release_date.substring(0, 4) }})</p>
-                <p v-else class="text-2xl">(tbd)</p>
-            </div>
-        </inertia-link>
+        <div class="p-5 w-full text-2xl" v-if="users != null">
+            <h3 class="border-b-2 border-blue-primary w-full">Users</h3>
+            <inertia-link :href="'/user/' + user.id" v-for="(user, index) in users" :key="index" class="m-5 flex items-center">
+                <div class="pb-16 pl-16 rounded-full bg-center bg-cover bg-blue-primary" :style="{'background-image':'url(' + user.profile_photo_url + ')'}"></div>
+                <div class="ml-5">
+                    <h3 class="text-2xl">
+                        {{ user.name }}
+                    </h3>
+                </div>
+            </inertia-link>
+        </div>
+
+        <div class="p-5 w-full text-2xl" v-if="communities != null">
+            <h3 class="border-b-2 border-blue-primary w-full">Communities</h3>
+            <inertia-link :href="'/community/' + community.id" v-for="(community, index) in communities" :key="index" class="m-5 flex items-center">
+                <div class="pb-16 pl-16 rounded-full bg-center bg-cover bg-blue-primary" :style="{'background-image':'url(/storage/' + community.community_photo_path + ')'}"></div>
+                <div class="ml-5">
+                    <h3 class="text-2xl">
+                        {{ community.name }}
+                    </h3>
+                </div>
+            </inertia-link>
+        </div>
+
+        <div class="p-5 w-full text-2xl" v-if="movies != null">
+            <h3 class="border-b-2 border-blue-primary w-full">Movies</h3>
+            <inertia-link :href="'/movie/' + movie.id" v-for="(movie, index) in movies" :key="index" class="m-5 flex items-center">
+                <div class="pb-24 pl-16 bg-center bg-cover bg-blue-primary" :style="{'background-image':'url(https://image.tmdb.org/t/p/w500' + movie.poster_path + ')'}"></div>
+                <div class="ml-5">
+                    <h3 class="text-2xl mb-4">
+                        {{ movie.title }}
+                    </h3>
+                    <p v-if="movie.release_date" class="text-2xl">({{ movie.release_date.substring(0, 4) }})</p>
+                    <p v-else class="text-2xl">(tbd)</p>
+                </div>
+            </inertia-link>
+        </div>
 
     </app-layout>
 </template>
@@ -83,7 +110,15 @@
             return { form, submit }
         },
         props: {
-            results: {
+            movies: {
+                type: Array,
+                required: false,
+            },
+            users: {
+                type: Array,
+                required: false,
+            },
+            communities: {
                 type: Array,
                 required: false,
             },
@@ -101,6 +136,8 @@
             },
         },
         methods: {
+
         },
+        
     };
 </script>
