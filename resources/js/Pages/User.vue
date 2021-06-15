@@ -36,8 +36,23 @@
                         md:flex-row
                     "
                 >
-                    <div class="bg-opacity-60 md:w-2/5">
-                        <div class="grid grid-cols-user items-center gap-4">
+                    <div
+                        class="
+                            bg-opacity-60
+                            w-full
+                            md:w-2/5
+                            flex-grow
+                            md:flex-grow-0
+                        "
+                    >
+                        <div
+                            class="
+                                grid grid-cols-user
+                                items-center
+                                gap-4
+                                md:w-80
+                            "
+                        >
                             <div
                                 class="
                                     items-center
@@ -88,7 +103,9 @@
                                     md:justify-self-start
                                 "
                             >
-                                <span>618</span>
+                                <span>{{
+                                    this.amountFilms ? this.amountFilms : 0
+                                }}</span>
                                 <p>films</p>
                             </div>
 
@@ -98,10 +115,13 @@
                                     md:text-xl
                                     justify-self-end
                                     md:row-start-2
-                                    md:col-start-2
+                                    md:col-start-3
+                                    md:justify-self-start
                                 "
                             >
-                                <span>{{ this.amountFriends }}</span>
+                                <span>{{
+                                    this.amountFriends ? this.amountFriends : 0
+                                }}</span>
                                 <p>friends</p>
                             </div>
 
@@ -151,7 +171,110 @@
                         md:p-8
                         min-h-screen
                     "
-                ></div>
+                >
+                    <p class="text-xl">
+                        Favorite genre:
+                        {{
+                            this.favoriteGenre
+                                ? this.favoriteGenre
+                                : "no genre found"
+                        }}
+                    </p>
+                    <div>
+                        <p class="text-xl mb-4">My favorite movies</p>
+                        <div class="grid grid-cols-5 gap-4">
+                            <inertia-link
+                                v-for="(favoriteMovie, index) in favoriteMovies"
+                                :key="index"
+                                :href="'/movie/' + favoriteMovie.id"
+                            >
+                                <img
+                                    :src="
+                                        'https://image.tmdb.org/t/p/w185/' +
+                                        favoriteMovie.poster_path
+                                    "
+                                    :alt="favoriteMovie.original_title"
+                                />
+                            </inertia-link>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-xl mb-4">Recent reviews</p>
+                        <div class="flex flex-col justify-between gap-4">
+                            <inertia-link
+                                class="
+                                    flex
+                                    justify-between
+                                    md:justify-start
+                                    gap-4
+                                "
+                                v-for="(review, index) in reviews"
+                                :key="index"
+                                :href="
+                                    '/movie/' +
+                                    review.movie_id +
+                                    '/review/' +
+                                    review.id
+                                "
+                            >
+                                <img
+                                    class="w-1/6 md:w-16"
+                                    :src="
+                                        'https://image.tmdb.org/t/p/w185' +
+                                        reviewMovies[index].poster_path
+                                    "
+                                    :alt="reviewMovies[index].original_title"
+                                />
+                                <div
+                                    class="flex flex-col justify-evenly w-full"
+                                >
+                                    <div class="flex justify-between gap-4">
+                                        <p
+                                            class="
+                                                font-serif
+                                                truncate
+                                                whitespace-nowrap
+                                            "
+                                        >
+                                            {{
+                                                reviewMovies[index]
+                                                    .original_title
+                                            }}
+                                        </p>
+                                        <p class="underline w-1/2 text-right">
+                                            Read review
+                                        </p>
+                                    </div>
+                                    <div v-if="review.rating < 5" class="flex">
+                                        <img
+                                            class="w-6 sm:w-10 mr-2"
+                                            v-for="index in review.rating"
+                                            :key="index"
+                                            src="/img/star.svg"
+                                            alt="Full Star"
+                                        />
+                                        <img
+                                            class="w-6 sm:w-10 mr-2"
+                                            v-for="index in 5 - review.rating"
+                                            :key="index"
+                                            src="/img/star-outline.svg"
+                                            alt="Blank Star"
+                                        />
+                                    </div>
+                                    <div v-else class="flex">
+                                        <img
+                                            class="w-6 sm:w-10 mr-2"
+                                            v-for="index in review.rating"
+                                            :key="index"
+                                            src="/img/star.svg"
+                                            alt="Full Star"
+                                        />
+                                    </div>
+                                </div>
+                            </inertia-link>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </app-layout>
@@ -169,6 +292,11 @@
             otherUser: Object,
             isFriend: Boolean,
             amountFriends: Number,
+            amountFilms: Number,
+            favoriteGenre: String,
+            favoriteMovies: Object,
+            reviews: Object,
+            reviewMovies: Object,
         },
 
         data() {
