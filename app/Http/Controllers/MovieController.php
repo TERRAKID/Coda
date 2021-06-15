@@ -73,44 +73,67 @@ class MovieController extends Controller
 
 /**-FUNCTION-03----------------------------------------------------------*/
     public function movieSearch(Request $request){
-        $search = request('search_movie');
-        $results = (new TMDBController)->fetchMovieByName($search);
-        $genres = TMDBController::fetchGenres();
+        $currentUser = auth()->user();
+        $currentUser = $currentUser->id;
 
+        $search = request('search_movie');
+
+        $users = [];
         if($search != null){
-            $users = User::search(request('search_movie'))->get();
-            if($users->count() == 0){
+            $userSearch = User::search(request('search_movie'))->get();
+            if($userSearch->count() == 0){
                 $users = null;
             }
+            else{
+                foreach($userSearch as $user){
+                    $user = User::where('id', '=', $user['id'])
+                        ->where('id', '!=', $currentUser)
+                        ->first();
 
-            $communities = Community::search(request('search_movie'))->get();
+                    array_push($users, $user);
+                }
+            }
+
+            $communities = Community::search(request('search_movie'))
+                ->where('visibility', 1)->get();
+
             if($communities->count() == 0){
                 $communities = null;
             }
-            
-            //This adds the movie to our database in case it doesn't exist yet
-            foreach($results as $movie){
-                $movieExist = Movie::where('tmdb_id', '=', $movie['id'])->count();
-                if(!$movieExist){
-                    $addMovie = new Movie;
-                    $addMovie->title = $movie['title'];
-                    $addMovie->tmdb_id = $movie['id'];
 
-                    $addMovie->save();
+            $results = (new TMDBController)->fetchMovieByName($search);
+            if(empty($results)){
+                $results = null;
+                $genres = null;
+            }
+            else{
+                $genres = TMDBController::fetchGenres();
+                
+                //This adds the movie to our database in case it doesn't exist yet
+                foreach($results as $movie){
+                    $movieExist = Movie::where('tmdb_id', '=', $movie['id'])->count();
+                    if(!$movieExist){
+                        $addMovie = new Movie;
+                        $addMovie->title = $movie['title'];
+                        $addMovie->tmdb_id = $movie['id'];
+    
+                        $addMovie->save();
+                    }
                 }
             }
         }
         else{
+            $genres = null;
             $search = null;
+            $searchMessage = 'Your search did not return any results, please try again.';
             $users = null;
+            $results = null;
             $communities = null;
         }
-
         return Inertia::render('Movie/Search')
             ->with('movies', $results)
             ->with('genres', $genres)
             ->with('search', $search)
-            ->with('users', $users)
             ->with('communities', $communities);
     }
 

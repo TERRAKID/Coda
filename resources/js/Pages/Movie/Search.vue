@@ -1,8 +1,8 @@
 <template>
     <app-layout>
-
-        <form @submit.prevent = "submit" class="hidden w-64 md:inline-block flex items-center relative m-5">
-            <input
+        <div class="bg-blue-primary ">
+        <form @submit.prevent = "submit" class="hidden w-64 md:inline-block flex items-center relative m-5 w-9/10">
+            <input autofocus ref="search"
                 class="rounded-full w-full h-14 pl-6 pr-12 text-sm border-2 focus:border-4 focus:border-blue-primary border-blue-primary rounded-full "
                     type="search" name="search_movie" id="search_movie" v-model="form.search_movie"
                 placeholder="Search movies, users, communities"
@@ -38,12 +38,11 @@
                 </svg>
             </button>
         </form>
-
+        </div>
         <template #header>
             <h2 v-if="search">Results for "{{ search }}"</h2>
             <h2 v-else>Please enter your search in the search box</h2>
         </template>
-
 
         <div class="p-5 w-full text-2xl" v-if="users != null">
             <h3 class="border-b-2 border-blue-primary w-full">Users</h3>
@@ -137,6 +136,8 @@
             },
         },
         methods: {
+
         },
+        
     };
 </script>
