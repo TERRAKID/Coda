@@ -313,6 +313,7 @@ class CommunityController extends Controller
 
             $community->background_photo_path = $filePath;
         }
+
         $community->save();
 
         $community = Community::where('name', request('name'))

@@ -98,12 +98,18 @@ class MovieController extends Controller
             }
 
             $communities = Community::search(request('search_movie'))
-                ->where('active', 1)
                 ->where('visibility', 1)
                 ->get();
 
-            if($communities->count() == 0){
-                $communities = null;
+            $filteredCommunities = [];
+            foreach($communities as $community){
+                $community = Community::where('id', '=', $community['id'])
+                    ->where('active', 1)->first();
+                array_push($filteredCommunities, $community);
+            }
+
+            if(count($filteredCommunities) == 0){
+                $filteredCommunities = null;
             }
 
             $results = (new TMDBController)->fetchMovieByName($search);
@@ -132,14 +138,14 @@ class MovieController extends Controller
             $search = null;
             $users = null;
             $results = null;
-            $communities = null;
+            $filteredCommunities = null;
         }
         return Inertia::render('Movie/Search')
             ->with('movies', $results)
             ->with('genres', $genres)
             ->with('search', $search)
             ->with('users', $users)
-            ->with('communities', $communities);
+            ->with('communities', $filteredCommunities);
     }
 
 /**-FUNCTION-04----------------------------------------------------------*/
