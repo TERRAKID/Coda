@@ -11,7 +11,7 @@
                     </inertia-link>
                 </div>
             </div>
-            <div class="max-w-full md:text-center ml-5 mt-5 pr-5 md:col-start-5 md:col-end-7 md:row-span-2">
+            <div class="max-w-full md:text-center ml-5 mt-5 pr-5 md:col-start-5 md:col-end-7 md:row-span-6">
                 <div class="max-w-full md:text-center mt-5 pr-5">
                     <h2 class="text-xl">
                         Your Communities

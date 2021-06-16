@@ -1,10 +1,10 @@
 <template>
     <app-layout>
-        <div class="bg-cover bg-center text-white pb-2 mb-5" :style="{'background-image':'linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(https://image.tmdb.org/t/p/w1280' + movie[0].backdrop_path + ')'}">
+        <div class="bg-cover bg-center text-white pb-2 mb-5" :style="{'background-image':'linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(https://image.tmdb.org/t/p/w1280' + movie.backdrop_path + ')'}">
             <div class="p-5 pt-32 text-3xl flex flex-wrap items-center justify-between">
                 <div>
                     <h2>Recent reviews:</h2>
-                    <p class="text-sm">Background from: <inertia-link class="underline ml-2" :href="'/movie/' + movie[0].id">{{ movie[0].title }}</inertia-link></p>
+                    <p class="text-sm">Background from: <inertia-link class="underline ml-2" :href="'/movie/' + movie.id">{{ movie.title }}</inertia-link></p>
                 </div>
                 <inertia-link class="underline text-xl" href="/dashboard">Return to dashboard</inertia-link>
             </div>
@@ -19,7 +19,7 @@
                     <inertia-link :href="'/user/' + review.user_id" class="flex items-center w-3/4 md:w-1/2">
                         <div class="p-8 rounded-full bg-center bg-cover bg-blue-primary" :style="{'background-image':'url('+ this.users[index].profile_photo_url + ')'}"></div>
                         <div class="ml-3">
-                            <h3 class="flex flex-wrap mr-2">{{ users[index].name }}'s review of </h3><inertia-link class="underline" :href="'/movie/' + movie[index].id">{{ movie[index].title }}</inertia-link>
+                            <h3 class="flex flex-wrap mr-2">{{ users[index].name }}'s review of </h3><inertia-link class="underline" :href="'/movie/' + review.tmdb_id">{{ review.title }}</inertia-link>
                             <p>{{ friendlyDate(review.created_at) }}</p>
                         </div>
                     </inertia-link>

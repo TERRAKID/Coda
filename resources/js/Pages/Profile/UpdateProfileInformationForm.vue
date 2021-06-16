@@ -153,7 +153,6 @@
         </template>
 
         <template #actions>
-            <p class="p-5 w-1/2">Images must be max 1mb</p>
             <jet-action-message :on="form.recentlySuccessful" class="mr-3">
                 Saved.
             </jet-action-message>

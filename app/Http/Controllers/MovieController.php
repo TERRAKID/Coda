@@ -80,6 +80,7 @@ class MovieController extends Controller
         $search = request('search_movie');
 
         $users = [];
+        $communities = [];
         if($search != null){
             $userSearch = User::search(request('search_movie'))->get();
             if($userSearch->count() == 0){
@@ -96,7 +97,9 @@ class MovieController extends Controller
             }
 
             $communities = Community::search(request('search_movie'))
-                ->where('visibility', 1)->get();
+                ->where('active', 1)
+                ->where('visibility', 1)
+                ->get();
 
             if($communities->count() == 0){
                 $communities = null;
@@ -130,7 +133,6 @@ class MovieController extends Controller
             $results = null;
             $communities = null;
         }
-        
         return Inertia::render('Movie/Search')
             ->with('movies', $results)
             ->with('genres', $genres)
@@ -470,28 +472,28 @@ class MovieController extends Controller
             ->where('movie_ratings.review', '!=', '')
             ->where('movie_ratings.active', '=', '1')
             ->orderBy('movie_ratings.created_at', 'DESC')
-            ->take(10)
+            ->take(100)
             ->get([
                 'movie_ratings.id',
                 'movie_ratings.user_id',
                 'users.name',
                 'users.profile_photo_path',
                 'movie.tmdb_id',
+                'movie.title',
                 'movie_ratings.rating',
                 'movie_ratings.review',
                 'movie_ratings.created_at',
             ]);
 
         $users = [];
-        $movies = [];
         
+
         if($recentReviews->count()!= 0){
+            $movie = (new TMDBController)->fetchMovieById($recentReviews['0']['tmdb_id']);
             foreach($recentReviews as $review){
                 $user = User::where('id', '=', $review['user_id'])->first();
-                $movie = (new TMDBController)->fetchMovieById($review['tmdb_id']);
     
                 array_push($users, $user);
-                array_push($movies, $movie);
             }
         }
 
@@ -501,7 +503,7 @@ class MovieController extends Controller
 
         return Inertia::render('Movie/RecentReviews')
             ->with('reviews', $recentReviews)
-            ->with('movie', $movies)
+            ->with('movie', $movie)
             ->with('users', $users);
     }
 /**-FUNCTION-10----------------------------------------------------------*/
