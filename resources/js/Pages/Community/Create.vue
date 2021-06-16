@@ -168,10 +168,13 @@ export default{
             formData.append('name', this.name);
             formData.append('visibility', this.visibility);
             
+            
             for(this.x = 0; this.x < 5; this.x++){
-                let invitedUser = document.getElementById('invitee-' + this.x)
-                if(invitedUser.checked == true){
-                    formData.append('invitee-' + this.x, invitedUser.value);
+                if(document.getElementById('invitee-' + this.x) != null){
+                    let invitedUser = document.getElementById('invitee-' + this.x)
+                    if(invitedUser.checked == true){
+                        formData.append('invitee-' + this.x, invitedUser.value);
+                    }
                 }
             }
             
