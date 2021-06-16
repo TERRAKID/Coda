@@ -7,6 +7,7 @@ use App\Models\Community;
 use App\Models\CommunityMember;
 use App\Models\UserFriend;
 use App\Models\MovieRating;
+use App\Models\UserMovieCollection;
 use App\Models\Movie;
 use App\Traits\UploadTrait;
 use Illuminate\Http\Request;
@@ -337,13 +338,26 @@ class MovieController extends Controller
             $averageFriendReviews = null;
         }
 
+        $collectionStatus = UserMovieCollection::where('user_id', '=', $currentUser)
+            ->where('movie_id', '=', $CodaMovieId)
+            ->where('active', '=', 1)
+            ->count();
+        
+        if($collectionStatus == 0){
+            $collectionStatus = false;
+        }
+        else{
+            $collectionStatus = true;
+        }
+
         return Inertia::render('Movie/Details')
             ->with('movie', $movie)
             ->with('globalReviews', $averageGlobalReviews)
             ->with('friendReviews', $averageFriendReviews)
             ->with('cast', $cast)
             ->with('trailer', $trailer)
-            ->with('directors', $directors);
+            ->with('directors', $directors)
+            ->with('collectionStatus', $collectionStatus);
     }
 /**-FUNCTION-08----------------------------------------------------------*/
     public function showAllReviews($movieId){
@@ -436,7 +450,6 @@ class MovieController extends Controller
             ->with('movie', $movie);
     }
 /**-FUNCTION-08----------------------------------------------------------*/
-
     public function deleteReview($movieId, $reviewId){
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
@@ -450,4 +463,71 @@ class MovieController extends Controller
 
         return redirect()->to('/diary')->send();
     }
+/**-FUNCTION-09----------------------------------------------------------*/
+    public function recentReviews(){
+        $recentReviews = MovieRating::join('movie', 'movie.id', '=', 'movie_ratings.movie_id')
+            ->join('users', 'users.id', '=', 'movie_ratings.user_id')
+            ->where('movie_ratings.review', '!=', '')
+            ->where('movie_ratings.active', '=', '1')
+            ->orderBy('movie_ratings.created_at', 'DESC')
+            ->take(10)
+            ->get([
+                'movie_ratings.id',
+                'movie_ratings.user_id',
+                'users.name',
+                'users.profile_photo_path',
+                'movie.tmdb_id',
+                'movie_ratings.rating',
+                'movie_ratings.review',
+                'movie_ratings.created_at',
+            ]);
+
+        $users = [];
+        $movies = [];
+        
+        if($recentReviews->count()!= 0){
+            foreach($recentReviews as $review){
+                $user = User::where('id', '=', $review['user_id'])->first();
+                $movie = (new TMDBController)->fetchMovieById($review['tmdb_id']);
+    
+                array_push($users, $user);
+                array_push($movies, $movie);
+            }
+        }
+
+        else{
+            $recentReviews = null;
+        }
+
+        return Inertia::render('Movie/RecentReviews')
+            ->with('reviews', $recentReviews)
+            ->with('movie', $movies)
+            ->with('users', $users);
+    }
+/**-FUNCTION-10----------------------------------------------------------*/
+    public function randomMovie(){
+        $currentUser = auth()->user();
+        $currentUser = $currentUser->id;
+
+        $movies = UserMovieCollection::where('user_id', '=', $currentUser)
+            ->where('active', '=', '1')
+            ->get(['movie_id']);
+
+        if($movies->count() == 0){
+            $randomMovie = null;
+        }
+        else{
+            
+        $movieIds = [];
+            foreach($movies as $movie){
+                $movieId = Movie::where('id', '=', $movie['movie_id'])->first('tmdb_id');
+                array_push($movieIds, $movieId['tmdb_id']);
+            }
+
+            $randomMovie = (new TMDBController)->fetchMovieById($movieIds[rand(0, count($movieIds) - 1)]);
+        }
+        return Inertia::render('Movie/RandomMovie')
+            ->with('movie', $randomMovie);
+    }
 }
+

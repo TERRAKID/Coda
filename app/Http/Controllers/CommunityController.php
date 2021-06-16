@@ -22,7 +22,9 @@ class CommunityController extends Controller
         $currentUser = $currentUser->id;
 
         $communities = Community::join('community_member', 'community_member.community_id', '=', 'community.id')
-            ->where('community_member.user_id', '=', $currentUser)->get();
+            ->where('community_member.user_id', '=', $currentUser)
+            ->where('community.active', '=', 1)
+            ->get();
 
         return Inertia::render('Community/Index')->with('communities', $communities)->with('user', auth()->user());
     }
@@ -34,6 +36,7 @@ class CommunityController extends Controller
         }
 
         $community = Community::where('id', $id)
+            ->where('active', '=', 1)
             ->get();
         
         if($community->isEmpty()){
@@ -53,24 +56,58 @@ class CommunityController extends Controller
             ->where('active', 1)
             ->count();
 
-        return Inertia::render('Community/Show')->with('community', $community)->with('isMember', $member);
+        return Inertia::render('Community/Show')
+            ->with('community', $community)
+            ->with('isMember', $member);
     }
 
     //-----------------------------------------------------------------------
     
     public function communityDetails($id){
-        $community = Community::where('id', $id)
-            ->get();
-        $community = $community[0];
+        $currentUser = auth()->user();
+        $currentUser = $currentUser->id;
 
-        $communityMembers = User::join('community_member', 'community_member.user_id', '=', 'users.id')
-                ->where('community_member.community_id', '=', $community->id)
-                ->where('community_member.active', '=', '1')
-                ->get(['users.id', 'users.name', 'users.profile_photo_path']);
+        $checkCurrentUserIsMember = CommunityMember::where('user_id', '=', $currentUser)
+            ->where('community_id', '=', $id)
+            ->where('active', '=', '1')->count();
 
-        $memberCount = $communityMembers->count();
+        if($checkCurrentUserIsMember != 0){
+            $community = Community::where('id', $id)
+                ->get();
+            $community = $community[0];
 
-        return Inertia::render('Community/Details')->with('community', $community)->with('communityMembers', $communityMembers)->with('memberCount', $memberCount);
+            $users = User::join('community_member', 'community_member.user_id', '=', 'users.id')
+                    ->where('community_member.community_id', '=', $community->id)
+                    ->where('community_member.active', '=', '1')
+                    ->get(['users.id']);
+            $memberCount = $users->count();
+            
+            $communityMembers = [];
+
+            foreach($users as $user){
+                $communityMember = User::where('id', '=', $user['id'])->first();
+                array_push($communityMembers, $communityMember);
+            }
+            
+            if($community['created_by'] == $currentUser){
+                $deletePermissions = 1;
+            }
+            else{
+                $deletePermissions = 0;
+            }
+        }
+        else{
+            $community = null;
+            $communityMembers = null;
+            $memberCount = null;
+            $deletePermissions = null;
+        }
+
+        return Inertia::render('Community/Details')
+            ->with('community', $community)
+            ->with('communityMembers', $communityMembers)
+            ->with('memberCount', $memberCount)
+            ->with('deletePermissions', $deletePermissions);
     }
 
     //-----------------------------------------------------------------------
@@ -108,9 +145,16 @@ class CommunityController extends Controller
     
     public function communityInvite($id){
         $community = Community::where('id', $id)
+            ->where('active', '=', 1)
             ->get();
-        $community = $community[0];
 
+        if($community->count() == 1){
+            $community = $community[0];
+        }
+        else{
+            $community = null;
+        }
+        
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
 
@@ -118,8 +162,10 @@ class CommunityController extends Controller
             ->where('community_id', $id)
             ->where('active', 1)
             ->count();
-            
-        return Inertia::render('Community/Invite')->with('community', $community)->with('isMember', $member);
+        //dd($community);
+        return Inertia::render('Community/Invite')
+            ->with('community', $community)
+            ->with('isMember', $member);
     }
 
     //-----------------------------------------------------------------------
@@ -141,7 +187,7 @@ class CommunityController extends Controller
         if($member != 0){
             $query = CommunityMember::where('user_id', $currentUser)
                 ->where('community_id', $id)
-                ->update(['active' => 1]);
+                ->update(['active' => 1, 'invited' => 0]);
 
             if($query){
                 return Inertia::render('Community/Show')->with('community', $community)->with('isMember', $member);
@@ -158,16 +204,12 @@ class CommunityController extends Controller
             $communityMember->user_id = $currentUser;
             $communityMember->community_id = $id;
             $communityMember->active = 1;
+            $communityMember->invited = 0;
     
             $query = $communityMember->save();
 
             if($query){
                 return Inertia::render('Community/Show')->with('community', $community)->with('isMember', $member);
-                /*
-                return redirect('/community' . '/' . $id)
-                    ->with(['community' => $community], ['member' => $member])
-                    ->withSuccess('You have joined ' . $community->name);
-                */
             }
             else{
                 return back()
@@ -184,21 +226,39 @@ class CommunityController extends Controller
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
 
-        $friends1 = User::join('user_friend', 'user_friend.user_id', '=', 'users.id')
-                ->where('user_friend.friend_id', '=', $currentUser)->get();
+        $friends = [];
+        $friends1 = UserFriend::where('user_friend.user_id', '=', $currentUser)
+            ->where('user_friend.accepted', '=', '1')
+            ->get('friend_id');
 
-        $friends2 = auth()->user()->friends()->get();
+        $friends2 = UserFriend::where('user_friend.friend_id', '=', $currentUser)
+            ->where('user_friend.accepted', '=', '1')
+            ->get('user_id');
 
-        $allFriends = $friends1->merge($friends2);
+        $allFriends = [];
 
-        if($allFriends->isEmpty()){
-            $hasFriends = false;
-            return Inertia::render('Community/Create')->with('hasFriends', $hasFriends);
+        if($friends1->count() > 0 || $friends2->count() > 0){
+            foreach($friends1 as $friend){
+                array_push($friends, $friend['friend_id']);
+            }
+            foreach($friends2 as $friend){
+                array_push($friends, $friend['user_id']);
+            }
+            $friends = array_unique($friends);
+    
+            foreach($friends as $friend){
+                $users = User::where('id', '=', $friend)->get();
+                foreach($users as $user){
+                    array_push($allFriends, $user);
+                }
+            }
         }
         else{
-            $hasFriends = true;
-            return Inertia::render('Community/Create')->with('friends', $allFriends)->with('hasFriends', $hasFriends);
+            $allFriends = null;
         }
+
+        return Inertia::render('Community/Create')
+            ->with('friends', $allFriends);
 
     }
 
@@ -213,6 +273,10 @@ class CommunityController extends Controller
             
         $community = new Community;
 
+        $currentUser = auth()->user();
+        $currentUser = $currentUser->id;
+
+        $community->created_by = $currentUser;
         $community->name = request('name');
         $community->visibility = request('visibility');
 
@@ -267,9 +331,6 @@ class CommunityController extends Controller
             }
         }
 
-        $currentUser = auth()->user();
-        $currentUser = $currentUser->id;
-
         $communityMember->user_id = $currentUser;
         $communityMember->community_id = $communityId;
         $communityMember->active='1';
@@ -286,5 +347,19 @@ class CommunityController extends Controller
             ->count();
         
         return Inertia::render('Community/Show')->with('community', $community)->with('isMember', $member);
+    }
+
+    public function deleteCommunity($id){
+        $currentUser = auth()->user();
+        $currentUser = $currentUser->id;
+
+        $community = Community::find($id);
+
+        if($community){
+            $community->active = '0';
+            $community->save();
+        }
+
+        return redirect()->to('/diary')->send();
     }
 }
