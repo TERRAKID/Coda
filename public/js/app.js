@@ -17961,25 +17961,16 @@ __webpack_require__.r(__webpack_exports__);
       visible: false,
       avatarURL: null,
       bannerURL: null,
-      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
       visibility: "1",
       isActive: true,
-      error: null,
-      form: {
-        avatar: null,
-        banner: null,
-        name: null,
-        visibility: null
-      }
+      errors: [],
+      success: []
     };
   },
   props: {
     friends: {
       type: Array,
       required: false
-    },
-    errors: {
-      type: Object
     },
     hasFriends: {
       type: String,
@@ -17988,16 +17979,72 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     avatarChange: function avatarChange(e) {
-      var file = e.target.files[0];
-      this.avatarURL = URL.createObjectURL(file);
-      visible = !visible; //I can't get this to work for the life of me, will come back to it if I have time
+      var avatar = e.target.files[0];
+      this.avatarURL = URL.createObjectURL(avatar);
     },
     bannerChange: function bannerChange(e) {
-      var file = e.target.files[0];
-      this.bannerURL = URL.createObjectURL(file);
+      var banner = e.target.files[0];
+      this.bannerURL = URL.createObjectURL(banner);
     },
     visSelect: function visSelect(e) {
       this.isActive = !this.isActive;
+    },
+    onSubmit: function onSubmit() {
+      var _this = this;
+
+      var formData = new FormData();
+
+      if (this.$refs.avatar.files[0]) {
+        console.log(this.$refs.avatar.files[0]);
+        formData.append('avatar', this.$refs.avatar.files[0]);
+      }
+
+      if (this.$refs.banner.files[0]) {
+        console.log("we've got a banner");
+        formData.append('banner', this.$refs.banner.files[0]);
+      }
+
+      formData.append('name', this.name);
+      formData.append('visibility', this.visibility);
+
+      for (this.x = 0; this.x < 5; this.x++) {
+        var invitedUser = document.getElementById('invitee-' + this.x);
+
+        if (invitedUser.checked == true) {
+          formData.append('invitee-' + this.x, invitedUser.value);
+        }
+      }
+
+      this.errors = [];
+
+      if (!this.name) {
+        this.errors.push("Please enter a name for your community");
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+      } else {
+        axios__WEBPACK_IMPORTED_MODULE_2___default().post("/community/create", formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(function (res) {
+          console.log(res.status);
+
+          if (res.status === 200) {
+            _this.success.push("Created community successfully");
+
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+        })["catch"](function (err) {
+          _this.errors = [];
+
+          _this.errors.push("Something went wrong, please try again later");
+        });
+      }
     }
   }
 });
@@ -22481,25 +22528,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "max-w-full",
-  action: "/community/create",
-  method: "POST",
-  enctype: "multipart/form-data"
-};
-var _hoisted_2 = {
   "class": "flex flex-col lg:flex-row"
 };
-var _hoisted_3 = {
+var _hoisted_2 = {
   "class": "lg:ml-6 lg:mt-14 mt-5"
 };
-var _hoisted_4 = {
+var _hoisted_3 = {
   "class": "w-60 max-h-14 cursor-pointer bg-blue-primary p-3 pl-10 pr-10 text-lg text-white text-center rounded-xl",
   "for": "avatar"
 };
 
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Upload avatar ");
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Upload avatar ");
 
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
   "class": "w-7 inline-block",
   src: "/img/upload.svg",
   alt: ""
@@ -22507,25 +22548,25 @@ var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 /* HOISTED */
 );
 
-var _hoisted_7 = {
+var _hoisted_6 = {
   type: "button",
   id: "remove-avatar",
   value: "Remove File"
 };
-var _hoisted_8 = {
+var _hoisted_7 = {
   "class": "justify-self-end content-center inline-block"
 };
-var _hoisted_9 = {
+var _hoisted_8 = {
   "class": "mt-14 lg:mr-10 pb-10"
 };
-var _hoisted_10 = {
+var _hoisted_9 = {
   "class": "w-60 max-h-14 cursor-pointer bg-blue-primary p-3 pl-10 pr-10 text-lg text-white text-center rounded-xl",
   "for": "banner"
 };
 
-var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Upload Banner ");
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Upload Banner ");
 
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
   "class": "w-7 inline-block",
   src: "/img/upload.svg",
   alt: ""
@@ -22533,7 +22574,7 @@ var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 /* HOISTED */
 );
 
-var _hoisted_13 = {
+var _hoisted_12 = {
   type: "button",
   style: {
     "display": "none"
@@ -22542,83 +22583,84 @@ var _hoisted_13 = {
   id: "remove-banner",
   value: "Remove File"
 };
-var _hoisted_14 = {
+var _hoisted_13 = {
   "class": "m-10 mt-5"
 };
-var _hoisted_15 = {
+var _hoisted_14 = {
   id: "community_details"
 };
+var _hoisted_15 = {
+  key: 0,
+  "class": "m-5 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative",
+  role: "alert"
+};
+var _hoisted_16 = {
+  key: 1,
+  "class": "m-5 bg-successGreen text-successGreenBorder border border-successGreenBorder text-green-700 px-4 py-3 rounded "
+};
+var _hoisted_17 = {
+  role: "alert"
+};
 
-var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "text-xs mb-3"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", null, "Images must be smaller than 2MB"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", null, "A name is required")], -1
-/* HOISTED */
-);
-
-var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
   "for": "name",
   "class": "text-black text-2xl mb-8"
-}, "Community Name"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-  type: "text",
-  name: "name",
-  placeholder: "Name",
-  "class": "lg:max-w-1/4 border-2 border-green focus:border-green focus:ring-2 focus:ring-green rounded-lg text-xl mt-5 block w-full"
-})], -1
+}, "Community Name", -1
 /* HOISTED */
 );
 
-var _hoisted_18 = {
+var _hoisted_19 = {
   "class": "mt-10 mb-10"
 };
 
-var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
+var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
   "for": "visibility",
   "class": "text-black text-2xl mb-8 mr-5"
 }, "Community Visibility", -1
 /* HOISTED */
 );
 
-var _hoisted_20 = {
+var _hoisted_21 = {
   "class": "inline-block mt-5 lg:mt-0"
 };
-var _hoisted_21 = {
+var _hoisted_22 = {
   "class": "inline-block mr-5"
 };
 
-var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Public ");
+var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Public ");
 
-var _hoisted_23 = {
+var _hoisted_24 = {
   "class": "inline-block mt-10 sm:mt-0"
 };
 
-var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Private ");
+var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Private ");
 
-var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h2", {
+var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h2", {
   "for": "invite",
   "class": "text-black text-2xl mb-8"
 }, "Invite Your Friends", -1
 /* HOISTED */
 );
 
-var _hoisted_26 = {
+var _hoisted_27 = {
   key: 0
 };
-var _hoisted_27 = {
+var _hoisted_28 = {
   "class": "p-5 pl-0 grid col-span-2"
 };
-var _hoisted_28 = {
+var _hoisted_29 = {
   key: 1
 };
 
-var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h3", null, "You do not have any friends at the moment.", -1
+var _hoisted_30 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h3", null, "You do not have any friends at the moment.", -1
 /* HOISTED */
 );
 
-var _hoisted_30 = {
+var _hoisted_31 = {
   key: 0
 };
 
-var _hoisted_31 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+var _hoisted_32 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
   "class": "w-full text-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
   "class": "cursor-pointer transition-all duration-200 bg-green hover:bg-greenDark text-white p-3 pl-10 pr-10 text-2xl rounded-full",
@@ -22636,25 +22678,25 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_app_layout, null, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("form", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-        type: "hidden",
-        name: "_token",
-        value: $data.csrf
-      }, null, 8
-      /* PROPS */
-      , ["value"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("header", {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("form", {
+        "class": "max-w-full",
+        onSubmit: _cache[8] || (_cache[8] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+          return $options.onSubmit();
+        }, ["prevent"]))
+      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("header", {
         "class": "lg:grid grid-cols-2 bg-green bg-center bg-cover max-w-full pl-10",
         style: {
           'background-image': 'linear-gradient(rgba(59, 186, 192, 0.5), rgba(59, 186, 192, 0.5)), url(' + $data.bannerURL + ')'
         }
-      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
         "class": "bg-cover bg-center w-28 h-28 rounded-full bg-blue-primary m-4 ml-0",
         style: {
           'background-image': 'url(' + $data.avatarURL + ')'
         }
       }, null, 4
       /* STYLE */
-      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", _hoisted_4, [_hoisted_5, _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", _hoisted_3, [_hoisted_4, _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+        ref: "avatar",
         "class": "hidden",
         onChange: _cache[1] || (_cache[1] = function () {
           return $options.avatarChange && $options.avatarChange.apply($options, arguments);
@@ -22663,11 +22705,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         id: "avatar",
         name: "avatar",
         placeholder: "Upload Avatar"
-      }, null, 32
-      /* HYDRATE_EVENTS */
-      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", _hoisted_7, null, 512
+      }, null, 544
+      /* HYDRATE_EVENTS, NEED_PATCH */
+      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", _hoisted_6, null, 512
       /* NEED_PATCH */
-      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.visible]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", _hoisted_10, [_hoisted_11, _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.visible]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", _hoisted_9, [_hoisted_10, _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+        ref: "banner",
         "class": "hidden",
         onChange: _cache[2] || (_cache[2] = function () {
           return $options.bannerChange && $options.bannerChange.apply($options, arguments);
@@ -22676,16 +22719,30 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         id: "banner",
         name: "banner",
         placeholder: "Upload Banner"
-      }, null, 32
-      /* HYDRATE_EVENTS */
-      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", _hoisted_13, null, 512
+      }, null, 544
+      /* HYDRATE_EVENTS, NEED_PATCH */
+      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", _hoisted_12, null, 512
       /* NEED_PATCH */
       )])])], 4
       /* STYLE */
-      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("main", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_15, [_hoisted_16, _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_18, [_hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
+      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("main", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_14, [_this.errors.length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("p", _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_this.errors[0]), 1
+      /* TEXT */
+      )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _this.success.length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_this.success[0]), 1
+      /* TEXT */
+      )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [_hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+        "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+          return _ctx.name = $event;
+        }),
+        type: "text",
+        name: "name",
+        placeholder: "Name",
+        "class": "lg:max-w-1/4 border-2 border-green focus:border-green focus:ring-2 focus:ring-green rounded-lg text-xl mt-5 block w-full"
+      }, null, 512
+      /* NEED_PATCH */
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.name]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_19, [_hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
         "class": ["cursor-pointer bg-blue-primary p-3 pl-16 text-lg pr-16 lg:ml-10 text-white text-center rounded-xl", [$data.isActive ? 'opacity-100' : 'opacity-60']]
-      }, [_hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-        onClick: _cache[3] || (_cache[3] = function () {
+      }, [_hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+        onClick: _cache[4] || (_cache[4] = function () {
           return $options.visSelect && $options.visSelect.apply($options, arguments);
         }),
         "class": "hidden",
@@ -22693,17 +22750,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         name: "visibility",
         id: "community_visibility",
         value: "1",
-        "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
+        "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
           return $data.visibility = $event;
         })
       }, null, 512
       /* NEED_PATCH */
       ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelRadio, $data.visibility]])], 2
       /* CLASS */
-      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
+      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
         "class": ["cursor-pointer bg-blue-primary p-3 pl-16 text-lg pr-16 lg:ml-10 md:ml-5 text-white text-center rounded-xl opacity-60", [$data.isActive ? 'opacity-60' : 'opacity-100']]
-      }, [_hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-        onClick: _cache[5] || (_cache[5] = function () {
+      }, [_hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+        onClick: _cache[6] || (_cache[6] = function () {
           return $options.visSelect && $options.visSelect.apply($options, arguments);
         }),
         "class": "hidden",
@@ -22711,14 +22768,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         name: "visibility",
         id: "community_visibility",
         value: "0",
-        "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
+        "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
           return $data.visibility = $event;
         })
       }, null, 512
       /* NEED_PATCH */
       ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelRadio, $data.visibility]])], 2
       /* CLASS */
-      )])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [_hoisted_25, _this.friends != null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_26, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.friends.slice(0, 5), function (friend, index) {
+      )])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [_hoisted_26, _this.friends != null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_27, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.friends.slice(0, 5), function (friend, index) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("label", {
           key: index,
           "class": "flex grid grid-cols-4 lg:grid-cols-10 mb-5 mr-5 min-w-min max-w-64",
@@ -22730,12 +22787,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           }
         }, null, 4
         /* STYLE */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_27, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(friend.name), 1
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(friend.name), 1
         /* TEXT */
         ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
           "class": "mt-6",
           type: "checkbox",
           value: friend.id,
+          ref: 'invite' + index,
           id: 'invitee-' + index,
           name: 'invitee-' + index
         }, null, 8
@@ -22745,9 +22803,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         , ["for"]);
       }), 128
       /* KEYED_FRAGMENT */
-      ))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_28, [_hoisted_29]))])]), $data.error ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_30, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.error.response.status), 1
+      ))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_29, [_hoisted_30]))])]), _ctx.error ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_31, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.error.response.status), 1
       /* TEXT */
-      )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_31])])];
+      )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_32])], 32
+      /* HYDRATE_EVENTS */
+      )];
     }),
     _: 1
     /* STABLE */

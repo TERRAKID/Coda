@@ -268,12 +268,10 @@ class CommunityController extends Controller
     public function createCommunity(Request $request){
         $validator = $request->validate([
             'name' => 'required|max:255',
-            'avatar' => 'image|max:2048',
-            'banner' => 'image|max:2048',
+            'avatar' => 'max:2048',
+            'banner' => 'max:2048',
         ]);
-            
         $community = new Community;
-
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
 
@@ -351,7 +349,8 @@ class CommunityController extends Controller
             ->where('active', 1)
             ->count();
         
-        return Inertia::render('Community/Show')->with('community', $community)->with('isMember', $member);
+        return redirect('/community\\' . $communityId);
+        //return Inertia::render('Community/Show')->with('community', $community)->with('isMember', $member);
     }
 
     public function deleteCommunity($id){
