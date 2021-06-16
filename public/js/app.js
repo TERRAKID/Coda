@@ -17980,11 +17980,23 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     avatarChange: function avatarChange(e) {
       var avatar = e.target.files[0];
-      this.avatarURL = URL.createObjectURL(avatar);
+
+      if (avatar.size > 2048 * 2048) {
+        this.errors = [];
+        this.errors.push("The community avatar must be less than 2mb");
+      } else {
+        this.avatarURL = URL.createObjectURL(avatar);
+      }
     },
     bannerChange: function bannerChange(e) {
       var banner = e.target.files[0];
-      this.bannerURL = URL.createObjectURL(banner);
+
+      if (banner.size > 2048 * 2048) {
+        this.errors = [];
+        this.errors.push("The community banner must be less than 2mb");
+      } else {
+        this.bannerURL = URL.createObjectURL(banner);
+      }
     },
     visSelect: function visSelect(e) {
       this.isActive = !this.isActive;
@@ -17995,13 +18007,21 @@ __webpack_require__.r(__webpack_exports__);
       var formData = new FormData();
 
       if (this.$refs.avatar.files[0]) {
-        console.log(this.$refs.avatar.files[0]);
-        formData.append('avatar', this.$refs.avatar.files[0]);
+        if (this.$refs.avatar.files[0].size > 2048 * 2048) {
+          this.errors = [];
+          this.errors.push("The community avatar must be less than 2mb");
+        } else {
+          formData.append('avatar', this.$refs.avatar.files[0]);
+        }
       }
 
       if (this.$refs.banner.files[0]) {
-        console.log("we've got a banner");
-        formData.append('banner', this.$refs.banner.files[0]);
+        if (this.$refs.banner.files[0].size > 2048 * 2048) {
+          this.errors = [];
+          this.errors.push("The community banner must be less than 2mb");
+        } else {
+          formData.append('banner', this.$refs.banner.files[0]);
+        }
       }
 
       formData.append('name', this.name);
@@ -18029,8 +18049,6 @@ __webpack_require__.r(__webpack_exports__);
             'Content-Type': 'multipart/form-data'
           }
         }).then(function (res) {
-          console.log(res.status);
-
           if (res.status === 200) {
             _this.success.push("Created community successfully");
 
@@ -18043,6 +18061,11 @@ __webpack_require__.r(__webpack_exports__);
           _this.errors = [];
 
           _this.errors.push("Something went wrong, please try again later");
+
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+          });
         });
       }
     }
