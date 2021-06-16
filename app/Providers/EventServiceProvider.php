@@ -20,7 +20,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\NewMessage' => [
             'App\Listeners\SendMessageNotification'
-        ]
+        ],
+        'App\Events\NewCommunityMessage' => [
+            'App\Listeners\SendCommunityNotification'
+        ],
     ];
 
     /**

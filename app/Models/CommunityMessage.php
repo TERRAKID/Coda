@@ -26,4 +26,14 @@ class CommunityMessage extends Model
      * @var string
      */
     protected $table = 'community_message';
+
+    public function community()
+    {
+        return $this->hasOne(Community::class, 'id', 'community_id');
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }

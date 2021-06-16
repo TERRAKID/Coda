@@ -23,3 +23,9 @@ Broadcast::channel('chat.{userId1}.{userId2}', function ($user, $userId) {
         return ['id' => $user->id, 'name' => $user->name];
     }
 });
+
+Broadcast::channel('community.{communityId}', function ($user, $communityId) {
+    if (Auth::check()) {
+        return ['id' => $user->id, 'name' => $user->name];
+    }
+});

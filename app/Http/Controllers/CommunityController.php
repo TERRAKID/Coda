@@ -6,18 +6,22 @@ use App\Models\User;
 use App\Models\Community;
 use App\Models\CommunityMember;
 use App\Models\UserFriend;
+use App\Models\CommunityMessage;
 use App\Traits\UploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Laravel\Jetstream\Jetstream;
 use Inertia\Inertia;
+use App\Events\NewCommunityMessage;
 
 class CommunityController extends Controller
 {
     use UploadTrait;
 
-    public function showAllCommunities(){
+    public function showAllCommunities()
+    {
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
 
@@ -29,41 +33,59 @@ class CommunityController extends Controller
         return Inertia::render('Community/Index')->with('communities', $communities)->with('user', auth()->user());
     }
 
-    public function showCommunity($id){
+    public function showCommunity($id)
+    {
         $currentUser = auth()->user();
-        if($currentUser != null){
+        if ($currentUser != null) {
             $currentUser = $currentUser->id;
         }
 
         $community = Community::where('id', $id)
             ->where('active', '=', 1)
             ->get();
-        
-        if($community->isEmpty()){
 
+        if ($community->isEmpty()) {
             $communities = Community::join('community_member', 'community_member.community_id', '=', 'community.id')
                 ->where('community_member.user_id', '=', $currentUser)->get();
 
             return Inertia::render('Community/Index')->with('communities', $communities)->with('user', auth()->user());
-        }
-        else{
+        } else {
             $community = $community[0];
         }
-        
+
 
         $member = CommunityMember::where('user_id', $currentUser)
             ->where('community_id', $id)
             ->where('active', 1)
             ->count();
 
-        return Inertia::render('Community/Show')
+        return Inertia::render('Community/Home/Show')
             ->with('community', $community)
             ->with('isMember', $member);
     }
 
+    public function newMessage(Request $request, $communityId)
+    {
+        $newMessage = new CommunityMessage;
+        $newMessage->user_id = Auth::id();
+        $newMessage->community_id = $communityId;
+        $newMessage->message = $request->message;
+        $newMessage->save();
+
+        broadcast(new NewCommunityMessage($newMessage))->toOthers();
+
+        return $newMessage;
+    }
+
+    public function getMessages(Request $request, $id)
+    {
+        return CommunityMessage::where('community_id', $id)->with('user')->orderby('created_at')->get();
+    }
+
     //-----------------------------------------------------------------------
-    
-    public function communityDetails($id){
+
+    public function communityDetails($id)
+    {
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
 
@@ -71,7 +93,7 @@ class CommunityController extends Controller
             ->where('community_id', '=', $id)
             ->where('active', '=', '1')->count();
 
-        if($checkCurrentUserIsMember != 0){
+        if ($checkCurrentUserIsMember != 0) {
             $community = Community::where('id', $id)
                 ->get();
             $community = $community[0];
@@ -81,22 +103,20 @@ class CommunityController extends Controller
                     ->where('community_member.active', '=', '1')
                     ->get(['users.id']);
             $memberCount = $users->count();
-            
+
             $communityMembers = [];
 
-            foreach($users as $user){
+            foreach ($users as $user) {
                 $communityMember = User::where('id', '=', $user['id'])->first();
                 array_push($communityMembers, $communityMember);
             }
-            
-            if($community['created_by'] == $currentUser){
+
+            if ($community['created_by'] == $currentUser) {
                 $deletePermissions = 1;
-            }
-            else{
+            } else {
                 $deletePermissions = 0;
             }
-        }
-        else{
+        } else {
             $community = null;
             $communityMembers = null;
             $memberCount = null;
@@ -111,30 +131,30 @@ class CommunityController extends Controller
     }
 
     //-----------------------------------------------------------------------
-    
-    public function leaveCommunity($id){
+
+    public function leaveCommunity($id)
+    {
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
 
         $community = Community::where('id', $id)
             ->get();
         $community = $community[0];
-        
+
         $query = CommunityMember::where('user_id', $currentUser)
             ->where('community_id', $id)
             ->update(['active' => 0]);
-        
+
         $member = CommunityMember::where('user_id', $currentUser)
             ->where('community_id', $id)
             ->where('active', 1)
             ->count();
 
-        if($query){
+        if ($query) {
             return redirect('/community' . '/' . $id)
                 ->with(['community' => $community], ['member' => $member])
                 ->withSuccess('You have left ' . $community->name);
-        }
-        else{
+        } else {
             return back()
                 ->with(['community' => $community], ['member' => $member])
                 ->withFail('Something went wrong, try again later');
@@ -142,19 +162,19 @@ class CommunityController extends Controller
     }
 
     //-----------------------------------------------------------------------
-    
-    public function communityInvite($id){
+
+    public function communityInvite($id)
+    {
         $community = Community::where('id', $id)
             ->where('active', '=', 1)
             ->get();
 
-        if($community->count() == 1){
+        if ($community->count() == 1) {
             $community = $community[0];
-        }
-        else{
+        } else {
             $community = null;
         }
-        
+
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
 
@@ -169,8 +189,9 @@ class CommunityController extends Controller
     }
 
     //-----------------------------------------------------------------------
-    
-    public function acceptInvite($id){
+
+    public function acceptInvite($id)
+    {
         $communityMember = new CommunityMember;
 
         $currentUser = auth()->user();
@@ -184,34 +205,30 @@ class CommunityController extends Controller
             ->where('community_id', $id)
             ->count();
 
-        if($member != 0){
+        if ($member != 0) {
             $query = CommunityMember::where('user_id', $currentUser)
                 ->where('community_id', $id)
                 ->update(['active' => 1, 'invited' => 0]);
 
-            if($query){
-                return Inertia::render('Community/Show')->with('community', $community)->with('isMember', $member);
-            }
-            else{
+            if ($query) {
+                return redirect('/community\\' . $id);
+            } else {
                 return back()
                     ->with('community', $community)
                     ->with('member', $member)
                     ->withFail('Something went wrong, try again later');
             }
-        }
-
-        else if($member == 0){
+        } elseif ($member == 0) {
             $communityMember->user_id = $currentUser;
             $communityMember->community_id = $id;
             $communityMember->active = 1;
             $communityMember->invited = 0;
-    
+
             $query = $communityMember->save();
 
-            if($query){
-                return Inertia::render('Community/Show')->with('community', $community)->with('isMember', $member);
-            }
-            else{
+            if ($query) {
+                return redirect('/community\\' . $id);
+            } else {
                 return back()
                     ->with('community', $community)
                     ->with('member', $member)
@@ -219,10 +236,11 @@ class CommunityController extends Controller
             }
         }
     }
-    
+
     //-----------------------------------------------------------------------
-    
-    public function createCommunityShowUsers(){
+
+    public function createCommunityShowUsers()
+    {
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
 
@@ -237,40 +255,39 @@ class CommunityController extends Controller
 
         $allFriends = [];
 
-        if($friends1->count() > 0 || $friends2->count() > 0){
-            foreach($friends1 as $friend){
+        if ($friends1->count() > 0 || $friends2->count() > 0) {
+            foreach ($friends1 as $friend) {
                 array_push($friends, $friend['friend_id']);
             }
-            foreach($friends2 as $friend){
+            foreach ($friends2 as $friend) {
                 array_push($friends, $friend['user_id']);
             }
             $friends = array_unique($friends);
-    
-            foreach($friends as $friend){
+
+            foreach ($friends as $friend) {
                 $users = User::where('id', '=', $friend)->get();
-                foreach($users as $user){
+                foreach ($users as $user) {
                     array_push($allFriends, $user);
                 }
             }
-        }
-        else{
+        } else {
             $allFriends = null;
         }
 
         return Inertia::render('Community/Create')
             ->with('friends', $allFriends);
-
     }
 
     //-----------------------------------------------------------------------
-    
-    public function createCommunity(Request $request){
+
+    public function createCommunity(Request $request)
+    {
         $validator = $request->validate([
             'name' => 'required|max:255',
             'avatar' => 'image|max:2048',
             'banner' => 'image|max:2048',
         ]);
-            
+
         $community = new Community;
 
         $currentUser = auth()->user();
@@ -281,12 +298,11 @@ class CommunityController extends Controller
         $community->visibility = request('visibility');
 
         if ($request->has('avatar')) {
-
             $image = $request->file('avatar');
 
             $name = $request->input('name').'_'.time();
             $name = str_replace(' ', '_', $name);
-            
+
             $folder = 'community-avatars/';
 
             $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
@@ -306,7 +322,7 @@ class CommunityController extends Controller
 
             $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
             //this comes from /Traits/UploadTrait
-            $this->uploadOne($image, $folder, 'public', $name); 
+            $this->uploadOne($image, $folder, 'public', $name);
 
             $community->background_photo_path = $filePath;
         }
@@ -318,10 +334,10 @@ class CommunityController extends Controller
             ->get();
         $communityId = $community[0]->id;
 
-        for($x = 0; $x <= 4; $x++){
+        for ($x = 0; $x <= 4; $x++) {
             $communityMember = new CommunityMember;
             $value = request('invitee-' . $x);
-            if(isset($value)){
+            if (isset($value)) {
                 $communityMember->user_id = $value;
                 $communityMember->community_id = $communityId;
                 $communityMember->invited = '1';
@@ -345,17 +361,18 @@ class CommunityController extends Controller
             ->where('community_id', $community)
             ->where('active', 1)
             ->count();
-        
-        return Inertia::render('Community/Show')->with('community', $community)->with('isMember', $member);
+
+        return redirect('/community\\' . $communityId);
     }
 
-    public function deleteCommunity($id){
+    public function deleteCommunity($id)
+    {
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
 
         $community = Community::find($id);
 
-        if($community){
+        if ($community) {
             $community->active = '0';
             $community->save();
         }

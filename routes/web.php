@@ -60,6 +60,8 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/community/{id}/delete', 
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/community', [CommunityController::class, 'showAllCommunities'])->name('community');
 Route::middleware(['auth:sanctum', 'verified'])->get('/community/{id}', [CommunityController::class, 'showCommunity']);
+Route::middleware(['auth:sanctum', 'verified'])->get('/community/{id}/messages', [CommunityController::class, 'getMessages']);
+Route::middleware(['auth:sanctum', 'verified'])->post('/community/{id}', [CommunityController::class, 'newMessage']);
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/community/{id}/details', [CommunityController::class, 'communityDetails']);
 Route::middleware(['auth:sanctum', 'verified'])->post('/community/{id}/leave', [CommunityController::class, 'leaveCommunity']);
@@ -97,4 +99,3 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/random', [MovieController
 Route::middleware(['auth:sanctum', 'verified'])->get('/collection', [MovieCollectionController::class, 'showMovieCollection'])->name('movieCollection');
 Route::middleware(['auth:sanctum', 'verified'])->post('/collection/{id}/add', [MovieCollectionController::class, 'addMovieToCollection']);
 Route::middleware(['auth:sanctum', 'verified'])->post('/collection/{id}/remove', [MovieCollectionController::class, 'removeMovieFromCollection']);
-
