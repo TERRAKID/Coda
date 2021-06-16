@@ -348,9 +348,8 @@ class CommunityController extends Controller
             ->where('community_id', $community)
             ->where('active', 1)
             ->count();
-        
-        return redirect('/community\\' . $communityId);
-        //return Inertia::render('Community/Show')->with('community', $community)->with('isMember', $member);
+
+        return ($communityId);
     }
 
     public function deleteCommunity($id){

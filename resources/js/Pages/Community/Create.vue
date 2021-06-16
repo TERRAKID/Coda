@@ -38,7 +38,8 @@
                     {{ this.errors[0] }}
                 </p>
                 <div v-if="this.success.length" class="m-5 bg-successGreen text-successGreenBorder border border-successGreenBorder text-green-700 px-4 py-3 rounded " >
-                    <p role="alert">{{ this.success[0] }}</p>
+                    <p role="alert">Community created successfully.</p>
+                    <p>Returning you to all communities...</p>
                 </div>
                 <div>
                     <label for="name" class="text-black text-2xl mb-8">Community Name</label>
@@ -114,6 +115,10 @@ export default{
         hasFriends: {
             type: String,
             required: true,
+        },
+        communityId: {
+            type: Number,
+            required: false,
         }
     },
     methods: {
@@ -184,8 +189,10 @@ export default{
                     })
                     .then((res) => {
                         if (res.status === 200) {
-                            this.success.push("Created community successfully");
+                            this.success.push("Created community successfully. Redirecting you to all communities...");
                             window.scrollTo({ top: 0, behavior: "smooth" });
+                            setTimeout(() => {  window.location.href = "/community"; }, 2000);
+                            
                         }
                     })
                     .catch((err) => {
