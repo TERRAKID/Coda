@@ -46,12 +46,36 @@ class GeneralController extends Controller
 
         // 5. Finally, we retrieve the details of the relevant communities
         foreach($communityIds as $communityId){
-            $result = Community::where('id', '=', $communityId)->get();
-            array_push($communitiesWithoutCurrentUserAsMember, $result['0']);
+            $result = Community::where('id', '=', $communityId)
+                ->where('community.visibility', '=', '1')
+                ->where('community.active', '=', '1')
+                ->first();
+            array_push($communitiesWithoutCurrentUserAsMember, $result);
         }
+        $communitiesWithoutCurrentUserAsMember = array_filter($communitiesWithoutCurrentUserAsMember);
 
         $userCommunities = Community::join('community_member', 'community_member.community_id', '=', 'community.id')
-        ->where('community_member.user_id', '=', $currentUser)->take(5)->get();
+            ->where('community_member.active', '=', '1')
+            ->where('community.active', '=', '1')
+            ->where('community_member.user_id', '=', $currentUser)
+            ->take(5)
+            ->get();
+        
+        if($userCommunities->count() == 0){
+            $userCommunities = null;
+        }
+
+        $inviteCommunities = Community::join('community_member', 'community_member.community_id', '=', 'community.id')
+            ->where('community_member.invited', '=', '1')
+            ->where('community_member.active', '=', '0')
+            ->where('community.active', '=', '1')
+            ->where('community_member.user_id', '=', $currentUser)
+            ->take(5)
+            ->get();
+
+        if($inviteCommunities->count() == 0){
+            $inviteCommunities = null;
+        }
 
         $review = User::join('movie_ratings', 'movie_ratings.user_id', '=', 'users.id')
             ->join('movie', 'movie.id', '=', 'movie_ratings.movie_id')
@@ -99,6 +123,7 @@ class GeneralController extends Controller
         return Inertia::render('Dashboard')
             ->with('recCommunities', $communitiesWithoutCurrentUserAsMember)
             ->with('userCommunities', $userCommunities)
+            ->with('inviteCommunities', $inviteCommunities)
             ->with('review', $review)
             ->with('reviewMovie', $reviewMovie)
             ->with('reviewStatus', $reviewStatus)

@@ -86,4 +86,35 @@ class TMDBController extends Controller
         return $trailer;
 
     }
+
+    public static function fetchRandomMovie(){
+        $apiKey = '?api_key=' . config('services.tmdb.token');
+
+        do{
+            $latestMovie = Http::get('https://api.themoviedb.org/3/movie/latest' . $apiKey)
+                ->json();
+
+            $movieId = rand(0, $latestMovie['id']);
+            $randomMovie = Http::get('https://api.themoviedb.org/3/movie/' . $movieId . $apiKey)
+                ->json();
+        
+            if(array_key_exists('adult', $randomMovie) 
+                && $randomMovie['adult'] == false
+                && $randomMovie['popularity'] > 2
+                && $randomMovie['backdrop_path']
+                && $randomMovie['poster_path']
+                && $randomMovie['title']
+                && $randomMovie['overview']
+                && $randomMovie['genres']){
+
+                $randomMovie = $randomMovie;
+            }
+            else{
+                $randomMovie = null;
+            }
+        } while($randomMovie == null);
+
+        return $randomMovie;
+
+    }
 }

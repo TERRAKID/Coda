@@ -245,12 +245,18 @@
                                 Movie diary
                             </jet-responsive-nav-link>
 
-                            <jet-responsive-nav-link>
+                            <jet-responsive-nav-link
+                                :href="route('movieCollection')"
+                                :active="route().current('movieCollection')"
+                                class="hidden md:block">
                                 Movie collection
                             </jet-responsive-nav-link>
 
-                            <jet-responsive-nav-link>
-                                Random movie
+                            <jet-responsive-nav-link 
+                                :href="route('randomMovie')"
+                                :active="route().current('randomMovie')"
+                                class="hidden md:block">
+                                Random Movie
                             </jet-responsive-nav-link>
 
                             <!-- Authentication -->
