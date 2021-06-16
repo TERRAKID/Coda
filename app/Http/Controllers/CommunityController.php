@@ -23,6 +23,7 @@ class CommunityController extends Controller
 
         $communities = Community::join('community_member', 'community_member.community_id', '=', 'community.id')
             ->where('community_member.user_id', '=', $currentUser)
+            ->where('community_member.active', '=', 1)
             ->where('community.active', '=', 1)
             ->get();
 
@@ -285,7 +286,9 @@ class CommunityController extends Controller
             $image = $request->file('avatar');
 
             $name = $request->input('name').'_'.time();
-            $name = str_replace(' ', '_', $name);
+            $nameCheck1 = preg_replace('/[^a-zA-Z0-9\']/', '_', $name);
+            $nameCheck2 = str_replace("'", '', $nameCheck1);
+            $name = str_replace(' ', '_', $nameCheck2);
             
             $folder = 'community-avatars/';
 
@@ -300,7 +303,9 @@ class CommunityController extends Controller
             $image = $request->file('banner');
 
             $name = $request->input('name').'_'.time();
-            $name = str_replace(' ', '_', $name);
+            $nameCheck1 = preg_replace('/[^a-zA-Z0-9\']/', '_', $name);
+            $nameCheck2 = str_replace("'", '', $nameCheck1);
+            $name = str_replace(' ', '_', $nameCheck2);
 
             $folder = 'community-banners/';
 

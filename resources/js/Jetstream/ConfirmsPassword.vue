@@ -15,7 +15,7 @@
                 <div class="mt-4">
                     <jet-input
                         type="password"
-                        class="mt-1 block w-full"
+                        class="mt-1 block w-full text-black"
                         placeholder="Password"
                         ref="password"
                         v-model="form.password"

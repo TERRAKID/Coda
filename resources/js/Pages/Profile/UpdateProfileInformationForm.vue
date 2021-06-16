@@ -1,7 +1,7 @@
 <template>
     <jet-form-section @submitted="updateProfileInformation">
         <template #form>
-            <div class="grid grid-cols-user items-center gap-4 md:w-80">
+            <div class="grid grid-cols-user items-center gap-4 md:w-full">
                 <div
                     class="
                         items-center
@@ -13,7 +13,7 @@
                     <!-- Profile Photo -->
                     <div
                         v-if="$page.props.jetstream.managesProfilePhotos"
-                        class="md:row-span-3"
+                        class="md:row-span-3 text-center "
                     >
                         <!-- Profile Photo File Input -->
                         <input
@@ -85,7 +85,7 @@
                         justify-self-center
                         md:row-start-3
                         md:col-start-2
-                        md:justify-self-start
+                        md:justify-self-center
                     "
                 >
                     <span>{{
@@ -98,7 +98,7 @@
                     class="
                         text-3xl text-center
                         md:text-xl
-                        justify-self-end
+                        justify-self-center
                         md:row-start-3
                         md:col-start-3
                     "
@@ -116,7 +116,7 @@
                     class="
                         col-span-3
                         md:row-start-1
-                        md:col-span-2 md:col-start-2
+                        md:col-span-4 md:col-start-2
                     "
                 >
                     <jet-input
@@ -134,7 +134,7 @@
                     class="
                         col-span-3
                         md:row-start-2
-                        md:col-span-2 md:col-start-2
+                        md:col-span-4 md:col-start-2
                     "
                 >
                     <jet-input
@@ -153,6 +153,7 @@
         </template>
 
         <template #actions>
+            <p class="p-5 w-1/2">Images must be max 1mb</p>
             <jet-action-message :on="form.recentlySuccessful" class="mr-3">
                 Saved.
             </jet-action-message>

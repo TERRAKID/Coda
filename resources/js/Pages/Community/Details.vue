@@ -99,7 +99,7 @@
                 </div>
                 <form v-if="deletePermissions == 1" @submit.prevent="deleteCommunity()" v-on:click="confirmingCommunityDeletion = !confirmingCommunityDeletion" v-show="confirmingCommunityDeletion" id="leave-community-form" class="min-w-screen h-screen animated fadeIn faster fixed left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-blue-primary bg-opacity-70">
                     <div v-on:click="confirmingCommunityDeletion = !confirmingCommunityDeletion" class="bg-white rounded-2xl h-64 max-w-3/4 p-5 text-center flex flex-col justify-center items-center">
-                        <h3 class="text-2xl">Are you sure you want to delete this review?</h3>
+                        <h3 class="text-2xl">Are you sure you want to delete this community?</h3>
                         <input @click="submitForm" id="leave-confirm" class="m-5 cursor-pointer transition-all duration-200 bg-purple hover:bg-purpleDark text-white p-3 pl-10 pr-10 text-2xl rounded-full" type="submit" value="Delete">
                         <input v-on:click="confirmingCommunityDeletion = !confirmingCommunityDeletion" id="leave-cancel" type="button" value="Cancel" class="bg-white underline cursor-pointer">
                     </div>
