@@ -66,7 +66,7 @@
                     <h2 for="invite" class="text-black text-2xl mb-8">Invite Your Friends</h2>
                     <div v-if="this.friends != null" >
                         <label v-for="(friend, index) in friends.slice(0, 5)" :key="index" class="flex grid grid-cols-4 lg:grid-cols-10 mb-5 mr-5 min-w-min max-w-64" :for="'invitee-' + index">
-                            <div class="rounded-full bg-blue-primary bg-cover h-16 w-16 inline-block" :style="{'background-image':'url(' + friend.profile_photo_url + ')'}"></div>
+                            <div class="rounded-full bg-blue-primary bg-cover bg-center h-16 w-16 inline-block" :style="{'background-image':'url(' + friend.profile_photo_url + ')'}"></div>
                             <p class="p-5 pl-0 grid col-span-2">{{ friend.name }}</p>
                             <input class="mt-6" type="checkbox" :value="friend.id" :ref="'invite' + index" :id="'invitee-' + index" :name="'invitee-' + index">
                         </label>
