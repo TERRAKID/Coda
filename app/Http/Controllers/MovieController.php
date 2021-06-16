@@ -82,14 +82,15 @@ class MovieController extends Controller
         $users = [];
         $communities = [];
         if($search != null){
-            $userSearch = User::search(request('search_movie'))->get();
+            $userSearch = User::search(request('search_movie'))
+                ->get();
+                
             if($userSearch->count() == 0){
                 $users = null;
             }
             else{
                 foreach($userSearch as $user){
                     $user = User::where('id', '=', $user['id'])
-                        ->where('id', '!=', $currentUser)
                         ->first();
 
                     array_push($users, $user);
