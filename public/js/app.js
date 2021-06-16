@@ -18575,6 +18575,10 @@ __webpack_require__.r(__webpack_exports__);
             behavior: "smooth"
           });
           _this.errors = [];
+          _this.view_date = " ";
+          _this.rating = " ";
+          _this.review = " ";
+          _this.notes = " ";
         }
       })["catch"](function (err) {
         _this.errors = [];

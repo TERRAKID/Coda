@@ -280,6 +280,10 @@
                             this.success.push("Created review successfully");
                             window.scrollTo({ top: 0, behavior: "smooth" });
                             this.errors = [];
+                            this.view_date= " ";
+                            this.rating = " ";
+                            this.review = " ";
+                            this.notes = " ";
                         }
                     })
                     .catch((err) => {
