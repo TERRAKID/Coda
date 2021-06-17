@@ -26,7 +26,7 @@
                     v-if="$page.props.jetstream.canUpdateProfileInformation"
                     class="md:border-b border-black md:p-8"
                 >
-                    <div class="bg-opacity-60 md:w-2/5">
+                    <div class="bg-opacity-60 md:w-1/2">
                         <update-profile-information-form
                             :user="$page.props.user"
                         />

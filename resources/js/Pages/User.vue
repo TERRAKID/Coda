@@ -193,7 +193,7 @@
                                         'https://image.tmdb.org/t/p/w185/' +
                                         favoriteMovie.poster_path
                                     "
-                                    :alt="favoriteMovie.original_title"
+                                    :alt="favoriteMovie.title"
                                 />
                             </inertia-link>
                         </div>
@@ -223,7 +223,7 @@
                                         'https://image.tmdb.org/t/p/w185' +
                                         reviewMovies[index].poster_path
                                     "
-                                    :alt="reviewMovies[index].original_title"
+                                    :alt="reviewMovies[index].title"
                                 />
                                 <div
                                     class="flex flex-col justify-evenly w-full"
@@ -238,7 +238,7 @@
                                         >
                                             {{
                                                 reviewMovies[index]
-                                                    .original_title
+                                                    .title
                                             }}
                                         </p>
                                         <p class="underline w-1/2 text-right">

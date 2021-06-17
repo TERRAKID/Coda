@@ -23,6 +23,7 @@ class Community extends Model
     protected $fillable = [
         'name',
         'visibility',
+        'active',
         'community_photo_path',
         'background_photo_path',
     ];
