@@ -81,7 +81,7 @@ class GeneralController extends Controller
         $review = User::join('movie_ratings', 'movie_ratings.user_id', '=', 'users.id')
             ->join('movie', 'movie.id', '=', 'movie_ratings.movie_id')
             ->where('movie_ratings.active', '=', '1')
-            ->where('movie_ratings.review', '!=', '')
+            ->whereNotNull('movie_ratings.review')
             ->orderBy('movie_ratings.created_at', 'DESC')
             ->take(1)
             ->get([
