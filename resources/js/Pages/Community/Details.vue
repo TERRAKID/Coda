@@ -12,9 +12,8 @@
                     <div class="bg-purple text-white h-16 grid grid-cols-2">
                         <div class="flex pl-4">
                             <h2 class="text-xl mt-4">Group members</h2>
-                            <!--<input type="search" name="memberSearch" class="m-3 rounded-full text-black">-->
                         </div>
-                        <p class="text-lg place-self-end mb-5 mr-5">{{ memberCount }}/100</p>
+                        <p class="text-lg place-self-end mb-5 mr-5">{{ memberCount }} members</p>
                     </div>
                     <div>
                         <inertia-link v-for="(user, index) in communityMembers" :key="index" :href="'/user/' + user.id" class="m-4 inline-block w-48">
@@ -46,43 +45,6 @@
                     </div>
                 </div>
 
-                <div class="mt-5">
-                    <div class="bg-purple text-white flex pl-4 h-16">
-                        <h2 class="text-xl mt-4">Community Goals</h2>
-                    </div>
-                    <div id="goals-list">
-                        <article></article>
-                    </div>
-                </div>
-
-                <div class="mt-5">
-                    <div class="bg-purple text-white flex pl-4 h-16">
-                        <h2 class="text-xl mt-4">Group members</h2>
-                    </div>
-                    <div id="movie-month-list">
-                        <article>
-                            <img src="" alt="">
-                            <h3></h3>
-                            <p></p>
-                            <p></p>
-                        </article>
-                    </div>
-                </div>
-
-                <div class="mt-5">
-                    <div class="bg-purple text-white flex pl-4 h-16">
-                        <h2 class="text-xl mt-4">Polls</h2>
-                    </div>
-                    <div id="polls-list">
-                        <article>
-                            <div class="poll-info">
-                                <img src="" alt="">
-                                <h3></h3>
-                                <p></p>
-                            </div>
-                        </article>
-                    </div>
-                </div>
                 <div class="w-full text-center">
                     <input v-on:click="confirmingUserLeave = !confirmingUserLeave" class="m-5 cursor-pointer transition-all duration-200 bg-purple hover:bg-purpleDark text-white p-3 pl-10 pr-10 text-2xl rounded-full" type="button" value="Leave Community">
                 </div>
@@ -99,7 +61,7 @@
                 </div>
                 <form v-if="deletePermissions == 1" @submit.prevent="deleteCommunity()" v-on:click="confirmingCommunityDeletion = !confirmingCommunityDeletion" v-show="confirmingCommunityDeletion" id="leave-community-form" class="min-w-screen h-screen animated fadeIn faster fixed left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-blue-primary bg-opacity-70">
                     <div v-on:click="confirmingCommunityDeletion = !confirmingCommunityDeletion" class="bg-white rounded-2xl h-64 max-w-3/4 p-5 text-center flex flex-col justify-center items-center">
-                        <h3 class="text-2xl">Are you sure you want to delete this review?</h3>
+                        <h3 class="text-2xl">Are you sure you want to delete this community?</h3>
                         <input @click="submitForm" id="leave-confirm" class="m-5 cursor-pointer transition-all duration-200 bg-purple hover:bg-purpleDark text-white p-3 pl-10 pr-10 text-2xl rounded-full" type="submit" value="Delete">
                         <input v-on:click="confirmingCommunityDeletion = !confirmingCommunityDeletion" id="leave-cancel" type="button" value="Cancel" class="bg-white underline cursor-pointer">
                     </div>

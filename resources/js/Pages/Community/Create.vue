@@ -1,7 +1,6 @@
 <template>
     <app-layout>
-        <form class="max-w-full" action="/community/create" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="_token" :value="csrf">
+        <form class="max-w-full" @submit.prevent="onSubmit()">
             <header 
                 class="lg:grid grid-cols-2 bg-green bg-center bg-cover max-w-full pl-10" 
                 :style="{'background-image':'linear-gradient(rgba(59, 186, 192, 0.5), rgba(59, 186, 192, 0.5)), url(' + bannerURL + ')'}">
@@ -16,7 +15,7 @@
 
                         <label class="w-60 max-h-14 cursor-pointer bg-blue-primary p-3 pl-10 pr-10 text-lg text-white text-center rounded-xl" for="avatar">Upload avatar 
                             <img class="w-7 inline-block" src="/img/upload.svg" alt="">
-                            <input class="hidden" @change="avatarChange" type="file" id="avatar" name="avatar" placeholder="Upload Avatar">
+                            <input ref="avatar" class="hidden" @change="avatarChange" type="file" id="avatar" name="avatar" placeholder="Upload Avatar">
                         </label>
                         <input type='button' id='remove-avatar' value='Remove File' v-show="visible">
                     </div>
@@ -26,7 +25,7 @@
                     <div class="mt-14 lg:mr-10 pb-10">
                         <label class="w-60 max-h-14 cursor-pointer bg-blue-primary p-3 pl-10 pr-10 text-lg text-white text-center rounded-xl" for="banner">Upload Banner
                             <img class="w-7 inline-block" src="/img/upload.svg" alt="">
-                            <input class="hidden" @change="bannerChange" type="file" id="banner" name="banner" placeholder="Upload Banner">
+                            <input ref="banner" class="hidden" @change="bannerChange" type="file" id="banner" name="banner" placeholder="Upload Banner">
                         </label>
                         <input type='button' style="display: none;" ref="removeBanner" id='remove-banner' value='Remove File'>
                     </div>
@@ -35,13 +34,16 @@
 
             <main class="m-10 mt-5">
             <div id="community_details">
-                <div class="text-xs mb-3">
-                    <p>Images must be smaller than 2MB</p>
-                    <p>A name is required</p>
+                <p v-if="this.errors.length" class="m-5 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                    {{ this.errors[0] }}
+                </p>
+                <div v-if="this.success.length" class="m-5 bg-successGreen text-successGreenBorder border border-successGreenBorder text-green-700 px-4 py-3 rounded " >
+                    <p role="alert">Community created successfully.</p>
+                    <p>Returning you to all communities...</p>
                 </div>
                 <div>
                     <label for="name" class="text-black text-2xl mb-8">Community Name</label>
-                    <input type="text" name="name" placeholder="Name" class="lg:max-w-1/4 border-2 border-green focus:border-green focus:ring-2 focus:ring-green rounded-lg text-xl mt-5 block w-full">
+                    <input v-model="name" type="text" name="name" placeholder="Name" class="lg:max-w-1/4 border-2 border-green focus:border-green focus:ring-2 focus:ring-green rounded-lg text-xl mt-5 block w-full">
                 </div>
                 <div class="mt-10 mb-10">
                     <label for="visibility" class="text-black text-2xl mb-8 mr-5">Community Visibility</label>
@@ -64,9 +66,9 @@
                     <h2 for="invite" class="text-black text-2xl mb-8">Invite Your Friends</h2>
                     <div v-if="this.friends != null" >
                         <label v-for="(friend, index) in friends.slice(0, 5)" :key="index" class="flex grid grid-cols-4 lg:grid-cols-10 mb-5 mr-5 min-w-min max-w-64" :for="'invitee-' + index">
-                            <div class="rounded-full bg-blue-primary bg-cover h-16 w-16 inline-block" :style="{'background-image':'url(' + friend.profile_photo_url + ')'}"></div>
+                            <div class="rounded-full bg-blue-primary bg-cover bg-center h-16 w-16 inline-block" :style="{'background-image':'url(' + friend.profile_photo_url + ')'}"></div>
                             <p class="p-5 pl-0 grid col-span-2">{{ friend.name }}</p>
-                            <input class="mt-6" type="checkbox" :value="friend.id" :id="'invitee-' + index" :name="'invitee-' + index">
+                            <input class="mt-6" type="checkbox" :value="friend.id" :ref="'invite' + index" :id="'invitee-' + index" :name="'invitee-' + index">
                         </label>
                     </div>
                     <div v-else>
@@ -99,16 +101,10 @@ export default{
             visible: false,
             avatarURL: null,
             bannerURL: null,
-            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             visibility: "1",
             isActive: true,
-            error: null,
-            form: {
-                avatar: null,
-                banner: null,
-                name: null,
-                visibility: null,
-            },
+            errors: [],
+            success: [],
         }
     },
     props: {
@@ -116,27 +112,99 @@ export default{
             type: Array,
             required: false,
         },
-        errors: {
-            type: Object,
-        },
         hasFriends: {
             type: String,
             required: true,
+        },
+        communityId: {
+            type: Number,
+            required: false,
         }
     },
     methods: {
         avatarChange(e){
-            const file = e.target.files[0];
-            this.avatarURL = URL.createObjectURL(file);
-            visible = !visible; //I can't get this to work for the life of me, will come back to it if I have time
+            const avatar = e.target.files[0];
+            if(avatar.size > 2048 * 2048){
+                this.errors = [];
+                this.errors.push("The community avatar must be less than 2mb");
+            }
+            else{
+                this.avatarURL = URL.createObjectURL(avatar);
+            }
         },
         bannerChange(e){
-            const file = e.target.files[0];
-            this.bannerURL = URL.createObjectURL(file);
+            const banner = e.target.files[0];
+            if(banner.size > 2048 * 2048){
+                this.errors = [];
+                this.errors.push("The community banner must be less than 2mb");
+            }
+            else{
+                this.bannerURL = URL.createObjectURL(banner);
+            }
         },
         visSelect(e){
             this.isActive = !this.isActive;
         },
+        onSubmit() {
+            let formData = new FormData();
+            if(this.$refs.avatar.files[0]){
+                if(this.$refs.avatar.files[0].size > 2048 * 2048){
+                    this.errors = [];
+                    this.errors.push("The community avatar must be less than 2mb");
+                }
+                else{
+                    formData.append('avatar', this.$refs.avatar.files[0]);
+                }
+            }
+            if(this.$refs.banner.files[0]){
+                if(this.$refs.banner.files[0].size > 2048 * 2048){
+                    this.errors = [];
+                    this.errors.push("The community banner must be less than 2mb");
+                }
+                else{
+                    formData.append('banner', this.$refs.banner.files[0]);
+                }
+            }
+            formData.append('name', this.name);
+            formData.append('visibility', this.visibility);
+            
+            
+            for(this.x = 0; this.x < 5; this.x++){
+                if(document.getElementById('invitee-' + this.x) != null){
+                    let invitedUser = document.getElementById('invitee-' + this.x)
+                    if(invitedUser.checked == true){
+                        formData.append('invitee-' + this.x, invitedUser.value);
+                    }
+                }
+            }
+            
+            this.errors = [];
+            if(!this.name){
+                this.errors.push("Please enter a name for your community");
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+            else{
+                axios
+                    .post("/community/create", formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        },
+                    })
+                    .then((res) => {
+                        if (res.status === 200) {
+                            this.success.push("Created community successfully. Redirecting you to all communities...");
+                            window.scrollTo({ top: 0, behavior: "smooth" });
+                            window.location.href = "/community";
+                            
+                        }
+                    })
+                    .catch((err) => {
+                        this.errors = [];
+                        this.errors.push("Something went wrong, please try again later");
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                    });
+            }
+        }
     },
 }
  

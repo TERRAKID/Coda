@@ -53,6 +53,7 @@ class GeneralController extends Controller
             array_push($communitiesWithoutCurrentUserAsMember, $result);
         }
         $communitiesWithoutCurrentUserAsMember = array_filter($communitiesWithoutCurrentUserAsMember);
+        $communitiesWithoutCurrentUserAsMember = array_slice($communitiesWithoutCurrentUserAsMember, 0, 5);
 
         $userCommunities = Community::join('community_member', 'community_member.community_id', '=', 'community.id')
             ->where('community_member.active', '=', '1')

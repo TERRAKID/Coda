@@ -23,6 +23,7 @@ class CommunityController extends Controller
 
         $communities = Community::join('community_member', 'community_member.community_id', '=', 'community.id')
             ->where('community_member.user_id', '=', $currentUser)
+            ->where('community_member.active', '=', 1)
             ->where('community.active', '=', 1)
             ->get();
 
@@ -267,25 +268,27 @@ class CommunityController extends Controller
     public function createCommunity(Request $request){
         $validator = $request->validate([
             'name' => 'required|max:255',
-            'avatar' => 'image|max:2048',
-            'banner' => 'image|max:2048',
+            'avatar' => 'max:2048',
+            'banner' => 'max:2048',
         ]);
-            
-        $community = new Community;
 
+        $community = new Community;
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
 
         $community->created_by = $currentUser;
         $community->name = request('name');
         $community->visibility = request('visibility');
+        $community->active = 1;
 
         if ($request->has('avatar')) {
 
             $image = $request->file('avatar');
 
             $name = $request->input('name').'_'.time();
-            $name = str_replace(' ', '_', $name);
+            $nameCheck1 = preg_replace('/[^a-zA-Z0-9\']/', '_', $name);
+            $nameCheck2 = str_replace("'", '', $nameCheck1);
+            $name = str_replace(' ', '_', $nameCheck2);
             
             $folder = 'community-avatars/';
 
@@ -300,7 +303,9 @@ class CommunityController extends Controller
             $image = $request->file('banner');
 
             $name = $request->input('name').'_'.time();
-            $name = str_replace(' ', '_', $name);
+            $nameCheck1 = preg_replace('/[^a-zA-Z0-9\']/', '_', $name);
+            $nameCheck2 = str_replace("'", '', $nameCheck1);
+            $name = str_replace(' ', '_', $nameCheck2);
 
             $folder = 'community-banners/';
 
@@ -310,8 +315,10 @@ class CommunityController extends Controller
 
             $community->background_photo_path = $filePath;
         }
+
         $community->save();
 
+        // Returning new community's ID
         $community = Community::where('name', request('name'))
             ->orderBy('id', 'DESC')
             ->take(1)
@@ -345,8 +352,8 @@ class CommunityController extends Controller
             ->where('community_id', $community)
             ->where('active', 1)
             ->count();
-        
-        return Inertia::render('Community/Show')->with('community', $community)->with('isMember', $member);
+
+        return ($communityId);
     }
 
     public function deleteCommunity($id){
