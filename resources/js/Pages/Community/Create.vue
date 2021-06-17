@@ -187,7 +187,7 @@ export default{
                     })
                     .catch((err) => {
                         this.errors = [];
-                        console.log(err);
+                        
                         if(err.response.status === 413){
                             this.errors.push("Community avatar and banner cannot be larger than 2mb");
                         }
