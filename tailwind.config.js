@@ -54,7 +54,9 @@ module.exports = {
             },
             height: {
                 dm: 'calc(100vh - 84px)',
-                dmmd: 'calc(100vh - 84px - 64px - 80px)'
+                dmmd: 'calc(100vh - 84px - 64px - 80px)',
+                com: 'calc(100vh - 136px)',
+                commd: 'calc(100vh - 120px - 64px - 80px)',
             },
             width: {
                 dm: '200vw',
