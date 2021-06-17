@@ -92,9 +92,10 @@ class MovieController extends Controller
 
                 array_push($users, $user);
             }
+
             $users = array_filter($users);
                 
-            if($userSearch->count() == 0){
+            if(count($users) == 0){
                 $users = null;
             }
 
