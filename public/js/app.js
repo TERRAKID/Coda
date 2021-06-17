@@ -17985,7 +17985,7 @@ __webpack_require__.r(__webpack_exports__);
     avatarChange: function avatarChange(e) {
       var avatar = e.target.files[0];
 
-      if (avatar.size > 2048) {
+      if (avatar.size > 2048 * 2048) {
         this.errors = [];
         this.errors.push("The community avatar must be less than 2mb");
       } else {
@@ -17995,7 +17995,7 @@ __webpack_require__.r(__webpack_exports__);
     bannerChange: function bannerChange(e) {
       var banner = e.target.files[0];
 
-      if (banner.size > 2048) {
+      if (banner.size > 2048 * 2048) {
         this.errors = [];
         this.errors.push("The community banner must be less than 2mb");
       } else {
@@ -18066,8 +18066,18 @@ __webpack_require__.r(__webpack_exports__);
           }
         })["catch"](function (err) {
           _this.errors = [];
+          var errorArray = [];
+          errorArray = JSON.parse(JSON.stringify(err.response.data.errors));
 
-          _this.errors.push("Something went wrong, please try again later");
+          if (errorArray.avatar) {
+            _this.errors.push(errorArray.avatar[0]);
+          }
+
+          if (errorArray.banner) {
+            _this.errors.push(errorArray.banner[0]);
+          } else {
+            _this.errors.push('Something went wrong, please try again later.');
+          }
 
           window.scrollTo({
             top: 0,

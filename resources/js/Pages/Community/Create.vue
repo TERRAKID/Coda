@@ -124,7 +124,7 @@ export default{
     methods: {
         avatarChange(e){
             const avatar = e.target.files[0];
-            if(avatar.size > 2048){
+            if(avatar.size > 2048 * 2048){
                 this.errors = [];
                 this.errors.push("The community avatar must be less than 2mb");
             }
@@ -134,7 +134,7 @@ export default{
         },
         bannerChange(e){
             const banner = e.target.files[0];
-            if(banner.size > 2048){
+            if(banner.size > 2048 * 2048){
                 this.errors = [];
                 this.errors.push("The community banner must be less than 2mb");
             }
@@ -195,12 +195,23 @@ export default{
                             this.success.push("Created community successfully. Redirecting you to all communities...");
                             window.scrollTo({ top: 0, behavior: "smooth" });
                             window.location.href = "/community";
-                            
                         }
                     })
                     .catch((err) => {
                         this.errors = [];
-                        this.errors.push("Something went wrong, please try again later");
+                        
+                        let errorArray = [];
+                        errorArray = JSON.parse(JSON.stringify(err.response.data.errors));
+                        if(errorArray.avatar){
+                            this.errors.push(errorArray.avatar[0]);
+                        }
+                        if(errorArray.banner){
+                            this.errors.push(errorArray.banner[0]);
+                        }
+                        else{
+                            this.errors.push('Something went wrong, please try again later.')
+                        }
+                        
                         window.scrollTo({ top: 0, behavior: "smooth" });
                     });
             }
