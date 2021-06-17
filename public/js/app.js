@@ -18056,7 +18056,6 @@ __webpack_require__.r(__webpack_exports__);
           }
         })["catch"](function (err) {
           _this.errors = [];
-          console.log(err);
 
           if (err.response.status === 413) {
             _this.errors.push("Community avatar and banner cannot be larger than 2mb");
