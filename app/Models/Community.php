@@ -12,7 +12,8 @@ class Community extends Model
     use HasFactory;
     use Searchable;
 
-    public function user(){
+    public function user()
+    {
         return $this->hasMany(User::class);
     }
     /**
@@ -35,7 +36,13 @@ class Community extends Model
      */
     protected $table = 'community';
 
-    public function searchableAs(){
+    public function searchableAs()
+    {
         return 'community_index';
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(CommunityMessage::class);
     }
 }

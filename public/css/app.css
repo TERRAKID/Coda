@@ -11844,6 +11844,14 @@ select {
   height: calc(100vh - 84px - 64px - 80px);
 }
 
+.h-com {
+  height: calc(100vh - 136px);
+}
+
+.h-commd {
+  height: calc(100vh - 120px - 64px - 80px);
+}
+
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
@@ -42155,6 +42163,14 @@ select {
     height: calc(100vh - 84px - 64px - 80px);
   }
 
+  .sm\:h-com {
+    height: calc(100vh - 136px);
+  }
+
+  .sm\:h-commd {
+    height: calc(100vh - 120px - 64px - 80px);
+  }
+
   .sm\:text-xs {
     font-size: 0.75rem;
     line-height: 1rem;
@@ -72386,6 +72402,14 @@ select {
 
   .md\:h-dmmd {
     height: calc(100vh - 84px - 64px - 80px);
+  }
+
+  .md\:h-com {
+    height: calc(100vh - 136px);
+  }
+
+  .md\:h-commd {
+    height: calc(100vh - 120px - 64px - 80px);
   }
 
   .md\:text-xs {
@@ -102621,6 +102645,14 @@ select {
     height: calc(100vh - 84px - 64px - 80px);
   }
 
+  .lg\:h-com {
+    height: calc(100vh - 136px);
+  }
+
+  .lg\:h-commd {
+    height: calc(100vh - 120px - 64px - 80px);
+  }
+
   .lg\:text-xs {
     font-size: 0.75rem;
     line-height: 1rem;
@@ -132854,6 +132886,14 @@ select {
     height: calc(100vh - 84px - 64px - 80px);
   }
 
+  .xl\:h-com {
+    height: calc(100vh - 136px);
+  }
+
+  .xl\:h-commd {
+    height: calc(100vh - 120px - 64px - 80px);
+  }
+
   .xl\:text-xs {
     font-size: 0.75rem;
     line-height: 1rem;
@@ -163085,6 +163125,14 @@ select {
 
   .\32xl\:h-dmmd {
     height: calc(100vh - 84px - 64px - 80px);
+  }
+
+  .\32xl\:h-com {
+    height: calc(100vh - 136px);
+  }
+
+  .\32xl\:h-commd {
+    height: calc(100vh - 120px - 64px - 80px);
   }
 
   .\32xl\:text-xs {
