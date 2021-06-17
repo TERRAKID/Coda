@@ -17985,7 +17985,7 @@ __webpack_require__.r(__webpack_exports__);
     avatarChange: function avatarChange(e) {
       var avatar = e.target.files[0];
 
-      if (avatar.size > 2048 * 2048) {
+      if (avatar.size > 2048) {
         this.errors = [];
         this.errors.push("The community avatar must be less than 2mb");
       } else {
@@ -17995,7 +17995,7 @@ __webpack_require__.r(__webpack_exports__);
     bannerChange: function bannerChange(e) {
       var banner = e.target.files[0];
 
-      if (banner.size > 2048 * 2048) {
+      if (banner.size > 2048) {
         this.errors = [];
         this.errors.push("The community banner must be less than 2mb");
       } else {
