@@ -18011,21 +18011,11 @@ __webpack_require__.r(__webpack_exports__);
       var formData = new FormData();
 
       if (this.$refs.avatar.files[0]) {
-        if (this.$refs.avatar.files[0].size > 2048 * 2048) {
-          this.errors = [];
-          this.errors.push("The community avatar must be less than 2mb");
-        } else {
-          formData.append('avatar', this.$refs.avatar.files[0]);
-        }
+        formData.append('avatar', this.$refs.avatar.files[0]);
       }
 
       if (this.$refs.banner.files[0]) {
-        if (this.$refs.banner.files[0].size > 2048 * 2048) {
-          this.errors = [];
-          this.errors.push("The community banner must be less than 2mb");
-        } else {
-          formData.append('banner', this.$refs.banner.files[0]);
-        }
+        formData.append('banner', this.$refs.banner.files[0]);
       }
 
       formData.append('name', this.name);
