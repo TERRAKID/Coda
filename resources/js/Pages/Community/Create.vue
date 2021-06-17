@@ -187,14 +187,8 @@ export default{
                     })
                     .catch((err) => {
                         this.errors = [];
-                        console.log(err.response);
-                        let errorArray = [];
-                        errorArray = JSON.parse(JSON.stringify(err.response.data.errors));
-                        if(errorArray.avatar){
-                            this.errors.push(errorArray.avatar[0]);
-                        }
-                        if(errorArray.banner){
-                            this.errors.push(errorArray.banner[0]);
+                        if(err.response.data.status === 413){
+                            this.errors.push("Community avatar and banner cannot be larger than 2mb");
                         }
                         else{
                             this.errors.push('Something went wrong, please try again later.')

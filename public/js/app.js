@@ -18056,16 +18056,9 @@ __webpack_require__.r(__webpack_exports__);
           }
         })["catch"](function (err) {
           _this.errors = [];
-          console.log(err.response);
-          var errorArray = [];
-          errorArray = JSON.parse(JSON.stringify(err.response.data.errors));
 
-          if (errorArray.avatar) {
-            _this.errors.push(errorArray.avatar[0]);
-          }
-
-          if (errorArray.banner) {
-            _this.errors.push(errorArray.banner[0]);
+          if (err.response.data.status === 413) {
+            _this.errors.push("Community avatar and banner cannot be larger than 2mb");
           } else {
             _this.errors.push('Something went wrong, please try again later.');
           }
