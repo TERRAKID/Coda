@@ -369,7 +369,7 @@ class MovieController extends Controller
         $allReviews = MovieRating::join('movie', 'movie.id', '=', 'movie_ratings.movie_id')
             ->join('users', 'users.id', '=', 'movie_ratings.user_id')
             ->where('movie.tmdb_id', '=', $movieId)
-            ->where('movie_ratings.review', '!=', '')
+            ->whereNotNull('movie_ratings.review')
             ->where('movie_ratings.active', '=', '1')
             ->get([
                 'movie_ratings.id',
@@ -429,6 +429,7 @@ class MovieController extends Controller
 
         foreach($friends as $friend){
             $friendReview = MovieRating::where('user_id', '=', $friend)
+                ->whereNotNull('movie_ratings.review')
                 ->where('movie_ratings.movie_id', '=', $CodaMovieId)
                 ->get();
 
@@ -472,7 +473,7 @@ class MovieController extends Controller
     public function recentReviews(){
         $recentReviews = MovieRating::join('movie', 'movie.id', '=', 'movie_ratings.movie_id')
             ->join('users', 'users.id', '=', 'movie_ratings.user_id')
-            ->where('movie_ratings.review', '!=', '')
+            ->whereNotNull('movie_ratings.review')
             ->where('movie_ratings.active', '=', '1')
             ->orderBy('movie_ratings.created_at', 'DESC')
             ->take(100)
