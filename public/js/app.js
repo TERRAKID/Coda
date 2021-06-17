@@ -18056,6 +18056,7 @@ __webpack_require__.r(__webpack_exports__);
           }
         })["catch"](function (err) {
           _this.errors = [];
+          console.log(err);
           var errorArray = [];
           errorArray = JSON.parse(JSON.stringify(err.response.data.errors));
 

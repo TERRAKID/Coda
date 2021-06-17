@@ -187,7 +187,7 @@ export default{
                     })
                     .catch((err) => {
                         this.errors = [];
-
+                        console.log(err);
                         let errorArray = [];
                         errorArray = JSON.parse(JSON.stringify(err.response.data.errors));
                         if(errorArray.avatar){
