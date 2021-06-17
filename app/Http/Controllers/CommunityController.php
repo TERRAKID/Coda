@@ -271,6 +271,7 @@ class CommunityController extends Controller
             'avatar' => 'max:2048',
             'banner' => 'max:2048',
         ]);
+
         $community = new Community;
         $currentUser = auth()->user();
         $currentUser = $currentUser->id;
@@ -278,6 +279,7 @@ class CommunityController extends Controller
         $community->created_by = $currentUser;
         $community->name = request('name');
         $community->visibility = request('visibility');
+        $community->active = 1;
 
         if ($request->has('avatar')) {
 
@@ -316,6 +318,7 @@ class CommunityController extends Controller
 
         $community->save();
 
+        // Returning new community's ID
         $community = Community::where('name', request('name'))
             ->orderBy('id', 'DESC')
             ->take(1)

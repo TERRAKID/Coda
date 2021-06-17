@@ -84,32 +84,27 @@ class MovieController extends Controller
         if($search != null){
             $userSearch = User::search(request('search_movie'))
                 ->get();
+
+            foreach($userSearch as $user){
+                $user = User::where('id', '=', $user['id'])
+                    ->where('id', '!=', $currentUser)
+                    ->first();
+
+                array_push($users, $user);
+            }
+            $users = array_filter($users);
                 
             if($userSearch->count() == 0){
                 $users = null;
             }
-            else{
-                foreach($userSearch as $user){
-                    $user = User::where('id', '=', $user['id'])
-                        ->first();
-
-                    array_push($users, $user);
-                }
-            }
 
             $communities = Community::search(request('search_movie'))
+                ->where('active', 1)
                 ->where('visibility', 1)
                 ->get();
 
-            $filteredCommunities = [];
-            foreach($communities as $community){
-                $community = Community::where('id', '=', $community['id'])
-                    ->where('active', 1)->first();
-                array_push($filteredCommunities, $community);
-            }
-
-            if(count($filteredCommunities) == 0){
-                $filteredCommunities = null;
+            if(count($communities) == 0){
+                $communities = null;
             }
 
             $results = (new TMDBController)->fetchMovieByName($search);
@@ -138,14 +133,14 @@ class MovieController extends Controller
             $search = null;
             $users = null;
             $results = null;
-            $filteredCommunities = null;
+            $communities = null;
         }
         return Inertia::render('Movie/Search')
             ->with('movies', $results)
             ->with('genres', $genres)
             ->with('search', $search)
             ->with('users', $users)
-            ->with('communities', $filteredCommunities);
+            ->with('communities', $communities);
     }
 
 /**-FUNCTION-04----------------------------------------------------------*/

@@ -194,7 +194,7 @@ export default{
                         if (res.status === 200) {
                             this.success.push("Created community successfully. Redirecting you to all communities...");
                             window.scrollTo({ top: 0, behavior: "smooth" });
-                            setTimeout(() => {  window.location.href = "/community"; }, 2000);
+                            window.location.href = "/community";
                             
                         }
                     })

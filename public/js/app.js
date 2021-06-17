@@ -18062,9 +18062,7 @@ __webpack_require__.r(__webpack_exports__);
               top: 0,
               behavior: "smooth"
             });
-            setTimeout(function () {
-              window.location.href = "/community";
-            }, 2000);
+            window.location.href = "/community";
           }
         })["catch"](function (err) {
           _this.errors = [];
